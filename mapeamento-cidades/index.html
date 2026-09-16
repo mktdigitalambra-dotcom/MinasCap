@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Minas Cap · Mapeamento de cidades</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#111827; --slate:#1F2937; --muted:#6B7280; --faint:#9CA3AF;
+  --line:#E5E7EB; --line2:#F1F2F4; --paper:#FFFFFF; --bg:#F7F8F9; --band:#FBFBFC;
+  --red:#C8191A; --gold:#C8901E;
+  --fica-bg:#E8F3EC; --fica-tx:#166534;
+  --sai-bg:#FCE9E7;  --sai-tx:#991B1B;
+  --entra-bg:#E8EEF9;--entra-tx:#1E3A8A;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Inter,system-ui,sans-serif;background:var(--bg);color:var(--ink);
+     font-size:14px;line-height:1.5;font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1240px;margin:0 auto;padding:0 22px}
+
+/* topo */
+header{background:var(--paper);border-bottom:1px solid var(--line)}
+.brandbar{height:4px;background:linear-gradient(90deg,var(--red) 0%,var(--gold) 65%,var(--red) 100%)}
+.head{padding:26px 0 20px}
+.eyebrow{font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin-bottom:7px}
+h1{font-size:27px;font-weight:800;letter-spacing:-.02em;line-height:1.1}
+.sub{color:var(--muted);font-size:13px;margin-top:6px}
+.meta-strip{display:flex;flex-wrap:wrap;gap:0 26px;margin-top:16px;padding-top:14px;border-top:1px solid var(--line2);font-size:11.5px;color:var(--faint)}
+.meta-strip b{display:block;color:var(--ink);font-weight:600;font-size:12.5px}
+
+/* abas */
+nav{background:var(--paper);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:40}
+.tabs{display:flex;gap:2px;overflow-x:auto}
+.tab{padding:12px 16px;font-size:13px;font-weight:600;color:var(--muted);background:none;border:none;
+     border-bottom:2px solid transparent;cursor:pointer;white-space:nowrap;font-family:inherit}
+.tab:hover{color:var(--ink)}
+.tab.on{color:var(--red);border-bottom-color:var(--red)}
+
+main{padding:26px 0 60px}
+.panel{display:none}.panel.on{display:block}
+.sec{margin-bottom:30px}
+.sec-h{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);margin-bottom:11px}
+
+/* cartões */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(178px,1fr));gap:12px;margin-bottom:26px}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:15px 17px}
+.card .lb{font-size:10.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);margin-bottom:6px}
+.card .vl{font-size:25px;font-weight:800;letter-spacing:-.02em;line-height:1}
+.card .ft{font-size:11.5px;color:var(--muted);margin-top:5px}
+.card.hl{background:#FFFBEB;border-color:#FDE68A}
+.card.hl .vl{color:#92400E}
+.card.hl .lb{color:#B45309}
+
+/* tabelas */
+.tbl-wrap{background:var(--paper);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.tbl-top{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;
+         padding:12px 15px;border-bottom:1px solid var(--line)}
+.tbl-title{font-size:13.5px;font-weight:700}
+.tbl-title span{color:var(--faint);font-weight:500;margin-left:6px}
+.tools{display:flex;gap:7px;align-items:center;flex-wrap:wrap}
+.search{border:1px solid var(--line);border-radius:7px;padding:6px 11px;font-size:12.5px;
+        font-family:inherit;width:190px;color:var(--ink);background:var(--bg)}
+.search:focus{outline:none;border-color:var(--slate);background:var(--paper)}
+.chip{font-size:11px;font-weight:600;padding:5px 11px;border-radius:20px;border:1px solid var(--line);
+      background:var(--paper);color:var(--muted);cursor:pointer;font-family:inherit}
+.chip.on{background:var(--slate);color:#fff;border-color:var(--slate)}
+.scroll{overflow-x:auto;max-height:620px;overflow-y:auto}
+table{border-collapse:separate;border-spacing:0;width:100%;min-width:820px}
+th{position:sticky;top:0;z-index:10;background:var(--slate);color:#fff;font-size:10px;font-weight:700;
+   letter-spacing:.06em;text-transform:uppercase;padding:10px 11px;text-align:right;
+   white-space:nowrap;cursor:pointer;user-select:none}
+th:first-child,th.l{text-align:left}
+th:hover{background:#374151}
+th .ar{opacity:.35;font-size:9px;margin-left:3px}
+th.sorted .ar{opacity:1}
+td{padding:8px 11px;text-align:right;font-size:13px;border-bottom:1px solid var(--line2);white-space:nowrap}
+td:first-child,td.l{text-align:left}
+tbody tr:nth-child(even){background:var(--band)}
+tbody tr:hover{background:#F0F4F8}
+td.city{font-weight:600}
+td.dim{color:var(--muted);font-size:12.5px}
+td.num{font-weight:600}
+.pill{display:inline-block;font-size:10px;font-weight:700;padding:3px 9px;border-radius:20px;letter-spacing:.02em}
+.p-fica{background:var(--fica-bg);color:var(--fica-tx)}
+.p-sai{background:var(--sai-bg);color:var(--sai-tx)}
+.p-entra{background:var(--entra-bg);color:var(--entra-tx)}
+tfoot td{background:var(--paper);border-top:2px solid var(--slate);border-bottom:none;
+         font-weight:700;font-size:13px;position:sticky;bottom:0}
+.rank{color:var(--faint);font-weight:700;font-size:12px;width:34px}
+
+/* barra de proporção */
+.bar{height:5px;background:var(--line2);border-radius:3px;overflow:hidden;min-width:54px;display:inline-block;vertical-align:middle}
+.bar i{display:block;height:100%;background:var(--slate);border-radius:3px}
+
+/* notas */
+.notes{background:var(--paper);border:1px solid var(--line);border-left:3px solid var(--slate);
+       border-radius:0 10px 10px 0;padding:14px 17px;margin-top:16px}
+.notes h4{font-size:10.5px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;color:var(--faint);margin-bottom:8px}
+.notes li{font-size:12px;color:var(--muted);line-height:1.65;list-style:none;padding-left:14px;position:relative;margin-bottom:3px}
+.notes li::before{content:'';position:absolute;left:0;top:9px;width:4px;height:4px;border-radius:50%;background:var(--faint)}
+.notes li b{color:var(--ink);font-weight:600}
+.empty{padding:34px;text-align:center;color:var(--faint);font-size:13px}
+
+@media(max-width:640px){
+  .wrap{padding:0 14px} h1{font-size:22px} .card .vl{font-size:21px}
+  .search{width:130px} .scroll{max-height:none}
+}
+@media print{
+  nav,.tools,.brandbar{display:none} .panel{display:block!important;page-break-before:always}
+  .scroll{max-height:none;overflow:visible} body{background:#fff}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="brandbar"></div>
+  <div class="wrap head">
+    <div class="eyebrow">Minas Cap · Equipe MKT Caps</div>
+    <h1>Mapeamento de cidades</h1>
+    <p class="sub">Vendas de <strong>todos os canais</strong> — acesso direto, aplicativo, Google Ads, Meta Ads, CRM e orgânico.</p>
+    <div class="meta-strip">
+      <div>Período<b>01/01 a 26/08/2026</b></div>
+      <div>Fonte de vendas<b>GA4 · minascap-53b4b</b></div>
+      <div>População<b>IBGE · Censo 2022</b></div>
+      <div>Cidades mapeadas<b>143</b></div>
+      <div>Lista final para o Meta<b>116 cidades</b></div>
+    </div>
+  </div>
+  <nav><div class="wrap"><div class="tabs">
+    <button class="tab on" data-p="resumo">Resumo</button>
+    <button class="tab" data-p="mapa">Mapeamento · 143</button>
+    <button class="tab" data-p="top">Top 12 cidades</button>
+    <button class="tab" data-p="resto">Fora do Top 12 · 104</button>
+  </div></div></nav>
+</header>
+<main class="wrap">
+  <section class="panel on" id="p-resumo"></section>
+  <section class="panel" id="p-mapa"></section>
+  <section class="panel" id="p-top"></section>
+  <section class="panel" id="p-resto"></section>
+</main>
+<script>
+const DATA =
+{"todas": [{"c": "Serro", "s": "SAI", "k": "—", "r": "Serra do Cipó", "p": 21813, "v": 332, "e": 6830, "m": 1}, {"c": "Aiuruoca", "s": "SAI", "k": "—", "r": "Fora do eixo", "p": 6225, "v": 0, "e": 0, "m": 0}, {"c": "Arapuá", "s": "SAI", "k": "—", "r": "Fora do eixo", "p": 2621, "v": 0, "e": 0, "m": 0}, {"c": "Arceburgo", "s": "SAI", "k": "—", "r": "Fora do eixo", "p": 9278, "v": 0, "e": 0, "m": 0}, {"c": "Barão de Monte Alto", "s": "SAI", "k": "—", "r": "Fora do eixo", "p": 4965, "v": 0, "e": 0, "m": 0}, {"c": "Bocaina de Minas", "s": "SAI", "k": "—", "r": "Fora do eixo", "p": 5316, "v": 0, "e": 0, "m": 0}, {"c": "Camacho", "s": "SAI", "k": "—", "r": "Fora do eixo", "p": 3028, "v": 0, "e": 0, "m": 0}, {"c": "Canaã", "s": "SAI", "k": "—", "r": "Zona da Mata", "p": 4715, "v": 0, "e": 0, "m": 0}, {"c": "Caranaíba", "s": "SAI", "k": "—", "r": "Quadrilátero/Vertentes", "p": 2937, "v": 0, "e": 0, "m": 0}, {"c": "Carvalhos", "s": "SAI", "k": "—", "r": "Fora do eixo", "p": 4374, "v": 0, "e": 0, "m": 0}, {"c": "Comendador Gomes", "s": "SAI", "k": "—", "r": "Fora do eixo", "p": 2708, "v": 0, "e": 0, "m": 0}, {"c": "Delfinópolis", "s": "SAI", "k": "—", "r": "Fora do eixo", "p": 8343, "v": 0, "e": 0, "m": 0}, {"c": "Entre Rios de Minas", "s": "SAI", "k": "—", "r": "Quadrilátero/Vertentes", "p": 14952, "v": 0, "e": 0, "m": 0}, {"c": "Liberdade", "s": "SAI", "k": "—", "r": "Fora do eixo", "p": 4713, "v": 0, "e": 0, "m": 0}, {"c": "Morada Nova de Minas", "s": "SAI", "k": "—", "r": "Central", "p": 8988, "v": 0, "e": 0, "m": 0}, {"c": "Passa Vinte", "s": "SAI", "k": "—", "r": "Fora do eixo", "p": 2232, "v": 0, "e": 0, "m": 0}, {"c": "Presidente Bernardes", "s": "SAI", "k": "—", "r": "Zona da Mata", "p": 4845, "v": 0, "e": 0, "m": 0}, {"c": "Rio Doce", "s": "SAI", "k": "—", "r": "Zona da Mata", "p": 2121, "v": 0, "e": 0, "m": 0}, {"c": "Rio Espera", "s": "SAI", "k": "—", "r": "Quadrilátero/Vertentes", "p": 5432, "v": 0, "e": 0, "m": 0}, {"c": "Rosário da Limeira", "s": "SAI", "k": "—", "r": "Zona da Mata", "p": 4736, "v": 0, "e": 0, "m": 0}, {"c": "Santa Rita de Jacutinga", "s": "SAI", "k": "—", "r": "Fora do eixo", "p": 4768, "v": 0, "e": 0, "m": 0}, {"c": "Seritinga", "s": "SAI", "k": "—", "r": "Fora do eixo", "p": 1812, "v": 0, "e": 0, "m": 0}, {"c": "Serra da Saudade", "s": "SAI", "k": "—", "r": "Central", "p": 836, "v": 0, "e": 0, "m": 0}, {"c": "Serranos", "s": "SAI", "k": "—", "r": "Fora do eixo", "p": 1952, "v": 0, "e": 0, "m": 0}, {"c": "São Sebastião do Rio Preto", "s": "SAI", "k": "—", "r": "Quadrilátero/Vertentes", "p": 1231, "v": 0, "e": 0, "m": 0}, {"c": "São Vicente de Minas", "s": "SAI", "k": "—", "r": "Fora do eixo", "p": 6669, "v": 0, "e": 0, "m": 0}, {"c": "Teixeiras", "s": "SAI", "k": "—", "r": "Zona da Mata", "p": 12105, "v": 0, "e": 0, "m": 0}, {"c": "Ponte Nova", "s": "ENTRA", "k": "D · Mata e Serra do Cipó", "r": "Zona da Mata", "p": 58779, "v": 1554, "e": 28840, "m": 61}, {"c": "Nova Era", "s": "ENTRA", "k": "C · Quadrilátero e Vertentes", "r": "Quadrilátero/Vertentes", "p": 16920, "v": 385, "e": 7450, "m": 0}, {"c": "Bonfim", "s": "ENTRA", "k": "C · Quadrilátero e Vertentes", "r": "Quadrilátero/Vertentes", "p": 7377, "v": 0, "e": 0, "m": 0}, {"c": "Capim Branco", "s": "ENTRA", "k": "B · Colar RMBH", "r": "RMBH", "p": 10706, "v": 0, "e": 0, "m": 0}, {"c": "Itatiaiuçu", "s": "ENTRA", "k": "B · Colar RMBH", "r": "RMBH", "p": 16257, "v": 0, "e": 0, "m": 0}, {"c": "Lagoa Dourada", "s": "ENTRA", "k": "C · Quadrilátero e Vertentes", "r": "Quadrilátero/Vertentes", "p": 12611, "v": 0, "e": 0, "m": 0}, {"c": "Piedade de Ponte Nova", "s": "ENTRA", "k": "D · Mata e Serra do Cipó", "r": "Zona da Mata", "p": 3941, "v": 0, "e": 0, "m": 0}, {"c": "Rio Casca", "s": "ENTRA", "k": "D · Mata e Serra do Cipó", "r": "Zona da Mata", "p": 12795, "v": 0, "e": 0, "m": 0}, {"c": "Santa Cruz do Escalvado", "s": "ENTRA", "k": "D · Mata e Serra do Cipó", "r": "Zona da Mata", "p": 4852, "v": 0, "e": 0, "m": 0}, {"c": "Santo Antônio do Grama", "s": "ENTRA", "k": "D · Mata e Serra do Cipó", "r": "Zona da Mata", "p": 4229, "v": 0, "e": 0, "m": 0}, {"c": "Sem-Peixe", "s": "ENTRA", "k": "D · Mata e Serra do Cipó", "r": "Zona da Mata", "p": 2382, "v": 0, "e": 0, "m": 0}, {"c": "Senhora de Oliveira", "s": "ENTRA", "k": "C · Quadrilátero e Vertentes", "r": "Quadrilátero/Vertentes", "p": 5295, "v": 0, "e": 0, "m": 0}, {"c": "Sericita", "s": "ENTRA", "k": "D · Mata e Serra do Cipó", "r": "Zona da Mata", "p": 7345, "v": 0, "e": 0, "m": 0}, {"c": "São Domingos do Prata", "s": "ENTRA", "k": "C · Quadrilátero e Vertentes", "r": "Quadrilátero/Vertentes", "p": 17399, "v": 0, "e": 0, "m": 0}, {"c": "São Pedro dos Ferros", "s": "ENTRA", "k": "D · Mata e Serra do Cipó", "r": "Zona da Mata", "p": 7122, "v": 0, "e": 0, "m": 0}, {"c": "Urucânia", "s": "ENTRA", "k": "D · Mata e Serra do Cipó", "r": "Zona da Mata", "p": 10480, "v": 0, "e": 0, "m": 0}, {"c": "Belo Horizonte", "s": "MANTÉM", "k": "A · Capital", "r": "RMBH", "p": 2392678, "v": 263931, "e": 4771230, "m": 6835}, {"c": "Contagem", "s": "MANTÉM", "k": "B · Colar RMBH", "r": "RMBH", "p": 615621, "v": 43241, "e": 773495, "m": 1305}, {"c": "Betim", "s": "MANTÉM", "k": "B · Colar RMBH", "r": "RMBH", "p": 428956, "v": 30749, "e": 548915, "m": 784}, {"c": "Ribeirão das Neves", "s": "MANTÉM", "k": "B · Colar RMBH", "r": "RMBH", "p": 327968, "v": 24170, "e": 421245, "m": 624}, {"c": "Santa Luzia", "s": "MANTÉM", "k": "B · Colar RMBH", "r": "RMBH", "p": 213709, "v": 17448, "e": 307060, "m": 432}, {"c": "Ibirité", "s": "MANTÉM", "k": "B · Colar RMBH", "r": "RMBH", "p": 181943, "v": 13613, "e": 239250, "m": 386}, {"c": "Sete Lagoas", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Central", "p": 233398, "v": 10435, "e": 184890, "m": 299}, {"c": "Lagoa Santa", "s": "MANTÉM", "k": "B · Colar RMBH", "r": "RMBH", "p": 70678, "v": 6614, "e": 118950, "m": 169}, {"c": "Vespasiano", "s": "MANTÉM", "k": "B · Colar RMBH", "r": "RMBH", "p": 137821, "v": 6520, "e": 112000, "m": 170}, {"c": "Esmeraldas", "s": "MANTÉM", "k": "B · Colar RMBH", "r": "RMBH", "p": 102608, "v": 6498, "e": 112800, "m": 122}, {"c": "Nova Lima", "s": "MANTÉM", "k": "B · Colar RMBH", "r": "RMBH", "p": 117819, "v": 6141, "e": 111390, "m": 167}, {"c": "Sabará", "s": "MANTÉM", "k": "B · Colar RMBH", "r": "RMBH", "p": 131294, "v": 6106, "e": 111345, "m": 209}, {"c": "Pedro Leopoldo", "s": "MANTÉM", "k": "B · Colar RMBH", "r": "RMBH", "p": 60154, "v": 5767, "e": 102660, "m": 185}, {"c": "Igarapé", "s": "MANTÉM", "k": "B · Colar RMBH", "r": "RMBH", "p": 44920, "v": 4785, "e": 88215, "m": 116}, {"c": "João Monlevade", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Quadrilátero/Vertentes", "p": 75838, "v": 3719, "e": 65370, "m": 107}, {"c": "Itabirito", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Quadrilátero/Vertentes", "p": 58544, "v": 3595, "e": 66010, "m": 99}, {"c": "Conselheiro Lafaiete", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Quadrilátero/Vertentes", "p": 134537, "v": 3161, "e": 58355, "m": 119}, {"c": "Sarzedo", "s": "MANTÉM", "k": "B · Colar RMBH", "r": "RMBH", "p": 36581, "v": 3053, "e": 53750, "m": 87}, {"c": "Matozinhos", "s": "MANTÉM", "k": "B · Colar RMBH", "r": "RMBH", "p": 36927, "v": 2862, "e": 48725, "m": 64}, {"c": "Itabira", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Quadrilátero/Vertentes", "p": 110335, "v": 2729, "e": 53245, "m": 106}, {"c": "Brumadinho", "s": "MANTÉM", "k": "B · Colar RMBH", "r": "RMBH", "p": 38640, "v": 2554, "e": 46930, "m": 63}, {"c": "Caeté", "s": "MANTÉM", "k": "B · Colar RMBH", "r": "RMBH", "p": 39578, "v": 2416, "e": 44070, "m": 58}, {"c": "Mateus Leme", "s": "MANTÉM", "k": "B · Colar RMBH", "r": "RMBH", "p": 43996, "v": 2212, "e": 41895, "m": 86}, {"c": "Juatuba", "s": "MANTÉM", "k": "B · Colar RMBH", "r": "RMBH", "p": 31409, "v": 2075, "e": 37670, "m": 63}, {"c": "São Joaquim de Bicas", "s": "MANTÉM", "k": "B · Colar RMBH", "r": "RMBH", "p": 34677, "v": 1887, "e": 33740, "m": 44}, {"c": "Congonhas", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Quadrilátero/Vertentes", "p": 55562, "v": 1726, "e": 32340, "m": 67}, {"c": "Ouro Branco", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Quadrilátero/Vertentes", "p": 39206, "v": 1197, "e": 23015, "m": 50}, {"c": "Barão de Cocais", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Quadrilátero/Vertentes", "p": 30643, "v": 974, "e": 19020, "m": 39}, {"c": "Santa Bárbara", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Quadrilátero/Vertentes", "p": 29491, "v": 971, "e": 18010, "m": 32}, {"c": "São José da Lapa", "s": "MANTÉM", "k": "B · Colar RMBH", "r": "RMBH", "p": 27125, "v": 906, "e": 15840, "m": 23}, {"c": "Mariana", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Quadrilátero/Vertentes", "p": 64890, "v": 853, "e": 17550, "m": 27}, {"c": "Ouro Preto", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Quadrilátero/Vertentes", "p": 76069, "v": 570, "e": 11130, "m": 27}, {"c": "Raposos", "s": "MANTÉM", "k": "B · Colar RMBH", "r": "RMBH", "p": 16266, "v": 458, "e": 8535, "m": 10}, {"c": "Paraopeba", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Central", "p": 23776, "v": 341, "e": 6855, "m": 8}, {"c": "Confins", "s": "MANTÉM", "k": "B · Colar RMBH", "r": "RMBH", "p": 7428, "v": 194, "e": 3580, "m": 10}, {"c": "Rio Piracicaba", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Quadrilátero/Vertentes", "p": 14120, "v": 117, "e": 2235, "m": 0}, {"c": "Tiradentes", "s": "MANTÉM", "k": "D · Mata e Serra do Cipó", "r": "Fora do eixo", "p": 7508, "v": 47, "e": 825, "m": 0}, {"c": "Acaiaca", "s": "MANTÉM", "k": "D · Mata e Serra do Cipó", "r": "Zona da Mata", "p": 3920, "v": 0, "e": 0, "m": 0}, {"c": "Alvinópolis", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Quadrilátero/Vertentes", "p": 15178, "v": 0, "e": 0, "m": 0}, {"c": "Amparo do Serra", "s": "MANTÉM", "k": "D · Mata e Serra do Cipó", "r": "Zona da Mata", "p": 4472, "v": 0, "e": 0, "m": 0}, {"c": "Araponga", "s": "MANTÉM", "k": "D · Mata e Serra do Cipó", "r": "Zona da Mata", "p": 8048, "v": 0, "e": 0, "m": 0}, {"c": "Araçaí", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Central", "p": 2174, "v": 0, "e": 0, "m": 0}, {"c": "Baldim", "s": "MANTÉM", "k": "B · Colar RMBH", "r": "RMBH", "p": 7336, "v": 0, "e": 0, "m": 0}, {"c": "Barra Longa", "s": "MANTÉM", "k": "D · Mata e Serra do Cipó", "r": "Zona da Mata", "p": 5678, "v": 0, "e": 0, "m": 0}, {"c": "Bela Vista de Minas", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Quadrilátero/Vertentes", "p": 9505, "v": 0, "e": 0, "m": 0}, {"c": "Belo Vale", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Quadrilátero/Vertentes", "p": 8632, "v": 0, "e": 0, "m": 0}, {"c": "Bom Jesus do Amparo", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Quadrilátero/Vertentes", "p": 5592, "v": 0, "e": 0, "m": 0}, {"c": "Cachoeira da Prata", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Central", "p": 3707, "v": 0, "e": 0, "m": 0}, {"c": "Caetanópolis", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Central", "p": 11425, "v": 0, "e": 0, "m": 0}, {"c": "Casa Grande", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Quadrilátero/Vertentes", "p": 2210, "v": 0, "e": 0, "m": 0}, {"c": "Catas Altas", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Quadrilátero/Vertentes", "p": 5486, "v": 0, "e": 0, "m": 0}, {"c": "Catas Altas da Noruega", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Quadrilátero/Vertentes", "p": 2918, "v": 0, "e": 0, "m": 0}, {"c": "Conceição do Mato Dentro", "s": "MANTÉM", "k": "D · Mata e Serra do Cipó", "r": "Serra do Cipó", "p": 23345, "v": 0, "e": 0, "m": 0}, {"c": "Congonhas do Norte", "s": "MANTÉM", "k": "D · Mata e Serra do Cipó", "r": "Serra do Cipó", "p": 4830, "v": 0, "e": 0, "m": 0}, {"c": "Cordisburgo", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Central", "p": 7548, "v": 0, "e": 0, "m": 0}, {"c": "Coronel Xavier Chaves", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Quadrilátero/Vertentes", "p": 3474, "v": 0, "e": 0, "m": 0}, {"c": "Cristiano Otoni", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Quadrilátero/Vertentes", "p": 4671, "v": 0, "e": 0, "m": 0}, {"c": "Crucilândia", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Quadrilátero/Vertentes", "p": 5779, "v": 0, "e": 0, "m": 0}, {"c": "Desterro de Entre Rios", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Quadrilátero/Vertentes", "p": 7633, "v": 0, "e": 0, "m": 0}, {"c": "Diogo de Vasconcelos", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Quadrilátero/Vertentes", "p": 3548, "v": 0, "e": 0, "m": 0}, {"c": "Florestal", "s": "MANTÉM", "k": "B · Colar RMBH", "r": "RMBH", "p": 8201, "v": 0, "e": 0, "m": 0}, {"c": "Fortuna de Minas", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Central", "p": 3102, "v": 0, "e": 0, "m": 0}, {"c": "Funilândia", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Central", "p": 4699, "v": 0, "e": 0, "m": 0}, {"c": "Guaraciaba", "s": "MANTÉM", "k": "D · Mata e Serra do Cipó", "r": "Zona da Mata", "p": 10487, "v": 0, "e": 0, "m": 0}, {"c": "Inhaúma", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Central", "p": 6213, "v": 0, "e": 0, "m": 0}, {"c": "Itaguara", "s": "MANTÉM", "k": "B · Colar RMBH", "r": "RMBH", "p": 14408, "v": 0, "e": 0, "m": 0}, {"c": "Itambé do Mato Dentro", "s": "MANTÉM", "k": "D · Mata e Serra do Cipó", "r": "Serra do Cipó", "p": 2140, "v": 0, "e": 0, "m": 0}, {"c": "Itaverava", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Quadrilátero/Vertentes", "p": 5650, "v": 0, "e": 0, "m": 0}, {"c": "Jaboticatubas", "s": "MANTÉM", "k": "B · Colar RMBH", "r": "RMBH", "p": 19697, "v": 0, "e": 0, "m": 0}, {"c": "Jeceaba", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Quadrilátero/Vertentes", "p": 6344, "v": 0, "e": 0, "m": 0}, {"c": "Jequitibá", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Central", "p": 5900, "v": 0, "e": 0, "m": 0}, {"c": "Lamim", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Quadrilátero/Vertentes", "p": 3184, "v": 0, "e": 0, "m": 0}, {"c": "Moeda", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Quadrilátero/Vertentes", "p": 5186, "v": 0, "e": 0, "m": 0}, {"c": "Morro do Pilar", "s": "MANTÉM", "k": "D · Mata e Serra do Cipó", "r": "Serra do Cipó", "p": 2977, "v": 0, "e": 0, "m": 0}, {"c": "Mário Campos", "s": "MANTÉM", "k": "B · Colar RMBH", "r": "RMBH", "p": 15969, "v": 0, "e": 0, "m": 0}, {"c": "Nova União", "s": "MANTÉM", "k": "B · Colar RMBH", "r": "RMBH", "p": 5729, "v": 0, "e": 0, "m": 0}, {"c": "Oratórios", "s": "MANTÉM", "k": "D · Mata e Serra do Cipó", "r": "Zona da Mata", "p": 4910, "v": 0, "e": 0, "m": 0}, {"c": "Passabém", "s": "MANTÉM", "k": "D · Mata e Serra do Cipó", "r": "Serra do Cipó", "p": 1604, "v": 0, "e": 0, "m": 0}, {"c": "Pedra do Anta", "s": "MANTÉM", "k": "D · Mata e Serra do Cipó", "r": "Zona da Mata", "p": 3511, "v": 0, "e": 0, "m": 0}, {"c": "Piedade do Rio Grande", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Quadrilátero/Vertentes", "p": 4560, "v": 0, "e": 0, "m": 0}, {"c": "Piedade dos Gerais", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Quadrilátero/Vertentes", "p": 5215, "v": 0, "e": 0, "m": 0}, {"c": "Piracema", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Quadrilátero/Vertentes", "p": 7451, "v": 0, "e": 0, "m": 0}, {"c": "Piranga", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Quadrilátero/Vertentes", "p": 15308, "v": 0, "e": 0, "m": 0}, {"c": "Porto Firme", "s": "MANTÉM", "k": "D · Mata e Serra do Cipó", "r": "Zona da Mata", "p": 10571, "v": 0, "e": 0, "m": 0}, {"c": "Prados", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Quadrilátero/Vertentes", "p": 8964, "v": 0, "e": 0, "m": 0}, {"c": "Prudente de Morais", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Central", "p": 12224, "v": 0, "e": 0, "m": 0}, {"c": "Queluzito", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Quadrilátero/Vertentes", "p": 1778, "v": 0, "e": 0, "m": 0}, {"c": "Resende Costa", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Quadrilátero/Vertentes", "p": 11004, "v": 0, "e": 0, "m": 0}, {"c": "Rio Acima", "s": "MANTÉM", "k": "B · Colar RMBH", "r": "RMBH", "p": 10263, "v": 0, "e": 0, "m": 0}, {"c": "Rio Manso", "s": "MANTÉM", "k": "B · Colar RMBH", "r": "RMBH", "p": 5527, "v": 0, "e": 0, "m": 0}, {"c": "Ritápolis", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Quadrilátero/Vertentes", "p": 4984, "v": 0, "e": 0, "m": 0}, {"c": "Santana de Pirapama", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Central", "p": 7014, "v": 0, "e": 0, "m": 0}, {"c": "Santana do Riacho", "s": "MANTÉM", "k": "D · Mata e Serra do Cipó", "r": "Serra do Cipó", "p": 5754, "v": 0, "e": 0, "m": 0}, {"c": "Santana dos Montes", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Quadrilátero/Vertentes", "p": 3469, "v": 0, "e": 0, "m": 0}, {"c": "Santo Antônio do Rio Abaixo", "s": "MANTÉM", "k": "D · Mata e Serra do Cipó", "r": "Serra do Cipó", "p": 1808, "v": 0, "e": 0, "m": 0}, {"c": "São Brás do Suaçuí", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Quadrilátero/Vertentes", "p": 3987, "v": 0, "e": 0, "m": 0}, {"c": "São Gonçalo do Rio Abaixo", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Quadrilátero/Vertentes", "p": 12466, "v": 0, "e": 0, "m": 0}, {"c": "São José da Varginha", "s": "MANTÉM", "k": "D · Mata e Serra do Cipó", "r": "Serra do Cipó", "p": 4392, "v": 0, "e": 0, "m": 0}, {"c": "São Miguel do Anta", "s": "MANTÉM", "k": "D · Mata e Serra do Cipó", "r": "Zona da Mata", "p": 6219, "v": 0, "e": 0, "m": 0}, {"c": "Taquaraçu de Minas", "s": "MANTÉM", "k": "B · Colar RMBH", "r": "RMBH", "p": 4135, "v": 0, "e": 0, "m": 0}], "top": [{"c": "Belo Horizonte", "s": "MANTÉM", "k": "A · Capital", "p": 2392678, "v": 263931, "e": 4771230}, {"c": "Contagem", "s": "MANTÉM", "k": "B · Colar RMBH", "p": 615621, "v": 43241, "e": 773495}, {"c": "Betim", "s": "MANTÉM", "k": "B · Colar RMBH", "p": 428956, "v": 30749, "e": 548915}, {"c": "Ribeirão das Neves", "s": "MANTÉM", "k": "B · Colar RMBH", "p": 327968, "v": 24170, "e": 421245}, {"c": "Santa Luzia", "s": "MANTÉM", "k": "B · Colar RMBH", "p": 213709, "v": 17448, "e": 307060}, {"c": "Ibirité", "s": "MANTÉM", "k": "B · Colar RMBH", "p": 181943, "v": 13613, "e": 239250}, {"c": "Sete Lagoas", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "p": 233398, "v": 10435, "e": 184890}, {"c": "Lagoa Santa", "s": "MANTÉM", "k": "B · Colar RMBH", "p": 70678, "v": 6614, "e": 118950}, {"c": "Vespasiano", "s": "MANTÉM", "k": "B · Colar RMBH", "p": 137821, "v": 6520, "e": 112000}, {"c": "Esmeraldas", "s": "MANTÉM", "k": "B · Colar RMBH", "p": 102608, "v": 6498, "e": 112800}, {"c": "Nova Lima", "s": "MANTÉM", "k": "B · Colar RMBH", "p": 117819, "v": 6141, "e": 111390}, {"c": "Sabará", "s": "MANTÉM", "k": "B · Colar RMBH", "p": 131294, "v": 6106, "e": 111345}], "resto": [{"c": "Pedro Leopoldo", "s": "MANTÉM", "k": "B · Colar RMBH", "r": "RMBH", "p": 60154, "v": 5767, "e": 102660}, {"c": "Igarapé", "s": "MANTÉM", "k": "B · Colar RMBH", "r": "RMBH", "p": 44920, "v": 4785, "e": 88215}, {"c": "João Monlevade", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Quadrilátero/Vertentes", "p": 75838, "v": 3719, "e": 65370}, {"c": "Itabirito", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Quadrilátero/Vertentes", "p": 58544, "v": 3595, "e": 66010}, {"c": "Conselheiro Lafaiete", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Quadrilátero/Vertentes", "p": 134537, "v": 3161, "e": 58355}, {"c": "Sarzedo", "s": "MANTÉM", "k": "B · Colar RMBH", "r": "RMBH", "p": 36581, "v": 3053, "e": 53750}, {"c": "Matozinhos", "s": "MANTÉM", "k": "B · Colar RMBH", "r": "RMBH", "p": 36927, "v": 2862, "e": 48725}, {"c": "Itabira", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Quadrilátero/Vertentes", "p": 110335, "v": 2729, "e": 53245}, {"c": "Brumadinho", "s": "MANTÉM", "k": "B · Colar RMBH", "r": "RMBH", "p": 38640, "v": 2554, "e": 46930}, {"c": "Caeté", "s": "MANTÉM", "k": "B · Colar RMBH", "r": "RMBH", "p": 39578, "v": 2416, "e": 44070}, {"c": "Mateus Leme", "s": "MANTÉM", "k": "B · Colar RMBH", "r": "RMBH", "p": 43996, "v": 2212, "e": 41895}, {"c": "Juatuba", "s": "MANTÉM", "k": "B · Colar RMBH", "r": "RMBH", "p": 31409, "v": 2075, "e": 37670}, {"c": "São Joaquim de Bicas", "s": "MANTÉM", "k": "B · Colar RMBH", "r": "RMBH", "p": 34677, "v": 1887, "e": 33740}, {"c": "Congonhas", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Quadrilátero/Vertentes", "p": 55562, "v": 1726, "e": 32340}, {"c": "Ponte Nova", "s": "ENTRA", "k": "D · Mata e Serra do Cipó", "r": "Zona da Mata", "p": 58779, "v": 1554, "e": 28840}, {"c": "Ouro Branco", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Quadrilátero/Vertentes", "p": 39206, "v": 1197, "e": 23015}, {"c": "Barão de Cocais", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Quadrilátero/Vertentes", "p": 30643, "v": 974, "e": 19020}, {"c": "Santa Bárbara", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Quadrilátero/Vertentes", "p": 29491, "v": 971, "e": 18010}, {"c": "São José da Lapa", "s": "MANTÉM", "k": "B · Colar RMBH", "r": "RMBH", "p": 27125, "v": 906, "e": 15840}, {"c": "Mariana", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Quadrilátero/Vertentes", "p": 64890, "v": 853, "e": 17550}, {"c": "Ouro Preto", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Quadrilátero/Vertentes", "p": 76069, "v": 570, "e": 11130}, {"c": "Raposos", "s": "MANTÉM", "k": "B · Colar RMBH", "r": "RMBH", "p": 16266, "v": 458, "e": 8535}, {"c": "Nova Era", "s": "ENTRA", "k": "C · Quadrilátero e Vertentes", "r": "Quadrilátero/Vertentes", "p": 16920, "v": 385, "e": 7450}, {"c": "Paraopeba", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Central", "p": 23776, "v": 341, "e": 6855}, {"c": "Confins", "s": "MANTÉM", "k": "B · Colar RMBH", "r": "RMBH", "p": 7428, "v": 194, "e": 3580}, {"c": "Rio Piracicaba", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Quadrilátero/Vertentes", "p": 14120, "v": 117, "e": 2235}, {"c": "Tiradentes", "s": "MANTÉM", "k": "D · Mata e Serra do Cipó", "r": "Fora do eixo", "p": 7508, "v": 47, "e": 825}, {"c": "Acaiaca", "s": "MANTÉM", "k": "D · Mata e Serra do Cipó", "r": "Zona da Mata", "p": 3920, "v": 0, "e": 0}, {"c": "Alvinópolis", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Quadrilátero/Vertentes", "p": 15178, "v": 0, "e": 0}, {"c": "Amparo do Serra", "s": "MANTÉM", "k": "D · Mata e Serra do Cipó", "r": "Zona da Mata", "p": 4472, "v": 0, "e": 0}, {"c": "Araçaí", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Central", "p": 2174, "v": 0, "e": 0}, {"c": "Araponga", "s": "MANTÉM", "k": "D · Mata e Serra do Cipó", "r": "Zona da Mata", "p": 8048, "v": 0, "e": 0}, {"c": "Baldim", "s": "MANTÉM", "k": "B · Colar RMBH", "r": "RMBH", "p": 7336, "v": 0, "e": 0}, {"c": "Barra Longa", "s": "MANTÉM", "k": "D · Mata e Serra do Cipó", "r": "Zona da Mata", "p": 5678, "v": 0, "e": 0}, {"c": "Bela Vista de Minas", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Quadrilátero/Vertentes", "p": 9505, "v": 0, "e": 0}, {"c": "Belo Vale", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Quadrilátero/Vertentes", "p": 8632, "v": 0, "e": 0}, {"c": "Bom Jesus do Amparo", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Quadrilátero/Vertentes", "p": 5592, "v": 0, "e": 0}, {"c": "Bonfim", "s": "ENTRA", "k": "C · Quadrilátero e Vertentes", "r": "Quadrilátero/Vertentes", "p": 7377, "v": 0, "e": 0}, {"c": "Cachoeira da Prata", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Central", "p": 3707, "v": 0, "e": 0}, {"c": "Caetanópolis", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Central", "p": 11425, "v": 0, "e": 0}, {"c": "Capim Branco", "s": "ENTRA", "k": "B · Colar RMBH", "r": "RMBH", "p": 10706, "v": 0, "e": 0}, {"c": "Casa Grande", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Quadrilátero/Vertentes", "p": 2210, "v": 0, "e": 0}, {"c": "Catas Altas", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Quadrilátero/Vertentes", "p": 5486, "v": 0, "e": 0}, {"c": "Catas Altas da Noruega", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Quadrilátero/Vertentes", "p": 2918, "v": 0, "e": 0}, {"c": "Conceição do Mato Dentro", "s": "MANTÉM", "k": "D · Mata e Serra do Cipó", "r": "Serra do Cipó", "p": 23345, "v": 0, "e": 0}, {"c": "Congonhas do Norte", "s": "MANTÉM", "k": "D · Mata e Serra do Cipó", "r": "Serra do Cipó", "p": 4830, "v": 0, "e": 0}, {"c": "Cordisburgo", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Central", "p": 7548, "v": 0, "e": 0}, {"c": "Coronel Xavier Chaves", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Quadrilátero/Vertentes", "p": 3474, "v": 0, "e": 0}, {"c": "Cristiano Otoni", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Quadrilátero/Vertentes", "p": 4671, "v": 0, "e": 0}, {"c": "Crucilândia", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Quadrilátero/Vertentes", "p": 5779, "v": 0, "e": 0}, {"c": "Desterro de Entre Rios", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Quadrilátero/Vertentes", "p": 7633, "v": 0, "e": 0}, {"c": "Diogo de Vasconcelos", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Quadrilátero/Vertentes", "p": 3548, "v": 0, "e": 0}, {"c": "Florestal", "s": "MANTÉM", "k": "B · Colar RMBH", "r": "RMBH", "p": 8201, "v": 0, "e": 0}, {"c": "Fortuna de Minas", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Central", "p": 3102, "v": 0, "e": 0}, {"c": "Funilândia", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Central", "p": 4699, "v": 0, "e": 0}, {"c": "Guaraciaba", "s": "MANTÉM", "k": "D · Mata e Serra do Cipó", "r": "Zona da Mata", "p": 10487, "v": 0, "e": 0}, {"c": "Inhaúma", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Central", "p": 6213, "v": 0, "e": 0}, {"c": "Itaguara", "s": "MANTÉM", "k": "B · Colar RMBH", "r": "RMBH", "p": 14408, "v": 0, "e": 0}, {"c": "Itambé do Mato Dentro", "s": "MANTÉM", "k": "D · Mata e Serra do Cipó", "r": "Serra do Cipó", "p": 2140, "v": 0, "e": 0}, {"c": "Itatiaiuçu", "s": "ENTRA", "k": "B · Colar RMBH", "r": "RMBH", "p": 16257, "v": 0, "e": 0}, {"c": "Itaverava", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Quadrilátero/Vertentes", "p": 5650, "v": 0, "e": 0}, {"c": "Jaboticatubas", "s": "MANTÉM", "k": "B · Colar RMBH", "r": "RMBH", "p": 19697, "v": 0, "e": 0}, {"c": "Jeceaba", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Quadrilátero/Vertentes", "p": 6344, "v": 0, "e": 0}, {"c": "Jequitibá", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Central", "p": 5900, "v": 0, "e": 0}, {"c": "Lagoa Dourada", "s": "ENTRA", "k": "C · Quadrilátero e Vertentes", "r": "Quadrilátero/Vertentes", "p": 12611, "v": 0, "e": 0}, {"c": "Lamim", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Quadrilátero/Vertentes", "p": 3184, "v": 0, "e": 0}, {"c": "Mário Campos", "s": "MANTÉM", "k": "B · Colar RMBH", "r": "RMBH", "p": 15969, "v": 0, "e": 0}, {"c": "Moeda", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Quadrilátero/Vertentes", "p": 5186, "v": 0, "e": 0}, {"c": "Morro do Pilar", "s": "MANTÉM", "k": "D · Mata e Serra do Cipó", "r": "Serra do Cipó", "p": 2977, "v": 0, "e": 0}, {"c": "Nova União", "s": "MANTÉM", "k": "B · Colar RMBH", "r": "RMBH", "p": 5729, "v": 0, "e": 0}, {"c": "Oratórios", "s": "MANTÉM", "k": "D · Mata e Serra do Cipó", "r": "Zona da Mata", "p": 4910, "v": 0, "e": 0}, {"c": "Passabém", "s": "MANTÉM", "k": "D · Mata e Serra do Cipó", "r": "Serra do Cipó", "p": 1604, "v": 0, "e": 0}, {"c": "Pedra do Anta", "s": "MANTÉM", "k": "D · Mata e Serra do Cipó", "r": "Zona da Mata", "p": 3511, "v": 0, "e": 0}, {"c": "Piedade de Ponte Nova", "s": "ENTRA", "k": "D · Mata e Serra do Cipó", "r": "Zona da Mata", "p": 3941, "v": 0, "e": 0}, {"c": "Piedade do Rio Grande", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Quadrilátero/Vertentes", "p": 4560, "v": 0, "e": 0}, {"c": "Piedade dos Gerais", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Quadrilátero/Vertentes", "p": 5215, "v": 0, "e": 0}, {"c": "Piracema", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Quadrilátero/Vertentes", "p": 7451, "v": 0, "e": 0}, {"c": "Piranga", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Quadrilátero/Vertentes", "p": 15308, "v": 0, "e": 0}, {"c": "Porto Firme", "s": "MANTÉM", "k": "D · Mata e Serra do Cipó", "r": "Zona da Mata", "p": 10571, "v": 0, "e": 0}, {"c": "Prados", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Quadrilátero/Vertentes", "p": 8964, "v": 0, "e": 0}, {"c": "Prudente de Morais", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Central", "p": 12224, "v": 0, "e": 0}, {"c": "Queluzito", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Quadrilátero/Vertentes", "p": 1778, "v": 0, "e": 0}, {"c": "Resende Costa", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Quadrilátero/Vertentes", "p": 11004, "v": 0, "e": 0}, {"c": "Rio Acima", "s": "MANTÉM", "k": "B · Colar RMBH", "r": "RMBH", "p": 10263, "v": 0, "e": 0}, {"c": "Rio Casca", "s": "ENTRA", "k": "D · Mata e Serra do Cipó", "r": "Zona da Mata", "p": 12795, "v": 0, "e": 0}, {"c": "Rio Manso", "s": "MANTÉM", "k": "B · Colar RMBH", "r": "RMBH", "p": 5527, "v": 0, "e": 0}, {"c": "Ritápolis", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Quadrilátero/Vertentes", "p": 4984, "v": 0, "e": 0}, {"c": "Santa Cruz do Escalvado", "s": "ENTRA", "k": "D · Mata e Serra do Cipó", "r": "Zona da Mata", "p": 4852, "v": 0, "e": 0}, {"c": "Santana de Pirapama", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Central", "p": 7014, "v": 0, "e": 0}, {"c": "Santana do Riacho", "s": "MANTÉM", "k": "D · Mata e Serra do Cipó", "r": "Serra do Cipó", "p": 5754, "v": 0, "e": 0}, {"c": "Santana dos Montes", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Quadrilátero/Vertentes", "p": 3469, "v": 0, "e": 0}, {"c": "Santo Antônio do Grama", "s": "ENTRA", "k": "D · Mata e Serra do Cipó", "r": "Zona da Mata", "p": 4229, "v": 0, "e": 0}, {"c": "Santo Antônio do Rio Abaixo", "s": "MANTÉM", "k": "D · Mata e Serra do Cipó", "r": "Serra do Cipó", "p": 1808, "v": 0, "e": 0}, {"c": "São Brás do Suaçuí", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Quadrilátero/Vertentes", "p": 3987, "v": 0, "e": 0}, {"c": "São Domingos do Prata", "s": "ENTRA", "k": "C · Quadrilátero e Vertentes", "r": "Quadrilátero/Vertentes", "p": 17399, "v": 0, "e": 0}, {"c": "São Gonçalo do Rio Abaixo", "s": "MANTÉM", "k": "C · Quadrilátero e Vertentes", "r": "Quadrilátero/Vertentes", "p": 12466, "v": 0, "e": 0}, {"c": "São José da Varginha", "s": "MANTÉM", "k": "D · Mata e Serra do Cipó", "r": "Serra do Cipó", "p": 4392, "v": 0, "e": 0}, {"c": "São Miguel do Anta", "s": "MANTÉM", "k": "D · Mata e Serra do Cipó", "r": "Zona da Mata", "p": 6219, "v": 0, "e": 0}, {"c": "São Pedro dos Ferros", "s": "ENTRA", "k": "D · Mata e Serra do Cipó", "r": "Zona da Mata", "p": 7122, "v": 0, "e": 0}, {"c": "Sem-Peixe", "s": "ENTRA", "k": "D · Mata e Serra do Cipó", "r": "Zona da Mata", "p": 2382, "v": 0, "e": 0}, {"c": "Senhora de Oliveira", "s": "ENTRA", "k": "C · Quadrilátero e Vertentes", "r": "Quadrilátero/Vertentes", "p": 5295, "v": 0, "e": 0}, {"c": "Sericita", "s": "ENTRA", "k": "D · Mata e Serra do Cipó", "r": "Zona da Mata", "p": 7345, "v": 0, "e": 0}, {"c": "Taquaraçu de Minas", "s": "MANTÉM", "k": "B · Colar RMBH", "r": "RMBH", "p": 4135, "v": 0, "e": 0}, {"c": "Urucânia", "s": "ENTRA", "k": "D · Mata e Serra do Cipó", "r": "Zona da Mata", "p": 10480, "v": 0, "e": 0}], "tv": 486574, "status": [{"l": "Já está no Meta · fica", "s": "MANTÉM"}, {"l": "Sai do Meta", "s": "SAI"}, {"l": "Entra no Meta", "s": "ENTRA"}], "agg": {"MANTÉM": {"n": 100, "p": 6526826, "v": 484635, "e": 8712140}, "SAI": {"n": 27, "p": 153715, "v": 332, "e": 6830}, "ENTRA": {"n": 16, "p": 198490, "v": 1939, "e": 36290}}, "final": {"n": 116, "p": 6725316, "v": 486574, "e": 8748430}, "total": {"n": 143, "p": 6879031, "v": 486906, "e": 8755260}, "clusters": {"A · Capital": {"n": 1, "p": 2392678, "v": 263931, "e": 4771230}, "B · Colar RMBH": {"n": 33, "p": 2864346, "v": 190269, "e": 3382060}, "C · Quadrilátero e Vertentes": {"n": 55, "p": 1244193, "v": 30773, "e": 565475}, "D · Mata e Serra do Cipó": {"n": 27, "p": 224099, "v": 1601, "e": 29665}}, "grupos": {"top": {"n": 12, "p": 4954493, "v": 435466, "e": 7812570}, "resto": {"n": 104, "p": 1770823, "v": 51108, "e": 935860}}};
+const nf=n=>n?n.toLocaleString('pt-BR'):'–';
+const mf=n=>n?'R$ '+Math.round(n).toLocaleString('pt-BR'):'–';
+const m2=n=>n?'R$ '+n.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2}):'–';
+const d1=n=>n?n.toLocaleString('pt-BR',{minimumFractionDigits:1,maximumFractionDigits:1}):'–';
+const pc=n=>(n*100).toLocaleString('pt-BR',{minimumFractionDigits:1,maximumFractionDigits:1})+'%';
+const pill=s=>s==='MANTÉM'?'<span class="pill p-fica">Fica</span>':s==='SAI'?'<span class="pill p-sai">Sai</span>':'<span class="pill p-entra">Entra</span>';
+const tk=(e,v)=>v?e/v:0, per=(v,p)=>p?v/p*1000:0;
+
+/* ---------- RESUMO ---------- */
+function resumo(){
+  const a=DATA.agg,f=DATA.final,t=DATA.total,g=DATA.grupos;
+  const linhas=DATA.status.map(x=>{const q=a[x.s];return `<tr>
+    <td class="l">${pill(x.s)} &nbsp;${x.l}</td>
+    <td class="num">${nf(q.n)}</td><td>${nf(q.p)}</td><td class="num">${nf(q.v)}</td>
+    <td>${mf(q.e)}</td><td>${m2(tk(q.e,q.v))}</td><td>${d1(per(q.v,q.p))}</td>
+    <td>${pc(q.v/t.v)}</td></tr>`}).join('');
+  const cls=Object.entries(DATA.clusters).map(([k,q])=>`<tr>
+    <td class="l city">${k}</td><td class="num">${nf(q.n)}</td><td>${nf(q.p)}</td>
+    <td class="num">${nf(q.v)}</td><td>${mf(q.e)}</td><td>${m2(tk(q.e,q.v))}</td>
+    <td>${d1(per(q.v,q.p))}</td>
+    <td><span class="bar" style="width:60px"><i style="width:${(q.v/f.v*100).toFixed(1)}%"></i></span> ${pc(q.v/f.v)}</td></tr>`).join('');
+  return `
+  <div class="cards">
+    <div class="card"><div class="lb">Cidades mapeadas</div><div class="vl">143</div><div class="ft">116 na lista final</div></div>
+    <div class="card"><div class="lb">Vendas no ano</div><div class="vl">${nf(f.v)}</div><div class="ft">todos os canais</div></div>
+    <div class="card"><div class="lb">Receita no ano</div><div class="vl">${mf(f.e)}</div><div class="ft">ticket ${m2(tk(f.e,f.v))}</div></div>
+    <div class="card"><div class="lb">População coberta</div><div class="vl">${(f.p/1e6).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2})} M</div><div class="ft">${d1(per(f.v,f.p))} vendas por mil hab.</div></div>
+    <div class="card hl"><div class="lb">Sai do Meta</div><div class="vl">${nf(a['SAI'].v)}</div><div class="ft">${pc(a['SAI'].v/t.v)} das vendas · 27 cidades</div></div>
+  </div>
+  <div class="sec"><div class="sec-h">Movimentação no targeting do Meta</div>
+    <div class="tbl-wrap"><div class="scroll"><table>
+      <thead><tr><th class="l">Situação</th><th>Cidades</th><th>População</th><th>Vendas</th><th>Receita</th><th>Ticket médio</th><th>Vendas por mil hab.</th><th>% das vendas</th></tr></thead>
+      <tbody>${linhas}</tbody>
+      <tfoot>
+        <tr><td class="l">Total mapeado</td><td>${nf(t.n)}</td><td>${nf(t.p)}</td><td>${nf(t.v)}</td><td>${mf(t.e)}</td><td>${m2(tk(t.e,t.v))}</td><td>${d1(per(t.v,t.p))}</td><td>100,0%</td></tr>
+        <tr style="background:#FFFBEB"><td class="l" style="color:#92400E">Lista final para o Meta</td><td style="color:#92400E">${nf(f.n)}</td><td style="color:#92400E">${nf(f.p)}</td><td style="color:#92400E">${nf(f.v)}</td><td style="color:#92400E">${mf(f.e)}</td><td style="color:#92400E">${m2(tk(f.e,f.v))}</td><td style="color:#92400E">${d1(per(f.v,f.p))}</td><td style="color:#92400E">${pc(f.v/t.v)}</td></tr>
+      </tfoot></table></div></div>
+  </div>
+  <div class="sec"><div class="sec-h">Clusters de mídia · lista final</div>
+    <div class="tbl-wrap"><div class="scroll"><table>
+      <thead><tr><th class="l">Cluster</th><th>Cidades</th><th>População</th><th>Vendas</th><th>Receita</th><th>Ticket médio</th><th>Vendas por mil hab.</th><th>% das vendas</th></tr></thead>
+      <tbody>${cls}</tbody></table></div></div>
+  </div>
+  <div class="sec"><div class="sec-h">Top 12 contra a cauda</div>
+    <div class="tbl-wrap"><div class="scroll"><table>
+      <thead><tr><th class="l">Grupo</th><th>Cidades</th><th>População</th><th>Vendas</th><th>Receita</th><th>% das vendas</th><th>Vendas por mil hab.</th><th>Ticket médio</th></tr></thead>
+      <tbody>
+        <tr><td class="l city">Top 12</td><td class="num">12</td><td>${nf(g.top.p)}</td><td class="num">${nf(g.top.v)}</td><td>${mf(g.top.e)}</td><td>${pc(g.top.v/f.v)}</td><td>${d1(per(g.top.v,g.top.p))}</td><td>${m2(tk(g.top.e,g.top.v))}</td></tr>
+        <tr><td class="l city">Fora do Top 12</td><td class="num">104</td><td>${nf(g.resto.p)}</td><td class="num">${nf(g.resto.v)}</td><td>${mf(g.resto.e)}</td><td>${pc(g.resto.v/f.v)}</td><td>${d1(per(g.resto.v,g.resto.p))}</td><td>${m2(tk(g.resto.e,g.resto.v))}</td></tr>
+      </tbody></table></div></div>
+    <div class="notes"><h4>O que isso significa</h4><ul>
+      <li>O ticket é praticamente igual nos dois grupos: <b>${m2(tk(g.top.e,g.top.v))}</b> no Top 12 contra <b>${m2(tk(g.resto.e,g.resto.v))}</b> na cauda.</li>
+      <li>A cauda não compra menos por vez — <b>compra menos vezes</b>. A diferença está toda na penetração: ${d1(per(g.top.v,g.top.p))} vendas por mil habitantes contra ${d1(per(g.resto.v,g.resto.p))}.</li>
+      <li>Leitura de mídia: no Top 12 o jogo é <b>frequência e recompra</b>. Nas 104 da cauda é <b>conquista de primeira compra</b>.</li>
+    </ul></div>
+  </div>
+  <div class="notes"><h4>Como ler este documento</h4><ul>
+    <li><b>Vendas</b> = todas as transações da cidade somando todos os canais. Não é só Meta.</li>
+    <li>Fonte: Windsor.ai · GA4 propriedade 260399536 <b>minascap-53b4b</b> (Minas Cap).</li>
+    <li>Excluído: 1.435.312 transações e R$ 25,75 M do bucket server-side geolocalizado em <b>Boydton, Virgínia</b> (datacenter Azure) — evento de backend, sem cidade real.</li>
+    <li><b>São Benedito</b> é distrito de Santa Luzia — os dois foram somados na linha Santa Luzia.</li>
+    <li>Lista base: documento <b>MINAS CAP · Check de Cidades 14-08-2026</b>, cidades em fonte preta, comparada com as 127 do targeting atual do Meta.</li>
+    <li>Cidades com <b>–</b> existem no GA4 mas ficam abaixo do limite de amostragem. Não são zero absoluto.</li>
+  </ul></div>`;
+}
+
+/* ---------- TABELAS ---------- */
+const COLS={
+ mapa:[{h:'Cidade',k:'c',t:'t'},{h:'Meta',k:'s',t:'p'},{h:'Cluster de mídia',k:'k',t:'t'},
+   {h:'Região',k:'r',t:'t'},{h:'População',k:'p',t:'n'},{h:'Vendas',k:'v',t:'n'},
+   {h:'Receita',k:'e',t:'m'},{h:'Ticket médio',k:'_tk',t:'m2'},{h:'Vendas por mil hab.',k:'_pr',t:'d'},
+   {h:'Vendas via Meta',k:'m',t:'n'},{h:'% via Meta',k:'_pm',t:'pc2'}],
+ top:[{h:'#',k:'_i',t:'r'},{h:'Cidade',k:'c',t:'t'},{h:'Meta',k:'s',t:'p'},{h:'Cluster de mídia',k:'k',t:'t'},
+   {h:'População',k:'p',t:'n'},{h:'Vendas',k:'v',t:'n'},{h:'Receita',k:'e',t:'m'},
+   {h:'Ticket médio',k:'_tk',t:'m2'},{h:'Vendas por mil hab.',k:'_pr',t:'d'},
+   {h:'% do total',k:'_ps',t:'pc'},{h:'% acumulado',k:'_ac',t:'pc'}],
+ resto:[{h:'#',k:'_i',t:'r'},{h:'Cidade',k:'c',t:'t'},{h:'Meta',k:'s',t:'p'},{h:'Cluster de mídia',k:'k',t:'t'},
+   {h:'Região',k:'r',t:'t'},{h:'População',k:'p',t:'n'},{h:'Vendas',k:'v',t:'n'},
+   {h:'Receita',k:'e',t:'m'},{h:'Ticket médio',k:'_tk',t:'m2'},
+   {h:'Vendas por mil hab.',k:'_pr',t:'d'},{h:'% do total',k:'_ps',t:'pc2'}]
+};
+function prep(arr,cum){let a=0;return arr.map((x,i)=>{const o={...x};o._i=i+1;o._tk=tk(x.e,x.v);
+  o._pr=per(x.v,x.p);o._ps=x.v/DATA.tv;o._pm=x.v?(x.m||0)/x.v:0;if(cum){a+=x.v;o._ac=a/DATA.tv}return o})}
+const ROWS={mapa:prep(DATA.todas),top:prep(DATA.top,true),resto:prep(DATA.resto)};
+const ST={mapa:{s:null,d:1,q:'',f:null},top:{s:null,d:1,q:'',f:null},resto:{s:null,d:1,q:'',f:null}};
+function fmt(v,t){switch(t){case 'n':return nf(v);case 'm':return mf(v);case 'm2':return m2(v);
+  case 'd':return d1(v);case 'pc':return v?pc(v):'–';case 'pc2':return v?(v*100).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2})+'%':'–';
+  case 'p':return pill(v);case 'r':return v;default:return v||'—'}}
+function tabela(id,titulo,filtros){
+  const cols=COLS[id],st=ST[id];
+  let rs=ROWS[id].filter(x=>(!st.q||x.c.toLowerCase().includes(st.q))&&(!st.f||x.s===st.f));
+  if(st.s){const k=st.s;rs=[...rs].sort((a,b)=>{const A=a[k],B=b[k];
+    return (typeof A==='string'?A.localeCompare(B,'pt-BR'):A-B)*st.d})}
+  const th=cols.map(c=>`<th class="${['t','p','r'].includes(c.t)?'l':''} ${st.s===c.k?'sorted':''}" data-k="${c.k}">${c.h}<span class="ar">${st.s===c.k?(st.d>0?'▲':'▼'):'⇅'}</span></th>`).join('');
+  const body=rs.length?rs.map(x=>'<tr>'+cols.map(c=>{
+    const cls=c.k==='c'?'l city':c.k==='_i'?'l rank':['k','r'].includes(c.k)?'l dim':c.t==='p'?'l':c.k==='v'?'num':'';
+    return `<td class="${cls}">${fmt(x[c.k],c.t)}</td>`}).join('')+'</tr>').join(''):'';
+  const tv=rs.reduce((s,x)=>s+x.v,0),te=rs.reduce((s,x)=>s+x.e,0),tp=rs.reduce((s,x)=>s+x.p,0),tm=rs.reduce((s,x)=>s+(x.m||0),0);
+  const foot=cols.map(c=>{if(c.k==='c')return `<td class="l">Total · ${rs.length} cidades</td>`;
+    if(c.k==='p')return `<td>${nf(tp)}</td>`;if(c.k==='v')return `<td>${nf(tv)}</td>`;
+    if(c.k==='e')return `<td>${mf(te)}</td>`;if(c.k==='m')return `<td>${nf(tm)}</td>`;
+    if(c.k==='_tk')return `<td>${m2(tk(te,tv))}</td>`;if(c.k==='_pr')return `<td>${d1(per(tv,tp))}</td>`;
+    if(c.k==='_ps')return `<td>${pc(tv/DATA.tv)}</td>`;return '<td></td>'}).join('');
+  const chips=filtros?`<button class="chip ${!st.f?'on':''}" data-f="">Todas</button>
+    <button class="chip ${st.f==='MANTÉM'?'on':''}" data-f="MANTÉM">Fica</button>
+    <button class="chip ${st.f==='SAI'?'on':''}" data-f="SAI">Sai</button>
+    <button class="chip ${st.f==='ENTRA'?'on':''}" data-f="ENTRA">Entra</button>`:'';
+  return `<div class="tbl-wrap"><div class="tbl-top">
+      <div class="tbl-title">${titulo}<span>${rs.length} de ${ROWS[id].length}</span></div>
+      <div class="tools">${chips}<input class="search" placeholder="Buscar cidade…" value="${st.q}"></div></div>
+    <div class="scroll"><table><thead><tr>${th}</tr></thead><tbody>${body}</tbody>
+      ${rs.length?`<tfoot><tr>${foot}</tr></tfoot>`:''}</table>
+      ${rs.length?'':'<div class="empty">Nenhuma cidade encontrada.</div>'}</div></div>`;
+}
+const NOTAS={
+ mapa:`<div class="notes"><h4>Legenda da coluna Meta</h4><ul>
+   <li><b>Fica</b> — está no targeting do Meta hoje e permanece · <b>100 cidades</b>.</li>
+   <li><b>Sai</b> — está no Meta e será removida · <b>27 cidades</b>, que somam apenas 332 vendas no ano.</li>
+   <li><b>Entra</b> — nova, será inserida · <b>16 cidades</b>, com 1.939 vendas já acontecendo sem mídia.</li>
+   <li>"Vendas via Meta" é um recorte <b>dentro</b> do total, por last-click facebook/cpc no GA4 — captura as duas contas Meta de Minas Cap.</li></ul></div>`,
+ top:`<div class="notes"><h4>Observações</h4><ul>
+   <li><b>Belo Horizonte sozinha</b> responde por 54,2% das vendas — mais que as outras 115 cidades somadas.</li>
+   <li>Onze das doze são da Região Metropolitana de BH. A única exceção é <b>Sete Lagoas</b>, em 7º lugar.</li>
+   <li>O 13º colocado é <b>Pedro Leopoldo</b>, com 5.767 vendas — a 339 de distância de Sabará.</li></ul></div>`,
+ resto:`<div class="notes"><h4>A cauda</h4><ul>
+   <li>104 cidades, <b>1,77 milhão de habitantes</b> e 10,5% das vendas.</li>
+   <li>Penetração de 28,9 vendas por mil habitantes contra 87,9 do Top 12 — <b>três vezes menor</b>.</li>
+   <li>É aqui que estão as 16 cidades novas e o eixo de Ponte Nova, sem histórico de mídia.</li></ul></div>`
+};
+function render(){
+  document.getElementById('p-resumo').innerHTML=resumo();
+  document.getElementById('p-mapa').innerHTML=tabela('mapa','Mapeamento completo',true)+NOTAS.mapa;
+  document.getElementById('p-top').innerHTML=tabela('top','Top 12 cidades',false)+NOTAS.top;
+  document.getElementById('p-resto').innerHTML=tabela('resto','Fora do Top 12',false)+NOTAS.resto;
+}
+render();
+document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));
+  document.querySelectorAll('.panel').forEach(x=>x.classList.remove('on'));
+  b.classList.add('on');document.getElementById('p-'+b.dataset.p).classList.add('on');
+  window.scrollTo({top:0,behavior:'smooth'});
+});
+const idOf=el=>{const p=el.closest('.panel').id.replace('p-','');return p==='mapa'?'mapa':p};
+document.addEventListener('click',e=>{
+  const th=e.target.closest('th[data-k]');
+  if(th){const id=idOf(th),k=th.dataset.k,s=ST[id];
+    if(s.s===k)s.d=-s.d;else{s.s=k;s.d=k==='c'?1:-1}render();return}
+  const ch=e.target.closest('.chip');
+  if(ch){const id=idOf(ch);ST[id].f=ch.dataset.f||null;render()}
+});
+document.addEventListener('input',e=>{
+  if(!e.target.classList.contains('search'))return;
+  const id=idOf(e.target),v=e.target.value;ST[id].q=v.toLowerCase();render();
+  const inp=document.querySelector('#p-'+(id==='mapa'?'mapa':id)+' .search');
+  if(inp){inp.focus();inp.setSelectionRange(v.length,v.length)}
+});
+</script>
+</body>
+</html>
