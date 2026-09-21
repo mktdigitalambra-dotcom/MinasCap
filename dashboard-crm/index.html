@@ -4128,7 +4128,8 @@ const JORN = {
     {ed:538,per:'13–19/set',s:8722,t:63,r:1095,parcial:true,det:[
       {n:'Compra Abandonada',s:4402,t:33,r:570,canais:'web push · e-mail · pop up · app push',ins:{entradas:37685,saidas:5763,rotulo:'saídas por compra',entregas:25970,conv:42,rev:900,versoes:1}},
       {n:'Estímulo ao Cadastro',s:3687,t:21,r:390,canais:'pop up · web push',ins:{entradas:30594,saidas:690,rotulo:'cadastros',entregas:4764,conv:44,rev:0,versoes:1}},
-      {n:'Onboarding',s:633,t:9,r:135,canais:'e-mail · web push',ins:{entradas:114,saidas:0,rotulo:'saídas',entregas:199,conv:0,rev:0,versoes:2}}]}]},
+      {n:'Onboarding',s:633,t:9,r:135,canais:'e-mail · web push',ins:{entradas:114,saidas:0,rotulo:'saídas',entregas:199,conv:0,rev:0,versoes:2}},
+      {n:'Cadastrados sem compra',s:41,t:2,r:30,canais:'e-mail · web push',novo:true,ins:{entradas:2948,saidas:4,rotulo:'saídas por compra',entregas:10679,conv:2,rev:45,versoes:1}}]}]},
   sm:{eds:[
     {ed:447,per:'26/jul–01/ago',s:206,t:11,r:165,det:[
       {n:'Compra Abandonada',s:202,t:9,r:135,canais:'web push'},
@@ -4231,7 +4232,7 @@ function rJornadas(){
                  a.rotulo=x.ins.rotulo; a.ultIns=(x.ins.entradas?x.ins.saidas/x.ins.entradas*100:0); }
     });
   });
-  var FIXAS=['Compra Abandonada','Estímulo ao Cadastro','Onboarding'];
+  var FIXAS=['Compra Abandonada','Estímulo ao Cadastro','Onboarding','Cadastrados sem compra'];
   var listaJ=FIXAS.map(function(k){
       var a=agJ[k]; if(!a) return null;
       a.nGa4=Object.keys(a.edsGa4).length; a.nIns=Object.keys(a.edsIns).length; return a;
@@ -4263,7 +4264,8 @@ function rJornadas(){
         +'<div style="font-size:9px;color:#a8a59c">'+n(a.sai)+' de '+n(a.ent)+' · '+(a.nIns>1?('média de '+a.nIns+' edições'):('só a Ed.'+ultDetEd))+'</div></div>';
     }
     var OKRJ={'Estímulo ao Cadastro':{sel:'OKR · Ativação',cor:'#1D9E75',meta:'4% → 5% até 31/12',alvo:5},
-              'Onboarding':{sel:'OKR · Ativação',cor:'#1D9E75',meta:'teste de régua com foco em conversão',alvo:null,confirmar:'número da meta a confirmar'}};
+              'Onboarding':{sel:'OKR · Ativação',cor:'#1D9E75',meta:'teste de régua com foco em conversão',alvo:null,confirmar:'número da meta a confirmar'},
+              'Cadastrados sem compra':{sel:'OKR · Ativação',cor:'#1D9E75',meta:'transformar cadastro em primeira compra',alvo:null}};
     var ok=OKRJ[a.nome];
     o+='<div style="border:1px solid #e8e6e0;border-top:3px solid '+(ok?ok.cor:col)+';border-radius:10px;padding:11px 13px;background:#fff">'
       +'<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:6px;min-height:26px">'
