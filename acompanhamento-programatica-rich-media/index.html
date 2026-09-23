@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Acompanhamento — Programática &amp; Rich Media | Minas Cap</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.2.0/chartjs-plugin-datalabels.min.js"></script>
+<style>
+  :root{
+    --bg:#f5f5f5; --card:#fff; --ink:#1a1a1a; --sub:#666;
+    --navy:#1a1a2e; --navy2:#2d2d5e;
+    --mc:#e30613; --mc-dark:#a80410; --mc-bg:#fdeaec;
+    --rich:#8e44ad; --rich-dark:#6c3483; --rich-bg:#f5edf9;
+    --br:#2e7d32; --br-bg:#e8f5e9;
+    --us:#c62828; --us-bg:#fce4ec;
+    --border:#e2e2e2;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#111113; --card:#1b1b1f; --ink:#eee; --sub:#a8a8b3;
+      --mc-bg:#2a1113; --rich-bg:#241a2c; --br-bg:#132417; --us-bg:#2a151a;
+      --border:#333340;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#111113; --card:#1b1b1f; --ink:#eee; --sub:#a8a8b3;
+    --mc-bg:#2a1113; --rich-bg:#241a2c; --br-bg:#132417; --us-bg:#2a151a;
+    --border:#333340;
+  }
+  html{ scroll-padding-top: env(safe-area-inset-top, 0px); }
+  *,*::before,*::after{ box-sizing:border-box; margin:0; padding:0; }
+  body{
+    font-family:'Segoe UI', Arial, sans-serif; font-size:13px; color:var(--ink);
+    background:var(--bg); padding:16px 16px 40px;
+  }
+  .wrap{ max-width:1240px; margin:0 auto; }
+  .page{ background:var(--card); border-radius:10px; overflow:hidden; box-shadow:0 1px 8px rgba(0,0,0,.08); }
+
+  .header{ background:var(--navy); padding:18px 24px; display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; }
+  .header-left{ display:flex; align-items:center; gap:14px; }
+  .header-icon{ background:var(--navy2); border-radius:10px; width:44px; height:44px; display:flex; align-items:center; justify-content:center; font-size:20px; flex-shrink:0; }
+  .h-title{ color:#fff; font-size:17px; font-weight:700; }
+  .h-sub{ color:#aab0c8; font-size:11px; margin-top:3px; }
+  .badge{ display:flex; align-items:center; gap:6px; border-radius:20px; padding:5px 12px; font-size:10px; font-weight:700; white-space:nowrap; background:#e8f5e9; color:#2e7d32; }
+
+  .tabbar{ display:flex; background:var(--navy2); padding:0 20px; gap:4px; }
+  .tabbtn{ appearance:none; border:none; background:transparent; color:#c9cbe0; font-size:12px; font-weight:700; padding:12px 20px; cursor:pointer; border-radius:8px 8px 0 0; display:flex; align-items:center; gap:7px; transition:background .15s,color .15s; }
+  .tabbtn:hover{ background:rgba(255,255,255,.08); color:#fff; }
+  .tabbtn.active{ background:var(--card); color:var(--ink); }
+  .tabbtn.active.tab-prog{ box-shadow:inset 0 3px 0 var(--mc); }
+  .tabbtn.active.tab-rich{ box-shadow:inset 0 3px 0 var(--rich); }
+  .tabbtn:disabled{ opacity:.45; cursor:not-allowed; }
+  .tabbtn:disabled:hover{ background:transparent; color:#c9cbe0; }
+
+  .tabpanel{ display:none; }
+  .tabpanel.active{ display:block; }
+
+  .section-title{ background:var(--navy); color:#fff; font-size:11px; font-weight:700; padding:9px 20px; letter-spacing:.4px; text-transform:uppercase; display:flex; align-items:center; justify-content:space-between; }
+  .section-title .st-period{ font-weight:500; opacity:.75; text-transform:none; letter-spacing:0; font-size:10px; }
+  .content{ padding:18px 24px; }
+
+  .kpi-grid{ display:grid; grid-template-columns:repeat(9,1fr); gap:10px; }
+  @media(max-width:1100px){ .kpi-grid{ grid-template-columns:repeat(4,1fr);} }
+  @media(max-width:600px){ .kpi-grid{ grid-template-columns:repeat(2,1fr);} }
+  .kpi{ background:var(--card); border:1px solid var(--border); border-radius:9px; padding:11px 10px; }
+  .kpi-label{ font-size:8.5px; color:var(--sub); text-transform:uppercase; letter-spacing:.3px; font-weight:700; line-height:1.3; min-height:22px; }
+  .kpi-value{ font-size:17px; font-weight:800; margin-top:5px; color:var(--ink); }
+  .kpi-note{ font-size:8.5px; color:var(--sub); margin-top:2px; }
+  .accent-prog{ border-top:3px solid var(--mc); }
+  .accent-rich{ border-top:3px solid var(--rich); }
+
+  .panel{ background:var(--card); border:1px solid var(--border); border-radius:10px; padding:16px; margin-top:16px; }
+  .panel-title{ font-size:12px; font-weight:700; color:var(--ink); margin-bottom:4px; }
+  .panel-sub{ font-size:10.5px; color:var(--sub); margin-bottom:12px; }
+  .chart-box{ position:relative; height:280px; }
+
+  .contrato-grid{ display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+  @media(max-width:700px){ .contrato-grid{ grid-template-columns:1fr; } }
+  .contrato-item{ margin-bottom:14px; }
+  .contrato-item:last-child{ margin-bottom:0; }
+  .contrato-labels{ display:flex; justify-content:space-between; font-size:10.5px; margin-bottom:5px; }
+  .contrato-labels .l1{ font-weight:700; color:var(--ink); }
+  .contrato-labels .l2{ color:var(--sub); }
+  .bar-track{ background:rgba(128,128,128,.15); border-radius:20px; height:14px; overflow:hidden; }
+  .bar-fill{ height:100%; border-radius:20px; display:flex; align-items:center; justify-content:flex-end; padding-right:6px; }
+  .bar-fill.prog{ background:linear-gradient(90deg,#e30613,#ff5c68); }
+  .bar-fill.rich{ background:linear-gradient(90deg,#8e44ad,#c07fdb); }
+  .bar-pct{ font-size:8.5px; font-weight:800; color:#fff; }
+
+  table{ width:100%; border-collapse:collapse; }
+  thead th{ background:#f0f0f0; border:1px solid var(--border); padding:7px 8px; font-size:9px; font-weight:700; text-align:left; color:#333; text-transform:uppercase; letter-spacing:.3px; position:sticky; top:0; z-index:2; }
+  :root[data-theme="dark"] thead th{ background:#26262c; color:#ddd; }
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) thead th{ background:#26262c; color:#ddd; } }
+  td{ border:1px solid var(--border); padding:6px 8px; font-size:10.5px; vertical-align:middle; }
+  tbody tr:nth-child(even) td{ background:rgba(128,128,128,.05); }
+  .num{ text-align:right; font-variant-numeric:tabular-nums; white-space:nowrap; }
+  .tag{ display:inline-block; border-radius:10px; padding:2px 8px; font-size:9px; font-weight:700; }
+  .tag-prog{ background:var(--mc-bg); color:var(--mc-dark); }
+  .tag-rich{ background:var(--rich-bg); color:var(--rich); }
+  .tfoot-row td{ font-weight:700; background:rgba(128,128,128,.08) !important; }
+
+  .table-scroll{ overflow-x:auto; }
+  .table-scroll-y{ max-height:420px; overflow-y:auto; overflow-x:auto; border:1px solid var(--border); border-radius:8px; }
+  .table-scroll-y table{ margin:0; }
+  .table-scroll-y td, .table-scroll-y th{ border-left:none; border-right:none; }
+
+  .callout{ border-radius:8px; padding:11px 13px; font-size:10.5px; line-height:1.55; display:flex; gap:9px; align-items:flex-start; margin-top:12px; }
+  .callout-good{ background:var(--br-bg); color:#1b5e20; }
+  .callout-watch{ background:var(--us-bg); color:#8a1c1c; }
+  .callout-info{ background:#fff8e1; color:#7a5200; }
+
+  .foot{ padding:14px 24px; font-size:9px; color:var(--sub); border-top:1px solid var(--border); }
+  .search-box{ margin-bottom:8px; }
+  .search-box input{ width:100%; max-width:260px; padding:7px 10px; border:1px solid var(--border); border-radius:6px; font-size:11px; background:var(--card); color:var(--ink); }
+
+  .creative-grid{ display:flex; flex-wrap:wrap; gap:18px; }
+  .creative-card{ background:var(--card); border:1px solid var(--border); border-radius:10px; padding:12px; }
+  .creative-frame{
+    background:repeating-conic-gradient(#e8e8e8 0% 25%, #f5f5f5 0% 50%) 0 0/16px 16px;
+    border-radius:6px; overflow:hidden; display:flex; align-items:center; justify-content:center;
+  }
+  .creative-frame img{ display:block; max-width:480px; width:100%; height:auto; }
+  .creative-caption{ margin-top:8px; font-size:10px; color:var(--sub); display:flex; align-items:center; gap:6px; }
+
+  .empty-state{ text-align:center; padding:40px 20px; color:var(--sub); }
+  .empty-state-icon{ font-size:32px; margin-bottom:10px; }
+  .empty-state-title{ font-size:13px; font-weight:700; color:var(--ink); margin-bottom:6px; }
+  .empty-state-sub{ font-size:11px; max-width:420px; margin:0 auto; line-height:1.5; }
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="page">
+
+  <div class="header">
+    <div class="header-left">
+      <div class="header-icon">📡</div>
+      <div>
+        <div class="h-title">Acompanhamento — Programática &amp; Rich Media</div>
+        <div class="h-sub">Minas Cap · Fontes: Publya (Programática) + GA4 (minascap-53b4b)</div>
+      </div>
+    </div>
+    <div class="badge">🟢 Campanha ativa · atualizado até 22/09/2026</div>
+  </div>
+
+  <div class="tabbar">
+    <button class="tabbtn tab-prog active" data-tab="prog">📊 Programática</button>
+    <button class="tabbtn tab-rich" data-tab="rich">🎨 Rich Media</button>
+  </div>
+
+  <!-- ══════════════════════ TAB: PROGRAMÁTICA ══════════════════════ -->
+  <div class="tabpanel active" id="panel-prog">
+
+    <div class="section-title">OVERVIEW <span class="st-period">15/09 a 22/09/2026</span></div>
+    <div class="content">
+      <div class="kpi-grid">
+        <div class="kpi accent-prog"><div class="kpi-label">Investimento</div><div class="kpi-value">R$ 2.423</div><div class="kpi-note">Publya</div></div>
+        <div class="kpi accent-prog"><div class="kpi-label">Cliques</div><div class="kpi-value">2.144</div></div>
+        <div class="kpi accent-prog"><div class="kpi-label">Impressões</div><div class="kpi-value">278.501</div></div>
+        <div class="kpi accent-prog"><div class="kpi-label">CPC</div><div class="kpi-value">R$ 1,13</div></div>
+        <div class="kpi accent-prog"><div class="kpi-label">CTR</div><div class="kpi-value">0,77%</div></div>
+        <div class="kpi accent-prog"><div class="kpi-label">Sessões</div><div class="kpi-value">2.780</div><div class="kpi-note">GA4</div></div>
+        <div class="kpi accent-prog"><div class="kpi-label">Taxa de Engajamento</div><div class="kpi-value">7,7%</div><div class="kpi-note">GA4</div></div>
+        <div class="kpi accent-prog"><div class="kpi-label">Purchase</div><div class="kpi-value">2</div></div>
+        <div class="kpi accent-prog"><div class="kpi-label">Taxa de Conversão</div><div class="kpi-value">0,09%</div><div class="kpi-note">Purchase / Cliques</div></div>
+      </div>
+
+      <div class="callout callout-watch">
+        <span>⚠️</span>
+        <span><strong>Dado corrigido pelo time:</strong> o arquivo de entrega trazia 1.478.197 impressões para o dia 15/09 (mesmo número do total contratado — erro de copiar/colar na planilha). Valor real confirmado: <strong>7.584 impressões</strong>. Já atualizado em todo o dashboard; o investimento do dia (R$49,53) não foi alterado.</span>
+      </div>
+    </div>
+
+    <div class="section-title">CONTRATO</div>
+    <div class="content">
+      <div class="panel" style="margin-top:0;">
+        <div class="contrato-grid">
+          <div>
+            <div class="contrato-item">
+              <div class="contrato-labels"><span class="l1">Investimento</span><span class="l2">R$ 2.423 / R$ 10.000.000</span></div>
+              <div class="bar-track"><div class="bar-fill prog" style="width:2%;"></div></div>
+            </div>
+          </div>
+          <div>
+            <div class="contrato-item">
+              <div class="contrato-labels"><span class="l1">Impressões</span><span class="l2">278.501 / 1.478.197</span></div>
+              <div class="bar-track"><div class="bar-fill prog" style="width:18.8%;"><span class="bar-pct">18,8%</span></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="callout callout-info">
+          <span>ℹ️</span>
+          <span>Contrato em fase inicial — 8 dias de um fôlego de campanha bem mais longo. Ritmo de entrega de impressões (18,8%) segue à frente do investimento (0,02%), normal em CPM negociado com pacing próprio da Publya.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-title">INVESTIMENTO + CLIQUES + SESSÕES (DIÁRIO)</div>
+    <div class="content">
+      <div class="panel" style="margin-top:0;">
+        <div class="chart-box"><canvas id="chartProgCombo"></canvas></div>
+      </div>
+    </div>
+
+    <div class="section-title">RESULTADOS POR EDIÇÃO</div>
+    <div class="content">
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr><th>Edição</th><th>Data do sorteio</th><th>Período de veiculação</th><th class="num">Investimento</th><th class="num">Cliques</th><th class="num">Impressões</th><th class="num">CPC</th><th class="num">CTR</th><th class="num">Sessões</th><th class="num">Tx. Engajamento</th><th class="num">Purchase</th><th class="num">Tx. Conversão</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Edição 538</td><td>20/09/2026</td><td>15/09 a 19/09</td>
+              <td class="num">R$ 2.000,88</td><td class="num">1.608</td><td class="num">215.117</td>
+              <td class="num">R$ 1,24</td><td class="num">0,75%</td><td class="num">1.992</td><td class="num">9,4%</td><td class="num">2</td><td class="num">0,12%</td>
+            </tr>
+            <tr>
+              <td>Edição 539</td><td>27/09/2026 (em andamento)</td><td>20/09 a 22/09</td>
+              <td class="num">R$ 421,66</td><td class="num">536</td><td class="num">63.384</td>
+              <td class="num">R$ 0,79</td><td class="num">0,85%</td><td class="num">788</td><td class="num">3,6%</td><td class="num">0</td><td class="num">0,00%</td>
+            </tr>
+          </tbody>
+          <tbody>
+            <tr class="tfoot-row"><td>Total</td><td></td><td>15/09 a 22/09</td><td class="num">R$ 2.422,54</td><td class="num">2.144</td><td class="num">278.501</td><td class="num">R$ 1,13</td><td class="num">0,77%</td><td class="num">2.780</td><td class="num">7,7%</td><td class="num">2</td><td class="num">0,09%</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout-info">
+        <span>🧮</span>
+        <span><strong>Metodologia:</strong> cada edição soma investimento, impressões, cliques, sessões, engajamento e purchase dos dias em que ela esteve efetivamente em veiculação (calendário real, sem estimativa/rateio). Edição 538 vendeu de 15/09 a 19/09 (véspera do sorteio de 20/09); Edição 539 abriu em 20/09, logo após o sorteio, e segue em veiculação. A peça institucional roda em paralelo dentro de cada janela e está incluída nos números de cada edição (não aparece como linha separada).</span>
+      </div>
+    </div>
+
+    <div class="section-title">TRÁFEGO POR CAMPANHA</div>
+    <div class="content">
+      <div class="table-scroll">
+        <table>
+          <thead><tr><th>Campanha</th><th class="num">Sessões</th><th class="num">Tx. Engajamento</th><th class="num">Pageviews</th><th class="num">Purchase</th></tr></thead>
+          <tbody>
+            <tr><td>institucional-a_15-09-2026</td><td class="num">1.345</td><td class="num">10,1%</td><td class="num">1.465</td><td class="num">2</td></tr>
+            <tr><td>ed-538-premiacao</td><td class="num">1.003</td><td class="num">6,9%</td><td class="num">1.072</td><td class="num">0</td></tr>
+            <tr><td>ed-539-premiacao</td><td class="num">432</td><td class="num">2,3%</td><td class="num">439</td><td class="num">0</td></tr>
+          </tbody>
+          <tbody>
+            <tr class="tfoot-row"><td>Total</td><td class="num">2.780</td><td class="num">7,7%</td><td class="num">2.976</td><td class="num">2</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="section-title">QUADRO DE SITES <span class="st-period">15 a 20/09/2026 · 326 sites</span></div>
+    <div class="content">
+      <div class="search-box"><input type="text" id="searchSitesProg" placeholder="🔎 Buscar site..."></div>
+      <div class="table-scroll-y">
+        <table>
+          <thead><tr><th>Site</th><th class="num">Impressões</th><th class="num">Cliques</th><th class="num">CTR</th></tr></thead>
+          <tbody id="tbodySitesProg"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="section-title">QUADRO DE REGIÕES <span class="st-period">15 a 20/09/2026 · 31 regiões</span></div>
+    <div class="content">
+      <div class="search-box"><input type="text" id="searchCitiesProg" placeholder="🔎 Buscar região..."></div>
+      <div class="table-scroll-y">
+        <table>
+          <thead><tr><th>Região</th><th class="num">Impressões</th><th class="num">Cliques</th><th class="num">CTR</th></tr></thead>
+          <tbody id="tbodyCitiesProg"></tbody>
+        </table>
+      </div>
+      <div class="callout callout-good">
+        <span>🔎</span>
+        <span><strong>Targeting geográfico correto:</strong> impressões e cliques concentrados na Grande BH (Belo Horizonte, Contagem, Betim, Santa Luzia, Sete Lagoas...), exatamente a região alvo do plano contratado.</span>
+      </div>
+    </div>
+
+    <div class="section-title">PEÇAS DE EXEMPLO</div>
+    <div class="content">
+      <div class="creative-grid" id="creativeGridProg">
+        <div class="creative-card">
+          <div class="creative-frame"><img src="assets/peca-institucional.png" alt="Peça institucional Minas Cap" loading="lazy"></div>
+          <div class="creative-caption"><span class="tag tag-prog">Institucional</span> 728x90</div>
+        </div>
+        <div class="creative-card">
+          <div class="creative-frame"><img src="assets/peca-edicao-538.png" alt="Peça Edição 538 Minas Cap" loading="lazy"></div>
+          <div class="creative-caption"><span class="tag tag-prog">Edição 538</span> 728x90</div>
+        </div>
+        <div class="creative-card">
+          <div class="creative-frame"><img src="assets/peca-edicao-539.png" alt="Peça Edição 539 Minas Cap" loading="lazy"></div>
+          <div class="creative-caption"><span class="tag tag-prog">Edição 539</span> 728x90</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ══════════════════════ TAB: RICH MEDIA ══════════════════════ -->
+  <div class="tabpanel" id="panel-rich">
+    <div class="content">
+      <div class="empty-state">
+        <div class="empty-state-icon">🎨</div>
+        <div class="empty-state-title">Sem campanha de Rich Media para Minas Cap no momento</div>
+        <div class="empty-state-sub">Não há arquivo de entrega de Rich Media para Minas Cap na pasta do SharePoint (só existe para Super Minas até agora). Assim que a praça tiver uma campanha ativa, esta aba é preenchida no mesmo modelo.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="foot">
+    Relatório gerado a partir dos arquivos de entrega da Programática (Publya, SharePoint, pasta "Análise Programática Publya e Rich Media 2026") e do GA4 (conta minascap-53b4b). Sem colunas de margem. Peça "Atualizar" para recalcular com dados mais recentes.
+  </div>
+
+</div>
+</div>
+
+<script id="data-sites-prog" type="application/json">[{"site": "globo.com", "impr": 52752, "clicks": 621}, {"site": "revistaquem.globo.com", "impr": 18773, "clicks": 347}, {"site": "noticias.uol.com.br", "impr": 17801, "clicks": 65}, {"site": "itatiaia.com.br", "impr": 17251, "clicks": 51}, {"site": "poder360.com.br", "impr": 13380, "clicks": 128}, {"site": "otempo.com.br", "impr": 11937, "clicks": 24}, {"site": "uol.com.br", "impr": 6457, "clicks": 51}, {"site": "uai.com.br", "impr": 6103, "clicks": 9}, {"site": "correiobraziliense.com.br", "impr": 6066, "clicks": 16}, {"site": "correio24horas.com.br", "impr": 5444, "clicks": 16}, {"site": "extra.globo.com", "impr": 5352, "clicks": 50}, {"site": "diariodolitoral.com.br", "impr": 4932, "clicks": 19}, {"site": "oglobo.globo.com", "impr": 4527, "clicks": 11}, {"site": "olhardigital.com.br", "impr": 3846, "clicks": 31}, {"site": "r7.com", "impr": 3779, "clicks": 12}, {"site": "sistemampa.com.br", "impr": 3747, "clicks": 33}, {"site": "veja.abril.com.br", "impr": 3634, "clicks": 4}, {"site": "tuasaude.com", "impr": 3352, "clicks": 22}, {"site": "revistaoeste.com", "impr": 3259, "clicks": 13}, {"site": "climatempo.com.br", "impr": 3171, "clicks": 18}, {"site": "purepeople.com.br", "impr": 2691, "clicks": 9}, {"site": "conjur.com.br", "impr": 2682, "clicks": 5}, {"site": "w3schools.com", "impr": 1851, "clicks": 5}, {"site": "cnnbrasil.com.br", "impr": 1805, "clicks": 0}, {"site": "terra.com.br", "impr": 1720, "clicks": 3}, {"site": "accuweather.com", "impr": 1498, "clicks": 106}, {"site": "comidinhasdochef.com", "impr": 1431, "clicks": 20}, {"site": "hojeemdia.com.br", "impr": 1349, "clicks": 10}, {"site": "caras.com.br", "impr": 1319, "clicks": 12}, {"site": "campograndenews.com.br", "impr": 1221, "clicks": 0}, {"site": "metropoles.com", "impr": 1195, "clicks": 4}, {"site": "bhaz.com.br", "impr": 1064, "clicks": 1}, {"site": "adorocinema.com", "impr": 1063, "clicks": 2}, {"site": "dicio.com.br", "impr": 1056, "clicks": 2}, {"site": "abril.com.br", "impr": 1006, "clicks": 4}, {"site": "g1.globo.com", "impr": 919, "clicks": 3}, {"site": "culturagenial.com", "impr": 789, "clicks": 6}, {"site": "techtudo.com.br", "impr": 774, "clicks": 2}, {"site": "fogaonet.com", "impr": 737, "clicks": 6}, {"site": "diariodocomercio.com.br", "impr": 612, "clicks": 6}, {"site": "receiteria.com.br", "impr": 484, "clicks": 0}, {"site": "atarde.com.br", "impr": 464, "clicks": 1}, {"site": "canaltech.com.br", "impr": 451, "clicks": 1}, {"site": "receitatodahora.com.br", "impr": 429, "clicks": 0}, {"site": "comprerural.com", "impr": 395, "clicks": 9}, {"site": "ingresso.com", "impr": 354, "clicks": 0}, {"site": "carrosnaweb.com.br", "impr": 343, "clicks": 0}, {"site": "ovicio.com.br", "impr": 333, "clicks": 2}, {"site": "band.com.br", "impr": 324, "clicks": 1}, {"site": "tribunademinas.com.br", "impr": 315, "clicks": 0}, {"site": "vagalume.com.br", "impr": 302, "clicks": 0}, {"site": "gaz.com.br", "impr": 282, "clicks": 1}, {"site": "ofuxico.com.br", "impr": 269, "clicks": 0}, {"site": "eurogamer.pt", "impr": 257, "clicks": 0}, {"site": "weather.com", "impr": 239, "clicks": 2}, {"site": "autoracing.com.br", "impr": 237, "clicks": 3}, {"site": "midiamax.com.br", "impr": 215, "clicks": 1}, {"site": "verdesmares.com.br", "impr": 211, "clicks": 1}, {"site": "dictionary.cambridge.org", "impr": 207, "clicks": 0}, {"site": "infojobs.com.br", "impr": 198, "clicks": 0}, {"site": "omelete.com.br", "impr": 185, "clicks": 0}, {"site": "patoshoje.com.br", "impr": 181, "clicks": 1}, {"site": "folhabv.com.br", "impr": 161, "clicks": 2}, {"site": "gazetasp.com.br", "impr": 161, "clicks": 2}, {"site": "correiodeminas.com.br", "impr": 159, "clicks": 0}, {"site": "pciconcursos.com.br", "impr": 159, "clicks": 0}, {"site": "jornaldebrasilia.com.br", "impr": 156, "clicks": 1}, {"site": "bandab.com.br", "impr": 153, "clicks": 1}, {"site": "itabiraonline.com.br", "impr": 148, "clicks": 0}, {"site": "jmonline.com.br", "impr": 141, "clicks": 1}, {"site": "diariodoaco.com.br", "impr": 140, "clicks": 0}, {"site": "theguardian.com", "impr": 134, "clicks": 0}, {"site": "wordreference.com", "impr": 127, "clicks": 0}, {"site": "tecnoblog.net", "impr": 117, "clicks": 0}, {"site": "jornalvozativa.com", "impr": 114, "clicks": 0}, {"site": "folhape.com.br", "impr": 111, "clicks": 0}, {"site": "tribunadonorte.com.br", "impr": 109, "clicks": 1}, {"site": "cinepop.com.br", "impr": 107, "clicks": 0}, {"site": "guiadacozinha.com.br", "impr": 102, "clicks": 0}, {"site": "anoticiaregional.com.br", "impr": 100, "clicks": 0}, {"site": "bemparana.com.br", "impr": 100, "clicks": 1}, {"site": "moneytimes.com.br", "impr": 94, "clicks": 0}, {"site": "tudocelular.com", "impr": 94, "clicks": 0}, {"site": "tnh1.com.br", "impr": 86, "clicks": 2}, {"site": "minhavida.com.br", "impr": 85, "clicks": 0}, {"site": "vivareal.com.br", "impr": 82, "clicks": 1}, {"site": "noticiasautomotivas.com.br", "impr": 75, "clicks": 0}, {"site": "ultimasnoticias.inf.br", "impr": 71, "clicks": 1}, {"site": "infoescola.com", "impr": 68, "clicks": 3}, {"site": "opopular.com.br", "impr": 67, "clicks": 0}, {"site": "canalrural.com.br", "impr": 66, "clicks": 0}, {"site": "noticiasaominuto.com.br", "impr": 66, "clicks": 1}, {"site": "sbt.com.br", "impr": 66, "clicks": 0}, {"site": "folhavitoria.com.br", "impr": 63, "clicks": 0}, {"site": "calculoexato.com.br", "impr": 62, "clicks": 0}, {"site": "msn.com", "impr": 62, "clicks": 0}, {"site": "lance.com.br", "impr": 61, "clicks": 0}, {"site": "exclusivo.com.br", "impr": 58, "clicks": 0}, {"site": "mantosdofutebol.com.br", "impr": 57, "clicks": 0}, {"site": "estadao.com.br", "impr": 52, "clicks": 1}, {"site": "varginhaonline.com.br", "impr": 52, "clicks": 0}, {"site": "buzzfeed.com", "impr": 50, "clicks": 0}, {"site": "estrelando.com.br", "impr": 50, "clicks": 1}, {"site": "clarin.com", "impr": 47, "clicks": 0}, {"site": "viomundo.com.br", "impr": 47, "clicks": 0}, {"site": "folhadesabara.com.br", "impr": 46, "clicks": 0}, {"site": "istoedinheiro.com.br", "impr": 44, "clicks": 0}, {"site": "vvale.com.br", "impr": 44, "clicks": 1}, {"site": "exame.com", "impr": 43, "clicks": 0}, {"site": "contabeis.com.br", "impr": 41, "clicks": 0}, {"site": "clicrbs.com.br", "impr": 40, "clicks": 0}, {"site": "rollingstone.com.br", "impr": 39, "clicks": 0}, {"site": "4gnews.pt", "impr": 38, "clicks": 0}, {"site": "oimparcial.com.br", "impr": 37, "clicks": 0}, {"site": "tomadadetempo.com.br", "impr": 37, "clicks": 0}, {"site": "diariodorio.com", "impr": 34, "clicks": 0}, {"site": "jornalemtempo.com", "impr": 34, "clicks": 0}, {"site": "portalleodias.com", "impr": 34, "clicks": 0}, {"site": "aficionados.com.br", "impr": 33, "clicks": 0}, {"site": "chavesnamao.com.br", "impr": 32, "clicks": 0}, {"site": "interligadonline.com", "impr": 32, "clicks": 0}, {"site": "vrum.com.br", "impr": 31, "clicks": 0}, {"site": "tabelafipebrasil.com", "impr": 30, "clicks": 0}, {"site": "babycenter.com", "impr": 29, "clicks": 0}, {"site": "radiomuriae.com.br", "impr": 29, "clicks": 0}, {"site": "sampi.net.br", "impr": 29, "clicks": 0}, {"site": "bbc.com", "impr": 28, "clicks": 0}, {"site": "geo.fr", "impr": 28, "clicks": 0}, {"site": "marca.com", "impr": 28, "clicks": 0}, {"site": "alagoas24horas.com.br", "impr": 26, "clicks": 0}, {"site": "arkade.com.br", "impr": 26, "clicks": 0}, {"site": "businessinsider.com", "impr": 26, "clicks": 0}, {"site": "espn.com.br", "impr": 26, "clicks": 0}, {"site": "novanews.com.br", "impr": 26, "clicks": 0}, {"site": "acheconcursos.com.br", "impr": 25, "clicks": 0}, {"site": "portaldozacarias.com.br", "impr": 25, "clicks": 0}, {"site": "tn.com.ar", "impr": 25, "clicks": 0}, {"site": "bonde.com.br", "impr": 24, "clicks": 1}, {"site": "elobservador.com.uy", "impr": 24, "clicks": 0}, {"site": "jornalopcao.com.br", "impr": 24, "clicks": 0}, {"site": "petitchef.com", "impr": 24, "clicks": 3}, {"site": "elespectador.com", "impr": 23, "clicks": 0}, {"site": "tribunadepetropolis.com.br", "impr": 22, "clicks": 0}, {"site": "cidadeverde.com", "impr": 21, "clicks": 0}, {"site": "ecycle.com.br", "impr": 21, "clicks": 0}, {"site": "ogol.com.br", "impr": 21, "clicks": 1}, {"site": "alterosa.com.br", "impr": 20, "clicks": 0}, {"site": "dci.com.br", "impr": 20, "clicks": 1}, {"site": "carangoweb.com.br", "impr": 19, "clicks": 0}, {"site": "maistocadas.mus.br", "impr": 19, "clicks": 0}, {"site": "sempreupdate.com.br", "impr": 19, "clicks": 0}, {"site": "seudinheiro.com", "impr": 19, "clicks": 0}, {"site": "diarinho.net", "impr": 18, "clicks": 0}, {"site": "jornaldelavras.com.br", "impr": 18, "clicks": 0}, {"site": "midianews.com.br", "impr": 18, "clicks": 0}, {"site": "aquinoticias.com", "impr": 17, "clicks": 0}, {"site": "car.blog.br", "impr": 17, "clicks": 0}, {"site": "cinema10.com.br", "impr": 17, "clicks": 0}, {"site": "elpais.com", "impr": 17, "clicks": 0}, {"site": "publico.pt", "impr": 17, "clicks": 0}, {"site": "acordacidade.com.br", "impr": 16, "clicks": 0}, {"site": "as.com", "impr": 16, "clicks": 0}, {"site": "cavok.com.br", "impr": 16, "clicks": 0}, {"site": "clickguarulhos.com.br", "impr": 16, "clicks": 0}, {"site": "receitasdepesos.com.br", "impr": 16, "clicks": 0}, {"site": "webvolei.com.br", "impr": 16, "clicks": 0}, {"site": "costanorte.com.br", "impr": 15, "clicks": 0}, {"site": "defatoonline.com.br", "impr": 15, "clicks": 0}, {"site": "metsul.com", "impr": 15, "clicks": 0}, {"site": "amandocozinhar.com", "impr": 14, "clicks": 0}, {"site": "correiodopovo.com.br", "impr": 14, "clicks": 0}, {"site": "folhadelondrina.com.br", "impr": 14, "clicks": 0}, {"site": "tribunaonline.com.br", "impr": 14, "clicks": 0}, {"site": "mundopositivo.com.br", "impr": 13, "clicks": 0}, {"site": "polemicaparaiba.com.br", "impr": 13, "clicks": 0}, {"site": "cadaminuto.com.br", "impr": 12, "clicks": 1}, {"site": "ciclovivo.com.br", "impr": 12, "clicks": 0}, {"site": "cozinharoman.com", "impr": 12, "clicks": 1}, {"site": "montesclaros.com", "impr": 12, "clicks": 0}, {"site": "blogdopaulinho.com.br", "impr": 11, "clicks": 0}, {"site": "futebolinterior.com.br", "impr": 11, "clicks": 0}, {"site": "gabarite.com.br", "impr": 11, "clicks": 0}, {"site": "pragmatismopolitico.com.br", "impr": 11, "clicks": 0}, {"site": "euronews.com", "impr": 10, "clicks": 1}, {"site": "lugarcerto.com.br", "impr": 10, "clicks": 0}, {"site": "ohoje.com", "impr": 10, "clicks": 0}, {"site": "otempobetim.com.br", "impr": 10, "clicks": 0}, {"site": "portalcaparao.com.br", "impr": 10, "clicks": 0}, {"site": "rollingstone.com", "impr": 10, "clicks": 0}, {"site": "edition.cnn.com", "impr": 9, "clicks": 0}, {"site": "macmagazine.com.br", "impr": 9, "clicks": 0}, {"site": "wimoveis.com.br", "impr": 9, "clicks": 0}, {"site": "acidadeon.com", "impr": 8, "clicks": 0}, {"site": "d24am.com", "impr": 8, "clicks": 0}, {"site": "empregacampinas.com.br", "impr": 8, "clicks": 0}, {"site": "eusemfronteiras.com.br", "impr": 8, "clicks": 0}, {"site": "receitasdemae.com.br", "impr": 8, "clicks": 0}, {"site": "sofascore.com", "impr": 8, "clicks": 1}, {"site": "vivadecora.com.br", "impr": 8, "clicks": 0}, {"site": "atribuna.com.br", "impr": 7, "clicks": 0}, {"site": "eshoje.com.br", "impr": 7, "clicks": 0}, {"site": "infopedia.pt", "impr": 7, "clicks": 0}, {"site": "inovacaotecnologica.com.br", "impr": 7, "clicks": 0}, {"site": "istoe.com.br", "impr": 7, "clicks": 0}, {"site": "perfil.com", "impr": 7, "clicks": 0}, {"site": "stealthelook.com.br", "impr": 7, "clicks": 0}, {"site": "giphy.com", "impr": 6, "clicks": 0}, {"site": "infonet.com.br", "impr": 6, "clicks": 0}, {"site": "nature.com", "impr": 6, "clicks": 0}, {"site": "usatoday.com", "impr": 6, "clicks": 0}, {"site": "viagenscinematograficas.com.br", "impr": 6, "clicks": 0}, {"site": "archdaily.com", "impr": 5, "clicks": 0}, {"site": "bebemamae.com", "impr": 5, "clicks": 0}, {"site": "correioweb.com.br", "impr": 5, "clicks": 0}, {"site": "nenoticias.com.br", "impr": 5, "clicks": 0}, {"site": "superesportes.com.br", "impr": 5, "clicks": 0}, {"site": "todateen.com.br", "impr": 5, "clicks": 0}, {"site": "tribunahoje.com", "impr": 5, "clicks": 0}, {"site": "ciudad.com.ar", "impr": 4, "clicks": 0}, {"site": "coladaweb.com", "impr": 4, "clicks": 0}, {"site": "faroldenoticias.com.br", "impr": 4, "clicks": 0}, {"site": "forbes.com", "impr": 4, "clicks": 0}, {"site": "fundamentus.com.br", "impr": 4, "clicks": 0}, {"site": "hardware.com.br", "impr": 4, "clicks": 0}, {"site": "jobrapido.com", "impr": 4, "clicks": 0}, {"site": "jovemnerd.com.br", "impr": 4, "clicks": 0}, {"site": "medicalnewstoday.com", "impr": 4, "clicks": 0}, {"site": "outerspace.com.br", "impr": 4, "clicks": 0}, {"site": "patrocinioonline.com.br", "impr": 4, "clicks": 0}, {"site": "redenoticia.com.br", "impr": 4, "clicks": 0}, {"site": "reuters.com", "impr": 4, "clicks": 0}, {"site": "somatematica.com.br", "impr": 4, "clicks": 0}, {"site": "sosergipe.com.br", "impr": 4, "clicks": 0}, {"site": "tudoreceitas.com", "impr": 4, "clicks": 0}, {"site": "afolharegional.com.br", "impr": 3, "clicks": 0}, {"site": "clube.fm", "impr": 3, "clicks": 0}, {"site": "folhadomate.com", "impr": 3, "clicks": 0}, {"site": "folhamax.com", "impr": 3, "clicks": 0}, {"site": "historiadomundo.com.br", "impr": 3, "clicks": 0}, {"site": "hojemais.com.br", "impr": 3, "clicks": 0}, {"site": "mundoboaforma.com.br", "impr": 3, "clicks": 0}, {"site": "osaogoncalo.com.br", "impr": 3, "clicks": 0}, {"site": "palcomp3.com.br", "impr": 3, "clicks": 0}, {"site": "shopcar.com.br", "impr": 3, "clicks": 0}, {"site": "solinguainglesa.com.br", "impr": 3, "clicks": 0}, {"site": "surfguru.com.br", "impr": 3, "clicks": 0}, {"site": "t1noticias.com.br", "impr": 3, "clicks": 0}, {"site": "tribunapr.com.br", "impr": 3, "clicks": 0}, {"site": "tvgazeta.com.br", "impr": 3, "clicks": 0}, {"site": "vgnoticias.com.br", "impr": 3, "clicks": 0}, {"site": "viagemcomemocao.com.br", "impr": 3, "clicks": 0}, {"site": "acessa.com", "impr": 2, "clicks": 0}, {"site": "agrobase.com.br", "impr": 2, "clicks": 0}, {"site": "autoforum.com.br", "impr": 2, "clicks": 0}, {"site": "autoo.com.br", "impr": 2, "clicks": 0}, {"site": "autossegredos.com.br", "impr": 2, "clicks": 0}, {"site": "caras.perfil.com", "impr": 2, "clicks": 0}, {"site": "corridasbr.com.br", "impr": 2, "clicks": 0}, {"site": "elmostrador.cl", "impr": 2, "clicks": 0}, {"site": "elmundo.es", "impr": 2, "clicks": 0}, {"site": "en.softonic.com", "impr": 2, "clicks": 0}, {"site": "examenglish.com", "impr": 2, "clicks": 0}, {"site": "fatosdesconhecidos.com.br", "impr": 2, "clicks": 0}, {"site": "free-codecs.com", "impr": 2, "clicks": 0}, {"site": "futebolpeneira.com.br", "impr": 2, "clicks": 0}, {"site": "hardmob.com.br", "impr": 2, "clicks": 0}, {"site": "helpsaude.com", "impr": 2, "clicks": 0}, {"site": "japaoemfoco.com", "impr": 2, "clicks": 0}, {"site": "manualdohomemmoderno.com.br", "impr": 2, "clicks": 0}, {"site": "minhaconexao.com.br", "impr": 2, "clicks": 0}, {"site": "opovo.com.br", "impr": 2, "clicks": 0}, {"site": "panelaterapia.com", "impr": 2, "clicks": 0}, {"site": "paraibaonline.com.br", "impr": 2, "clicks": 0}, {"site": "plox.com.br", "impr": 2, "clicks": 0}, {"site": "portalpalotina.com.br", "impr": 2, "clicks": 0}, {"site": "portalpiracuruca.com", "impr": 2, "clicks": 0}, {"site": "rdnews.com.br", "impr": 2, "clicks": 0}, {"site": "soliteratura.com.br", "impr": 2, "clicks": 0}, {"site": "srzd.com", "impr": 2, "clicks": 0}, {"site": "tribunadointerior.com.br", "impr": 2, "clicks": 0}, {"site": "wscom.com.br", "impr": 2, "clicks": 0}, {"site": "xadrezverbal.com", "impr": 2, "clicks": 0}, {"site": "agazetadoacre.com", "impr": 1, "clicks": 0}, {"site": "arkpad.com.br", "impr": 1, "clicks": 0}, {"site": "biologianet.com", "impr": 1, "clicks": 0}, {"site": "blogdoiphone.com", "impr": 1, "clicks": 0}, {"site": "brasileiraspelomundo.com", "impr": 1, "clicks": 0}, {"site": "campos24horas.com.br", "impr": 1, "clicks": 0}, {"site": "diario24horas.com.br", "impr": 1, "clicks": 0}, {"site": "diarionline.com.br", "impr": 1, "clicks": 0}, {"site": "diariosm.com.br", "impr": 1, "clicks": 0}, {"site": "elcomercio.pe", "impr": 1, "clicks": 0}, {"site": "eleconomista.es", "impr": 1, "clicks": 0}, {"site": "esportenewsmundo.com.br", "impr": 1, "clicks": 0}, {"site": "jandaiaonline.com.br", "impr": 1, "clicks": 0}, {"site": "jornalaguaslindas.com.br", "impr": 1, "clicks": 0}, {"site": "jornaldaorla.com.br", "impr": 1, "clicks": 0}, {"site": "jornalnoroeste.com.br", "impr": 1, "clicks": 0}, {"site": "jpagora.com", "impr": 1, "clicks": 0}, {"site": "lacuarta.com", "impr": 1, "clicks": 0}, {"site": "larepublica.pe", "impr": 1, "clicks": 0}, {"site": "maladeaventuras.com", "impr": 1, "clicks": 0}, {"site": "marthastewart.com", "impr": 1, "clicks": 0}, {"site": "meiobit.com", "impr": 1, "clicks": 0}, {"site": "menshealth.com", "impr": 1, "clicks": 0}, {"site": "mmafighting.com", "impr": 1, "clicks": 0}, {"site": "motonline.com.br", "impr": 1, "clicks": 0}, {"site": "motorcyclenews.com", "impr": 1, "clicks": 0}, {"site": "mundogump.com.br", "impr": 1, "clicks": 0}, {"site": "nerdist.com", "impr": 1, "clicks": 0}, {"site": "oparana.com.br", "impr": 1, "clicks": 0}, {"site": "portaltemponovo.com.br", "impr": 1, "clicks": 0}, {"site": "preparaenem.com", "impr": 1, "clicks": 0}, {"site": "receitasnaturais.com.br", "impr": 1, "clicks": 0}, {"site": "rondoniadinamica.com", "impr": 1, "clicks": 0}, {"site": "rondoniaovivo.com", "impr": 1, "clicks": 0}, {"site": "rondonoticias.com.br", "impr": 1, "clicks": 0}, {"site": "softonic.com", "impr": 1, "clicks": 0}, {"site": "sogeografia.com.br", "impr": 1, "clicks": 0}, {"site": "soportugues.com.br", "impr": 1, "clicks": 0}, {"site": "teixeiranews.com.br", "impr": 1, "clicks": 0}, {"site": "temqueir.com.br", "impr": 1, "clicks": 0}, {"site": "thefreedictionary.com", "impr": 1, "clicks": 0}, {"site": "theguardian.com/technology", "impr": 1, "clicks": 0}, {"site": "todabiologia.com", "impr": 1, "clicks": 0}, {"site": "tribunadecianorte.com.br", "impr": 1, "clicks": 0}]</script>
+<script id="data-cities-prog" type="application/json">[{"city": "Belo Horizonte", "impr": 102777, "clicks": 808}, {"city": "Contagem", "impr": 27163, "clicks": 172}, {"city": "Betim", "impr": 16501, "clicks": 172}, {"city": "Santa Luzia", "impr": 12275, "clicks": 69}, {"city": "Sete Lagoas", "impr": 11458, "clicks": 91}, {"city": "Ribeirao das Neves", "impr": 8998, "clicks": 61}, {"city": "Ibirite", "impr": 7823, "clicks": 65}, {"city": "Nova Lima", "impr": 6642, "clicks": 43}, {"city": "Itauna", "impr": 6564, "clicks": 56}, {"city": "Sabara", "impr": 3876, "clicks": 31}, {"city": "Lagoa Santa", "impr": 3742, "clicks": 13}, {"city": "Vespasiano", "impr": 3522, "clicks": 29}, {"city": "Para de Minas", "impr": 3505, "clicks": 21}, {"city": "Esmeraldas", "impr": 3113, "clicks": 36}, {"city": "Pedro Leopoldo", "impr": 2845, "clicks": 30}, {"city": "Itabirito", "impr": 2262, "clicks": 21}, {"city": "Brumadinho", "impr": 2244, "clicks": 14}, {"city": "Caete", "impr": 1612, "clicks": 7}, {"city": "Mateus Leme", "impr": 1605, "clicks": 9}, {"city": "Barao de Cocais", "impr": 1216, "clicks": 13}, {"city": "Santa Barbara", "impr": 1126, "clicks": 6}, {"city": "Juatuba", "impr": 1041, "clicks": 12}, {"city": "Sao Jose da Lapa", "impr": 837, "clicks": 4}, {"city": "Matozinhos", "impr": 802, "clicks": 9}, {"city": "Unknown", "impr": 602, "clicks": 4}, {"city": "Raposos", "impr": 320, "clicks": 1}, {"city": "Sao Joaquim de Bicas", "impr": 269, "clicks": 1}, {"city": "Sarzedo", "impr": 222, "clicks": 0}, {"city": "Confins", "impr": 208, "clicks": 1}, {"city": "Igarape", "impr": 179, "clicks": 0}, {"city": "Itabira", "impr": 48, "clicks": 1}]</script>
+
+<script>
+Chart.register(ChartDataLabels);
+Chart.defaults.font.family = "'Segoe UI', Arial, sans-serif";
+
+/* ---------- TABS ---------- */
+document.querySelectorAll('.tabbtn').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.tabbtn').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.tabpanel').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('panel-'+btn.dataset.tab).classList.add('active');
+  });
+});
+
+/* ---------- helpers ---------- */
+function baseGrid(){ return { color:'rgba(128,128,128,.15)' }; }
+function baseTicks(){ return { color:getComputedStyle(document.body).color || '#333', font:{size:10} }; }
+function fmtInt(n){ return n.toLocaleString('pt-BR'); }
+function fmtPct(n, d){ return n.toFixed(d===undefined?2:d).replace('.',',')+'%'; }
+
+/* ---------- load embedded data ---------- */
+const sitesProg = JSON.parse(document.getElementById('data-sites-prog').textContent);
+const citiesProg = JSON.parse(document.getElementById('data-cities-prog').textContent);
+
+function renderSitesTable(tbodyId, rows, keyLabel){
+  const tbody = document.getElementById(tbodyId);
+  const frag = document.createDocumentFragment();
+  rows.forEach(r=>{
+    const ctr = r.impr>0 ? (r.clicks/r.impr*100) : 0;
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${r[keyLabel]}</td><td class="num">${fmtInt(r.impr)}</td><td class="num">${fmtInt(r.clicks)}</td><td class="num">${fmtPct(ctr)}</td>`;
+    frag.appendChild(tr);
+  });
+  tbody.innerHTML = '';
+  tbody.appendChild(frag);
+}
+
+renderSitesTable('tbodySitesProg', sitesProg, 'site');
+renderSitesTable('tbodyCitiesProg', citiesProg, 'city');
+
+document.getElementById('searchSitesProg').addEventListener('input', function(){
+  const q = this.value.toLowerCase();
+  renderSitesTable('tbodySitesProg', sitesProg.filter(r=>r.site.toLowerCase().includes(q)), 'site');
+});
+document.getElementById('searchCitiesProg').addEventListener('input', function(){
+  const q = this.value.toLowerCase();
+  renderSitesTable('tbodyCitiesProg', citiesProg.filter(r=>r.city.toLowerCase().includes(q)), 'city');
+});
+
+/* ---------- charts ---------- */
+const progDates = ["15/09","16/09","17/09","18/09","19/09","20/09","21/09","22/09"];
+const progSpend = [49.53,163.51,163.91,815.84,808.09,140.19,141.06,140.41];
+const progClicks = [30,145,112,381,940,192,147,197];
+const progSessions = [328,268,119,611,666,237,386,165];
+
+new Chart(document.getElementById('chartProgCombo'), {
+  data:{
+    labels:progDates,
+    datasets:[
+      { type:'bar', label:'Investimento (R$)', data:progSpend, backgroundColor:'#e30613', borderRadius:4, yAxisID:'y', order:2 },
+      { type:'line', label:'Cliques', data:progClicks, borderColor:'#1a1a2e', backgroundColor:'#1a1a2e', tension:.3, yAxisID:'y1', order:1 },
+      { type:'line', label:'Sessões (GA4)', data:progSessions, borderColor:'#2e7d32', backgroundColor:'#2e7d32', tension:.3, yAxisID:'y1', order:0 }
+    ]
+  },
+  options:{
+    responsive:true, maintainAspectRatio:false,
+    plugins:{
+      legend:{ position:'bottom', labels:{ boxWidth:10, font:{size:10} } },
+      datalabels:{ display:false }
+    },
+    scales:{
+      x:{ grid:{display:false}, ticks:baseTicks() },
+      y:{ position:'left', grid:baseGrid(), ticks:{...baseTicks(), callback:(v)=>'R$'+v}, beginAtZero:true },
+      y1:{ position:'right', grid:{display:false}, ticks:baseTicks(), beginAtZero:true }
+    }
+  }
+});
+</script>
+</body>
+</html>
