@@ -45,6 +45,9 @@
   .h-title{ color:#fff; font-size:17px; font-weight:700; }
   .h-sub{ color:#aab0c8; font-size:11px; margin-top:3px; }
   .badge{ display:flex; align-items:center; gap:6px; border-radius:20px; padding:5px 12px; font-size:10px; font-weight:700; white-space:nowrap; background:#e8f5e9; color:#2e7d32; }
+  .btn-report{ display:inline-flex; align-items:center; gap:7px; background:var(--navy); color:#fff; text-decoration:none; font-size:11px; font-weight:700; padding:9px 16px; border-radius:8px; margin-bottom:16px; transition:background .15s; }
+  .btn-report:hover{ background:var(--navy2); }
+  .btn-report svg{ width:14px; height:14px; flex-shrink:0; }
 
   .tabbar{ display:flex; background:var(--navy2); padding:0 20px; gap:4px; }
   .tabbtn{ appearance:none; border:none; background:transparent; color:#c9cbe0; font-size:12px; font-weight:700; padding:12px 20px; cursor:pointer; border-radius:8px 8px 0 0; display:flex; align-items:center; gap:7px; transition:background .15s,color .15s; }
@@ -156,6 +159,10 @@
 
     <div class="section-title">OVERVIEW <span class="st-period">15/09 a 22/09/2026</span></div>
     <div class="content">
+      <a class="btn-report" href="https://portal.publya.com/report/campaign/minas-cap/v2/e54e952e-027e-4492-aecf-35091e3e4b12" target="_blank" rel="noopener">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 3H4a1 1 0 00-1 1v12a1 1 0 001 1h12a1 1 0 001-1v-5"/><path d="M12 3h5v5"/><path d="M8.5 11.5L17 3"/></svg>
+        Ver relatório detalhado na Publya
+      </a>
       <div class="kpi-grid">
         <div class="kpi accent-prog"><div class="kpi-label">Investimento</div><div class="kpi-value">R$ 2.423</div><div class="kpi-note">Publya</div></div>
         <div class="kpi accent-prog"><div class="kpi-label">Cliques</div><div class="kpi-value">2.144</div></div>
