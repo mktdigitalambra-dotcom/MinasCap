@@ -298,22 +298,66 @@
   <!-- ══════════════════════ TAB: RICH MEDIA ══════════════════════ -->
   <div class="tabpanel" id="panel-rich">
 
-    <div class="section-title">OVERVIEW <span class="st-period">24/09 a 01/10/2026 · GA4</span></div>
+    <div class="section-title">OVERVIEW <span class="st-period">24/09 a 28/09/2026</span></div>
     <div class="content">
-      <div class="callout-info" style="background:#fff8e1; color:#7a5200; border-radius:8px; padding:11px 13px; font-size:10.5px; line-height:1.55; margin-bottom:14px;">
-        ⏳ Campanha já em veiculação (iniciou 24/09), mas o arquivo de entrega da Publya para Rich Media de Minas Cap ainda está vazio — sem dados de investimento, impressões, cliques ou CPC por enquanto. Os números abaixo são só do GA4 (sessões, engajamento, purchase).
-      </div>
       <div class="kpi-grid">
+        <div class="kpi accent-rich"><div class="kpi-label">Investimento</div><div class="kpi-value">R$ 1.660</div></div>
+        <div class="kpi accent-rich"><div class="kpi-label">Cliques</div><div class="kpi-value">228</div></div>
+        <div class="kpi accent-rich"><div class="kpi-label">Impressões</div><div class="kpi-value">92.309</div><div class="kpi-note">19.071 viewable</div></div>
+        <div class="kpi accent-rich"><div class="kpi-label">CPC</div><div class="kpi-value">R$ 7,28</div></div>
+        <div class="kpi accent-rich"><div class="kpi-label">vCTR</div><div class="kpi-value">1,20%</div></div>
+        <div class="kpi accent-rich"><div class="kpi-label">Engajamentos</div><div class="kpi-value">5.156</div><div class="kpi-note">Ações</div></div>
+        <div class="kpi accent-rich"><div class="kpi-label">Taxa de Engajamento</div><div class="kpi-value">28,0%</div></div>
         <div class="kpi accent-rich"><div class="kpi-label">Sessões</div><div class="kpi-value">208</div><div class="kpi-note">GA4</div></div>
-        <div class="kpi accent-rich"><div class="kpi-label">Taxa de Engajamento</div><div class="kpi-value">41,8%</div><div class="kpi-note">GA4</div></div>
         <div class="kpi accent-rich"><div class="kpi-label">Purchase</div><div class="kpi-value">0</div></div>
+        <div class="kpi accent-rich"><div class="kpi-label">Taxa de Conversão</div><div class="kpi-value">0,00%</div><div class="kpi-note">Purchase / Cliques</div></div>
       </div>
     </div>
 
-    <div class="section-title">SESSÕES (DIÁRIO)</div>
+    <div class="section-title">CONTRATO</div>
     <div class="content">
       <div class="panel" style="margin-top:0;">
-        <div class="chart-box"><canvas id="chartRichMcSessions"></canvas></div>
+        <div class="contrato-grid">
+          <div>
+            <div class="contrato-item">
+              <div class="contrato-labels"><span class="l1">Investimento</span><span class="l2">R$ 1.660 / R$ 10.000</span></div>
+              <div class="bar-track"><div class="bar-fill rich" style="width:16.6%;"><span class="bar-pct">16,6%</span></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-title">INVESTIMENTO + CLIQUES + SESSÕES (DIÁRIO)</div>
+    <div class="content">
+      <div class="panel" style="margin-top:0;">
+        <div class="chart-box"><canvas id="chartRichCombo"></canvas></div>
+      </div>
+    </div>
+
+    <div class="section-title">RESULTADOS POR EDIÇÃO</div>
+    <div class="content">
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr><th>Edição</th><th>Data do sorteio</th><th>Período de veiculação</th><th class="num">Investimento</th><th class="num">Cliques</th><th class="num">Impressões</th><th class="num">CPC</th><th class="num">vCTR</th><th class="num">Sessões</th><th class="num">Tx. Engajamento</th><th class="num">Purchase</th><th class="num">Tx. Conversão</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Edição 539</td><td>27/09/2026</td><td>24/09 a 26/09</td>
+              <td class="num">R$ 1.529,30</td><td class="num">207</td><td class="num">84.961</td>
+              <td class="num">R$ 7,39</td><td class="num">1,17%</td><td class="num">166</td><td class="num">42,2%</td><td class="num">0</td><td class="num">0,00%</td>
+            </tr>
+            <tr>
+              <td>Edição 540</td><td>04/10/2026 (em andamento)</td><td>27/09 a 28/09</td>
+              <td class="num">R$ 130,63</td><td class="num">21</td><td class="num">7.348</td>
+              <td class="num">R$ 6,22</td><td class="num">1,48%</td><td class="num">12</td><td class="num">25,0%</td><td class="num">0</td><td class="num">0,00%</td>
+            </tr>
+          </tbody>
+          <tbody>
+            <tr class="tfoot-row"><td>Total</td><td></td><td>24/09 a 28/09</td><td class="num">R$ 1.659,93</td><td class="num">228</td><td class="num">92.309</td><td class="num">R$ 7,28</td><td class="num">1,20%</td><td class="num">178</td><td class="num">41,0%</td><td class="num">0</td><td class="num">0,00%</td></tr>
+          </tbody>
+        </table>
       </div>
     </div>
 
@@ -333,7 +377,19 @@
       </div>
     </div>
 
+    <div class="section-title">QUADRO DE SITES <span class="st-period">24 a 28/09/2026 · top 31 sites</span></div>
+    <div class="content">
+      <div class="table-scroll">
+        <table>
+          <thead><tr><th>Site</th><th class="num">Impressões</th><th class="num">Cliques</th><th class="num">vCTR</th><th class="num">Tx. Engajamento</th><th class="num">Ações</th><th class="num">Gasto</th></tr></thead>
+          <tbody id="tbodySitesRichMc"></tbody>
+        </table>
+      </div>
+    </div>
+
   </div>
+
+<script id="data-sites-rich-mc" type="application/json">[{"site": "veja.abril.com.br", "impr_total": 22277, "impr": 2051, "clicks": 33, "ctr": 0.15, "vctr": 1.61, "eng": 34.08, "acoes": 670, "gasto": 400.81}, {"site": "tuasaude.com", "impr_total": 4783, "impr": 244, "clicks": 2, "ctr": 0.04, "vctr": 0.82, "eng": 33.2, "acoes": 81, "gasto": 86.08}, {"site": "portaltemponovo.com.br", "impr_total": 4516, "impr": 499, "clicks": 6, "ctr": 0.13, "vctr": 1.2, "eng": 17.64, "acoes": 83, "gasto": 81.16}, {"site": "olhardigital.com.br", "impr_total": 3622, "impr": 786, "clicks": 59, "ctr": 1.63, "vctr": 7.51, "eng": 21.76, "acoes": 112, "gasto": 65.18}, {"site": "hugogloss.com.br", "impr_total": 3612, "impr": 972, "clicks": 3, "ctr": 0.08, "vctr": 0.31, "eng": 36.11, "acoes": 349, "gasto": 65.0}, {"site": "bhaz.com.br", "impr_total": 3549, "impr": 307, "clicks": 0, "ctr": 0.0, "vctr": 0.0, "eng": 41.69, "acoes": 128, "gasto": 63.77}, {"site": "caras.com.br", "impr_total": 3203, "impr": 1132, "clicks": 6, "ctr": 0.19, "vctr": 0.53, "eng": 33.13, "acoes": 372, "gasto": 57.65}, {"site": "diariodocentrodomundo.com.br", "impr_total": 2683, "impr": 386, "clicks": 2, "ctr": 0.07, "vctr": 0.52, "eng": 36.01, "acoes": 137, "gasto": 48.28}, {"site": "qpo.com.br", "impr_total": 2089, "impr": 1012, "clicks": 4, "ctr": 0.19, "vctr": 0.4, "eng": 30.73, "acoes": 309, "gasto": 37.57}, {"site": "bodaonha.top", "impr_total": 1747, "impr": 567, "clicks": 0, "ctr": 0.0, "vctr": 0.0, "eng": 24.51, "acoes": 144, "gasto": 31.45}, {"site": "ndmais.com.br", "impr_total": 1688, "impr": 1045, "clicks": 19, "ctr": 1.13, "vctr": 1.82, "eng": 11.39, "acoes": 100, "gasto": 30.37}, {"site": "receitatodahora.com.br", "impr_total": 1613, "impr": 657, "clicks": 1, "ctr": 0.06, "vctr": 0.15, "eng": 24.51, "acoes": 160, "gasto": 29.0}, {"site": "portalbrasil.net", "impr_total": 1585, "impr": 503, "clicks": 7, "ctr": 0.44, "vctr": 1.39, "eng": 15.11, "acoes": 70, "gasto": 28.53}, {"site": "brasilacontece.net.br", "impr_total": 1224, "impr": 666, "clicks": 6, "ctr": 0.49, "vctr": 0.9, "eng": 30.93, "acoes": 200, "gasto": 22.01}, {"site": "meubrasil24hs.com.br", "impr_total": 1005, "impr": 275, "clicks": 6, "ctr": 0.6, "vctr": 2.18, "eng": 36.73, "acoes": 95, "gasto": 18.05}, {"site": "canaltech.com.br", "impr_total": 925, "impr": 284, "clicks": 3, "ctr": 0.32, "vctr": 1.06, "eng": 42.25, "acoes": 117, "gasto": 16.63}, {"site": "joaobidu.com.br", "impr_total": 881, "impr": 189, "clicks": 0, "ctr": 0.0, "vctr": 0.0, "eng": 15.34, "acoes": 29, "gasto": 15.82}, {"site": "teclemidia.com", "impr_total": 874, "impr": 176, "clicks": 0, "ctr": 0.0, "vctr": 0.0, "eng": 20.45, "acoes": 36, "gasto": 15.73}, {"site": "lifehiddenchapters.com", "impr_total": 798, "impr": 247, "clicks": 1, "ctr": 0.13, "vctr": 0.4, "eng": 25.51, "acoes": 63, "gasto": 14.36}, {"site": "tvprime.correiobraziliense.com.br", "impr_total": 752, "impr": 10, "clicks": 3, "ctr": 0.4, "vctr": 30.0, "eng": 60.0, "acoes": 3, "gasto": 13.54}, {"site": "vidaemfocooo.com", "impr_total": 739, "impr": 156, "clicks": 3, "ctr": 0.41, "vctr": 1.92, "eng": 22.44, "acoes": 32, "gasto": 13.28}, {"site": "lideranoticias.club", "impr_total": 684, "impr": 113, "clicks": 0, "ctr": 0.0, "vctr": 0.0, "eng": 31.86, "acoes": 36, "gasto": 12.31}, {"site": "folhavitoria.com.br", "impr_total": 681, "impr": 59, "clicks": 0, "ctr": 0.0, "vctr": 0.0, "eng": 49.15, "acoes": 29, "gasto": 12.26}, {"site": "diariodopeixe.com.br", "impr_total": 662, "impr": 37, "clicks": 8, "ctr": 1.21, "vctr": 21.62, "eng": 21.62, "acoes": 0, "gasto": 11.88}, {"site": "contigo.com.br", "impr_total": 658, "impr": 117, "clicks": 2, "ctr": 0.3, "vctr": 1.71, "eng": 34.19, "acoes": 38, "gasto": 11.84}, {"site": "catracalivre.com.br", "impr_total": 656, "impr": 162, "clicks": 0, "ctr": 0.0, "vctr": 0.0, "eng": 24.69, "acoes": 40, "gasto": 11.81}, {"site": "bandab.com.br", "impr_total": 655, "impr": 195, "clicks": 2, "ctr": 0.31, "vctr": 1.03, "eng": 33.33, "acoes": 63, "gasto": 11.77}, {"site": "aventurasnahistoria.com.br", "impr_total": 648, "impr": 156, "clicks": 0, "ctr": 0.0, "vctr": 0.0, "eng": 40.38, "acoes": 65, "gasto": 11.66}, {"site": "lafaieteagora.com.br", "impr_total": 633, "impr": 186, "clicks": 2, "ctr": 0.32, "vctr": 1.08, "eng": 38.71, "acoes": 70, "gasto": 11.39}, {"site": "saude.abril.com.br", "impr_total": 574, "impr": 75, "clicks": 0, "ctr": 0.0, "vctr": 0.0, "eng": 32.0, "acoes": 24, "gasto": 10.33}, {"site": "topicnews.com.br", "impr_total": 557, "impr": 199, "clicks": 2, "ctr": 0.36, "vctr": 1.01, "eng": 25.63, "acoes": 49, "gasto": 10.03}]</script>
 
   <div class="foot">
     Relatório gerado a partir dos arquivos de entrega da Programática (Publya, SharePoint, pasta "Análise Programática Publya e Rich Media 2026") e do GA4 (conta minascap-53b4b). Sem colunas de margem. Peça "Atualizar" para recalcular com dados mais recentes.
@@ -368,6 +424,7 @@ function fmtPct(n, d){ return n.toFixed(d===undefined?2:d).replace('.',',')+'%';
 /* ---------- load embedded data ---------- */
 const sitesProg = JSON.parse(document.getElementById('data-sites-prog').textContent);
 const citiesProg = JSON.parse(document.getElementById('data-cities-prog').textContent);
+const sitesRichMc = JSON.parse(document.getElementById('data-sites-rich-mc').textContent);
 
 function renderSitesTable(tbodyId, rows, keyLabel){
   const tbody = document.getElementById(tbodyId);
@@ -384,6 +441,18 @@ function renderSitesTable(tbodyId, rows, keyLabel){
 
 renderSitesTable('tbodySitesProg', sitesProg, 'site');
 renderSitesTable('tbodyCitiesProg', citiesProg, 'city');
+
+(function(){
+  const tbody = document.getElementById('tbodySitesRichMc');
+  const frag = document.createDocumentFragment();
+  sitesRichMc.forEach(r=>{
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${r.site}</td><td class="num">${fmtInt(r.impr_total)}</td><td class="num">${fmtInt(r.clicks)}</td><td class="num">${fmtPct(r.vctr)}</td><td class="num">${fmtPct(r.eng)}</td><td class="num">${fmtInt(r.acoes)}</td><td class="num">R$ ${r.gasto.toFixed(2).replace('.',',')}</td>`;
+    frag.appendChild(tr);
+  });
+  tbody.innerHTML = '';
+  tbody.appendChild(frag);
+})();
 
 document.getElementById('searchSitesProg').addEventListener('input', function(){
   const q = this.value.toLowerCase();
@@ -423,26 +492,30 @@ new Chart(document.getElementById('chartProgCombo'), {
   }
 });
 
-const richMcDates = ["24/09","25/09","26/09","27/09","28/09","29/09","30/09","01/10"];
-const richMcSessions = [25,42,99,0,12,20,6,4];
+const richDates = ["24/09","25/09","26/09","27/09","28/09"];
+const richSpend = [171.47,514.42,843.41,0,130.63];
+const richClicks = [23,79,105,0,21];
+const richSessions = [25,42,99,0,12];
 
-new Chart(document.getElementById('chartRichMcSessions'), {
-  type:'bar',
+new Chart(document.getElementById('chartRichCombo'), {
   data:{
-    labels:richMcDates,
+    labels:richDates,
     datasets:[
-      { label:'Sessões (GA4)', data:richMcSessions, backgroundColor:'#8e44ad', borderRadius:4 }
+      { type:'bar', label:'Investimento (R$)', data:richSpend, backgroundColor:'#8e44ad', borderRadius:4, yAxisID:'y', order:2 },
+      { type:'line', label:'Cliques', data:richClicks, borderColor:'#1a1a2e', backgroundColor:'#1a1a2e', tension:.3, yAxisID:'y1', order:1 },
+      { type:'line', label:'Sessões (GA4)', data:richSessions, borderColor:'#2e7d32', backgroundColor:'#2e7d32', tension:.3, yAxisID:'y1', order:0 }
     ]
   },
   options:{
     responsive:true, maintainAspectRatio:false,
     plugins:{
-      legend:{ display:false },
-      datalabels:{ anchor:'end', align:'top', font:{size:9,weight:'bold'}, color:'#555', formatter:(v)=> v>0?v:'' }
+      legend:{ position:'bottom', labels:{ boxWidth:10, font:{size:10} } },
+      datalabels:{ display:false }
     },
     scales:{
       x:{ grid:{display:false}, ticks:baseTicks() },
-      y:{ grid:baseGrid(), ticks:baseTicks(), beginAtZero:true }
+      y:{ position:'left', grid:baseGrid(), ticks:{...baseTicks(), callback:(v)=>'R$'+v}, beginAtZero:true },
+      y1:{ position:'right', grid:{display:false}, ticks:baseTicks(), beginAtZero:true }
     }
   }
 });
