@@ -396,7 +396,7 @@
   <div class="note">
     Vendas de mídia somam Google (2.455) e Meta (235). Vendas de CRM vêm do GA4 (compras das sessões de web push, e-mail, pop-up e SMS, incluindo as UTMs de Architect); investimento de CRM semanal de R$ 15.225 (mensal de R$ 60.900). O investimento do Online geral soma mídia e CRM.
   </div>
-  <div class="note alert"><b>Atenção à leitura do CRM:</b> no GA4 do Minas Cap, <b>92% das compras da semana</b> (45.082 de 48.942) estão em "Não atribuído", sem origem identificada. Por isso, as vendas de CRM medidas no GA4 tendem a estar subnotificadas, e o ROAS de CRM (0,3) deve ser lido com cautela. Como referência, o Insider atribui <b>561 conversões</b> ao CRM na mesma semana.</div>
+  <div class="note alert"><b>Atenção à leitura do CRM:</b> no GA4 do Minas Cap, <b>92% das compras da semana</b> (45.082 de 48.942) estão em "Não atribuído", sem origem identificada. Por isso, as vendas de CRM medidas no GA4 tendem a estar subnotificadas, e o ROAS de CRM (0,3) deve ser lido com cautela. Como referência, o Insider atribui <b>561 conversões</b> ao CRM na mesma semana. O problema já está sendo revisto pelo <b>time de Tecnologia</b>, e os ajustes entram na <b>próxima release, em 05/10</b>.</div>
 </div>
 
 <!-- CARD 4 -->
@@ -430,7 +430,7 @@
       </tbody>
     </table>
   </div>
-  <div class="note">Usuários não são somáveis entre origens: o total vem deduplicado do GA4. E-mail, pop-up e demais UTMs de CRM foram retirados de "Não atribuído", onde o GA4 classifica as marcações CRM / email-mkt, architect_email e architect_popup, e agrupados nas linhas marcadas com (CRM).</div>
+  <div class="note">Usuários não são somáveis entre origens: o total vem deduplicado do GA4.</div>
 </div>
 
 <!-- CARD 5 -->
@@ -461,7 +461,7 @@
     </table>
   </div>
   <div class="note">
-    google / cpc reúne PMax, Display, Busca e sessões PMax sem origem identificada. Usuários nos subtotais são a soma das linhas, sem deduplicação. crm / web push reúne todas as marcações de web push, incluindo architect_web_push; crm / email reúne email-mkt, architect_email e e-mail Insider; crm / popup corresponde a architect_popup. crm / outros reúne insider / insider e WhatsApp.
+    google / cpc reúne PMax, Display, Busca e sessões PMax sem origem identificada. crm / outros reúne insider / insider e WhatsApp. Usuários nos subtotais são a soma das linhas, sem deduplicação.
   </div>
 </div>
 
@@ -480,7 +480,7 @@
       </tbody>
     </table>
   </div>
-  <div class="note">Insider: total de compradores que entraram na plataforma de 20/09 a 26/09, não apenas os atribuídos ao CRM. Como um comprador pode levar mais de um título, o número tende a ficar abaixo do ERP.</div>
+  <div class="note">Insider: total de compradores que entraram na plataforma de 20/09 a 26/09, não apenas os atribuídos ao CRM. A Insider ainda não recebe as compras feitas via PIX e, por isso, o número fica abaixo do ERP. A integração já está na esteira do time de Tecnologia para ser resolvida.</div>
 </div>
 
 <!-- LEITURA FINAL -->
@@ -501,13 +501,14 @@
   <h3 class="sub-h">CRM</h3>
   <ul>
     <li>O CRM gerou <b>297 vendas</b> no GA4 (0,7% do online), com R$ 15.225 investidos na semana: <b>ROAS de 0,3</b> e CPA de <b>R$ 51,26</b>.</li>
+    <li>Na comparação com a edição anterior de mesmo valor (<b>ed. 538</b>, de 13/09 a 19/09, R$ 15), as vendas de CRM no GA4 caíram de <b>860 para 297</b> (−65,5%). O web push foi de 411 para 177 e o e-mail de 443 para 109. A queda acompanha o aumento das compras em "Não atribuído", que passaram de 63% para 92% do total entre as duas semanas.</li>
     <li>O <b>web push</b> concentrou 73% das sessões de CRM e 60% das vendas (177). O <b>e-mail</b> respondeu por 109 vendas (37%) e o <b>pop-up</b> por 11.</li>
     <li>Na conversão de sessão em compra, o <b>e-mail</b> teve 1,9%, o web push 1,1% e o pop-up 3,7%.</li>
     <li>O GA4 classifica as UTMs de e-mail e pop-up (email-mkt, architect_email e architect_popup) como "Não atribuído".</li>
   </ul>
   <h3 class="sub-h">Mensuração</h3>
   <ul>
-    <li>O resultado de compras por origem no GA4 está comprometido: <b>92% das compras</b> (45.082 de 48.942) caem em "Não atribuído", porque o evento de compra chega sem a sessão de origem. Isso subnotifica principalmente o <b>CRM</b> (297 compras no GA4 contra 561 conversões no Insider) e a mídia, e explica o ROAS de CRM de 0,3.</li>
+    <li>O resultado de compras por origem no GA4 está comprometido: <b>92% das compras</b> (45.082 de 48.942) caem em "Não atribuído", porque o evento de compra chega sem a sessão de origem. Isso subnotifica principalmente o <b>CRM</b> (297 compras no GA4 contra 561 conversões no Insider) e a mídia, e explica o ROAS de CRM de 0,3. O problema já está sendo revisto pelo <b>time de Tecnologia</b>, e os ajustes entram na <b>próxima release, em 05/10</b>.</li>
   </ul>
 </div>
 
