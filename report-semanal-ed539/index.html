@@ -303,6 +303,12 @@
   .peca-links a{ color:var(--brand-text); border-color:var(--brand-text); }
   .peca-links a:hover{ background:var(--brand-text); color:#fff; }
   :root{ --brand1:#fdc300; --brand2:#86b13c; --brand-text:#5f8526; }
+
+  .note.alert{ background:#fff8e1; border:1px solid #f3d27a; border-left:4px solid var(--brand1); color:var(--black); font-size:11.5px; }
+  .note.alert b{ color:var(--black); }
+  .leituras h3.sub-h{ margin-top:14px; }
+  @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .note.alert{ background:#2d2610; border-color:#5a4a17; } }
+  :root[data-theme="dark"] .note.alert{ background:#2d2610; border-color:#5a4a17; }
 </style>
 </head>
 <body>
@@ -323,7 +329,7 @@
 </header>
 
 <!-- CARD 1 -->
-<h2 class="section-title">Vendas gerais <span class="card-num">· Card 1</span></h2>
+<h2 class="section-title">Vendas gerais</h2>
 <p class="section-desc">Total de títulos vendidos na edição, separados entre canal físico e canais online.</p>
 
 <div class="kpi-row">
@@ -350,7 +356,7 @@
 </div>
 
 <!-- CARD 2 -->
-<h2 class="section-title">Vendas canal online <span class="card-num">· Card 2</span></h2>
+<h2 class="section-title">Vendas canal online</h2>
 <p class="section-desc">Distribuição das vendas online por origem. Os percentuais são calculados sobre o total online da edição (44.425), e não sobre o total geral.</p>
 
 <div class="card">
@@ -371,7 +377,7 @@
 </div>
 
 <!-- CARD 3 -->
-<h2 class="section-title">Vendas origem mídia, CRM e online geral <span class="card-num">· Card 3</span></h2>
+<h2 class="section-title">Vendas origem mídia, CRM e online geral</h2>
 <p class="section-desc">% calculado sobre o total de vendas online da edição (44.425). Receita = vendas × ticket de R$ 15,00. ROAS = receita ÷ investimento. CPA = investimento ÷ vendas.</p>
 
 <div class="card">
@@ -382,18 +388,19 @@
       </thead>
       <tbody>
         <tr class="group"><td>Mídia</td><td>2.690</td><td>6,1%</td><td>R$ 22.402,00</td><td>R$ 40.350,00</td><td>1,8</td><td>R$ 8,33</td></tr>
-        <tr class="group pending"><td>CRM</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
-        <tr class="tt"><td>Online geral</td><td>44.425</td><td>100%</td><td>R$ 22.402,00</td><td>R$ 666.375,00</td><td>29,7</td><td>R$ 0,50</td></tr>
+        <tr class="group"><td>CRM</td><td>297</td><td>0,7%</td><td>R$ 15.225,00</td><td>R$ 4.455,00</td><td>0,3</td><td>R$ 51,26</td></tr>
+        <tr class="tt"><td>Online geral</td><td>44.425</td><td>100%</td><td>R$ 37.627,00</td><td>R$ 666.375,00</td><td>17,7</td><td>R$ 0,85</td></tr>
       </tbody>
     </table>
   </div>
   <div class="note">
-    Vendas de mídia somam Google (2.455) e Meta (235). CRM aguardando fonte de dados; o investimento do Online geral considera, por enquanto, apenas a mídia.
+    Vendas de mídia somam Google (2.455) e Meta (235). Vendas de CRM vêm do GA4 (compras das sessões de web push, e-mail, pop-up e SMS, incluindo as UTMs de Architect); investimento de CRM semanal de R$ 15.225 (mensal de R$ 60.900). O investimento do Online geral soma mídia e CRM.
   </div>
+  <div class="note alert"><b>Atenção à leitura do CRM:</b> no GA4 do Minas Cap, <b>92% das compras da semana</b> (45.082 de 48.942) estão em "Não atribuído", sem origem identificada. Por isso, as vendas de CRM medidas no GA4 tendem a estar subnotificadas, e o ROAS de CRM (0,3) deve ser lido com cautela. Como referência, o Insider atribui <b>561 conversões</b> ao CRM na mesma semana.</div>
 </div>
 
 <!-- CARD 4 -->
-<h2 class="section-title">Sessões por origem <span class="card-num">· Card 4</span></h2>
+<h2 class="section-title">Sessões por origem</h2>
 <p class="section-desc">Google Analytics 4, site Minas Cap, de 20/09 a 26/09/2026. Origem pelo agrupamento padrão de canais da sessão.</p>
 
 <div class="card">
@@ -405,29 +412,29 @@
       <tbody>
         <tr><td>Direto</td><td>251.794</td><td>144.931</td><td>26.017</td><td>28.482</td><td>10.627</td><td>3.091</td></tr>
         <tr><td>Cross-network (PMax)</td><td>75.582</td><td>44.196</td><td>9.059</td><td>11.106</td><td>6.191</td><td>383</td></tr>
-        <tr><td>Não atribuído</td><td>51.142</td><td>128.750</td><td>1.848</td><td>22.099</td><td>16.496</td><td>45.082</td></tr>
+        <tr><td>Não atribuído</td><td>45.255</td><td>125.016</td><td>800</td><td>20.325</td><td>15.650</td><td>44.962</td></tr>
         <tr><td>Busca orgânica</td><td>25.687</td><td>16.870</td><td>5.254</td><td>1.944</td><td>681</td><td>175</td></tr>
-        <tr><td>Push mobile</td><td>16.218</td><td>8.367</td><td>124</td><td>4.167</td><td>2.498</td><td>177</td></tr>
+        <tr><td>Push mobile (CRM)</td><td>16.218</td><td>8.367</td><td>124</td><td>4.167</td><td>2.498</td><td>177</td></tr>
         <tr><td>Social pago</td><td>15.684</td><td>8.748</td><td>14.794</td><td>140</td><td>62</td><td>0</td></tr>
+        <tr><td>E-mail (CRM)</td><td>5.638</td><td>3.580</td><td>1.036</td><td>1.708</td><td>827</td><td>109</td></tr>
         <tr><td>Paid Other</td><td>2.057</td><td>1.672</td><td>2.144</td><td>32</td><td>3</td><td>0</td></tr>
         <tr><td>Display</td><td>1.119</td><td>612</td><td>44</td><td>173</td><td>126</td><td>3</td></tr>
         <tr><td>Social orgânico</td><td>533</td><td>396</td><td>209</td><td>379</td><td>103</td><td>24</td></tr>
+        <tr><td>Pop-up (CRM)</td><td>295</td><td>183</td><td>14</td><td>80</td><td>26</td><td>11</td></tr>
         <tr><td>Vídeo orgânico</td><td>235</td><td>161</td><td>17</td><td>73</td><td>11</td><td>0</td></tr>
         <tr><td>Referência</td><td>179</td><td>117</td><td>43</td><td>22</td><td>9</td><td>5</td></tr>
         <tr><td>Busca paga</td><td>146</td><td>87</td><td>14</td><td>22</td><td>10</td><td>2</td></tr>
-        <tr><td>E-mail</td><td>56</td><td>36</td><td>2</td><td>17</td><td>10</td><td>0</td></tr>
         <tr><td>Assistentes de IA</td><td>22</td><td>15</td><td>13</td><td>2</td><td>2</td><td>0</td></tr>
+        <tr><td>Outros CRM</td><td>10</td><td>7</td><td>0</td><td>3</td><td>3</td><td>0</td></tr>
         <tr class="tt"><td>Total</td><td>440.306</td><td>301.281</td><td>59.582</td><td>68.658</td><td>36.829</td><td>48.942</td></tr>
       </tbody>
     </table>
   </div>
-  <div class="note">
-    Usuários não são somáveis entre origens: o total vem deduplicado do GA4.
-  </div>
+  <div class="note">Usuários não são somáveis entre origens: o total vem deduplicado do GA4. E-mail, pop-up e demais UTMs de CRM foram retirados de "Não atribuído", onde o GA4 classifica as marcações CRM / email-mkt, architect_email e architect_popup, e agrupados nas linhas marcadas com (CRM).</div>
 </div>
 
 <!-- CARD 5 -->
-<h2 class="section-title">Origem da sessão · mídia e CRM <span class="card-num">· Card 5</span></h2>
+<h2 class="section-title">Origem da sessão · mídia e CRM</h2>
 <p class="section-desc">Google Analytics 4, site Minas Cap, de 20/09 a 26/09/2026. Detalhado por origem / mídia da sessão.</p>
 
 <div class="card">
@@ -444,22 +451,23 @@
         <tr class="sub"><td>facebook / cpc</td><td>1.578</td><td>1.090</td><td>1.822</td><td>107</td><td>62</td><td>0</td></tr>
         <tr class="sub"><td>rich-media / cpc</td><td>165</td><td>99</td><td>178</td><td>26</td><td>1</td><td>0</td></tr>
         <tr class="sub"><td>uol-ads / cpc</td><td>113</td><td>109</td><td>113</td><td>0</td><td>0</td><td>0</td></tr>
-        <tr class="group"><td>CRM</td><td>16.159</td><td>8.772</td><td>126</td><td>4.187</td><td>2.511</td><td>177</td></tr>
+        <tr class="group"><td>CRM</td><td>22.035</td><td>12.498</td><td>1.174</td><td>5.958</td><td>3.354</td><td>297</td></tr>
         <tr class="sub"><td>crm / web push</td><td>16.092</td><td>8.728</td><td>124</td><td>4.167</td><td>2.498</td><td>177</td></tr>
-        <tr class="sub"><td>crm / email</td><td>56</td><td>36</td><td>2</td><td>17</td><td>10</td><td>0</td></tr>
-        <tr class="sub"><td>crm / outros</td><td>11</td><td>8</td><td>0</td><td>3</td><td>3</td><td>0</td></tr>
-        <tr class="tt"><td>Mídia + CRM</td><td>110.726</td><td>64.083</td><td>26.181</td><td>15.660</td><td>8.903</td><td>565</td></tr>
+        <tr class="sub"><td>crm / email</td><td>5.638</td><td>3.580</td><td>1.036</td><td>1.708</td><td>827</td><td>109</td></tr>
+        <tr class="sub"><td>crm / popup</td><td>295</td><td>183</td><td>14</td><td>80</td><td>26</td><td>11</td></tr>
+        <tr class="sub"><td>crm / outros</td><td>10</td><td>7</td><td>0</td><td>3</td><td>3</td><td>0</td></tr>
+        <tr class="tt"><td>Mídia + CRM</td><td>116.602</td><td>67.809</td><td>27.229</td><td>17.431</td><td>9.746</td><td>685</td></tr>
       </tbody>
     </table>
   </div>
   <div class="note">
-    google / cpc reúne PMax, Display, Busca e sessões PMax sem origem identificada. Usuários nos subtotais são a soma das linhas, sem deduplicação. crm / web push reúne sete marcações de UTM diferentes (CRM, crm e insider com web-push, web_push, webpush e architect_web_push).
+    google / cpc reúne PMax, Display, Busca e sessões PMax sem origem identificada. Usuários nos subtotais são a soma das linhas, sem deduplicação. crm / web push reúne todas as marcações de web push, incluindo architect_web_push; crm / email reúne email-mkt, architect_email e e-mail Insider; crm / popup corresponde a architect_popup. crm / outros reúne insider / insider e WhatsApp.
   </div>
 </div>
 
 <div class="card">
   <h3>Compras: ERP x GA4 x Insider</h3>
-  <p class="hint">Cada fonte mede de um jeito: o ERP conta títulos vendidos online, o GA4 conta eventos de compra no site e o Insider conta conversões atribuídas aos disparos de CRM.</p>
+  <p class="hint">Cada fonte mede de um jeito: o ERP conta títulos vendidos online, o GA4 conta eventos de compra no site e o Insider conta os compradores identificados na plataforma na semana.</p>
   <div class="table-wrap">
     <table class="valores">
       <thead>
@@ -468,13 +476,11 @@
       <tbody>
         <tr><td>ERP (online)</td><td>44.425</td><td>—</td></tr>
         <tr><td>GA4</td><td>48.942</td><td>+4.517 (+10,2%)</td></tr>
-        <tr><td>Insider</td><td>561</td><td>−43.864 (−98,7%)</td></tr>
+        <tr><td>Insider</td><td>7.601</td><td>−36.824 (−82,9%)</td></tr>
       </tbody>
     </table>
   </div>
-  <div class="note">
-    Insider soma campanhas de web push (232), campanhas de e-mail (146) e jornadas (183), e cobre apenas as compras atribuídas ao CRM.
-  </div>
+  <div class="note">Insider: total de compradores que entraram na plataforma de 20/09 a 26/09, não apenas os atribuídos ao CRM. Como um comprador pode levar mais de um título, o número tende a ficar abaixo do ERP.</div>
 </div>
 
 <!-- LEITURA FINAL -->
@@ -491,6 +497,17 @@
         <a href="https://demo.somplo.com/demo/298074783" target="_blank" rel="noopener">Ver peça 2 ↗</a>
       </span>
     </li>
+  </ul>
+  <h3 class="sub-h">CRM</h3>
+  <ul>
+    <li>O CRM gerou <b>297 vendas</b> no GA4 (0,7% do online), com R$ 15.225 investidos na semana: <b>ROAS de 0,3</b> e CPA de <b>R$ 51,26</b>.</li>
+    <li>O <b>web push</b> concentrou 73% das sessões de CRM e 60% das vendas (177). O <b>e-mail</b> respondeu por 109 vendas (37%) e o <b>pop-up</b> por 11.</li>
+    <li>Na conversão de sessão em compra, o <b>e-mail</b> teve 1,9%, o web push 1,1% e o pop-up 3,7%.</li>
+    <li>O GA4 classifica as UTMs de e-mail e pop-up (email-mkt, architect_email e architect_popup) como "Não atribuído".</li>
+  </ul>
+  <h3 class="sub-h">Mensuração</h3>
+  <ul>
+    <li>O resultado de compras por origem no GA4 está comprometido: <b>92% das compras</b> (45.082 de 48.942) caem em "Não atribuído", porque o evento de compra chega sem a sessão de origem. Isso subnotifica principalmente o <b>CRM</b> (297 compras no GA4 contra 561 conversões no Insider) e a mídia, e explica o ROAS de CRM de 0,3.</li>
   </ul>
 </div>
 
