@@ -340,8 +340,8 @@
   </div>
   <div class="kpi-card fisico">
     <div class="label">Total físico</div>
-    <div class="value">82.216</div>
-    <div class="foot">60,7% do total</div>
+    <div class="value">90.775</div>
+    <div class="foot">67,0% do total · Físico, Pos Comum e Pos Smart</div>
   </div>
   <div class="kpi-card online">
     <div class="label">Total online</div>
@@ -387,15 +387,13 @@
         <tr><th>Origem</th><th>Vendas</th><th>% do online</th><th>Investimento</th><th>Receita</th><th>ROAS</th><th>CPA</th></tr>
       </thead>
       <tbody>
-        <tr class="group"><td>Mídia</td><td>2.690</td><td>6,1%</td><td>R$ 22.402,00</td><td>R$ 40.350,00</td><td>1,8</td><td>R$ 8,33</td></tr>
+        <tr class="group"><td>Mídia</td><td>2.882</td><td>6,5%</td><td>R$ 11.754,49</td><td>R$ 43.230,00</td><td>3,7</td><td>R$ 4,08</td></tr>
         <tr class="group"><td>CRM</td><td>297</td><td>0,7%</td><td>R$ 15.225,00</td><td>R$ 4.455,00</td><td>0,3</td><td>R$ 51,26</td></tr>
-        <tr class="tt"><td>Online geral</td><td>44.425</td><td>100%</td><td>R$ 37.627,00</td><td>R$ 666.375,00</td><td>17,7</td><td>R$ 0,85</td></tr>
+        <tr class="tt"><td>Online geral</td><td>44.425</td><td>100%</td><td>R$ 26.979,49</td><td>R$ 666.375,00</td><td>24,7</td><td>R$ 0,61</td></tr>
       </tbody>
     </table>
   </div>
-  <div class="note">
-    Vendas de mídia somam Google (2.455) e Meta (235). Vendas de CRM vêm do GA4 (compras das sessões de web push, e-mail, pop-up e SMS, incluindo as UTMs de Architect); investimento de CRM semanal de R$ 15.225 (mensal de R$ 60.900). O investimento do Online geral soma mídia e CRM.
-  </div>
+  <div class="note">Mídia considera apenas campanhas de conversão, com vendas e investimento direto das plataformas: Google Ads (PMax e Demand Gen, 2.882 vendas e R$ 11.754,49). Não houve campanha de conversão no Meta Ads na semana. Vendas de CRM vêm do GA4 (compras das sessões de web push, e-mail, pop-up e SMS, incluindo as UTMs de Architect); investimento de CRM semanal de R$ 15.225 (mensal de R$ 60.900). O investimento do Online geral soma mídia e CRM.</div>
   <div class="note alert"><b>Atenção à leitura do CRM:</b> no GA4 do Minas Cap, <b>92% das compras da semana</b> (45.082 de 48.942) estão em "Não atribuído", sem origem identificada. Por isso, as vendas de CRM medidas no GA4 tendem a estar subnotificadas, e o ROAS de CRM (0,3) deve ser lido com cautela. Como referência, o Insider atribui <b>561 conversões</b> ao CRM na mesma semana. O problema já está sendo revisto pelo <b>time de Tecnologia</b>, e os ajustes entram na <b>próxima release, em 05/10</b>.</div>
 </div>
 
@@ -430,7 +428,7 @@
       </tbody>
     </table>
   </div>
-  <div class="note">Usuários não são somáveis entre origens: o total vem deduplicado do GA4.</div>
+  <div class="note">Uma mesma pessoa pode visitar o site por mais de uma origem na semana. Por isso, somando os usuários linha a linha, o resultado fica maior que o total.</div>
 </div>
 
 <!-- CARD 5 -->
@@ -460,9 +458,7 @@
       </tbody>
     </table>
   </div>
-  <div class="note">
-    google / cpc reúne PMax, Display, Busca e sessões PMax sem origem identificada. crm / outros reúne insider / insider e WhatsApp. Usuários nos subtotais são a soma das linhas, sem deduplicação.
-  </div>
+  <div class="note">google / cpc junta todas as campanhas do Google (PMax, Display e Busca). crm / outros reúne WhatsApp e outros disparos menores. Uma mesma pessoa pode aparecer em mais de uma linha, então os usuários dos subtotais podem ficar um pouco acima do real.</div>
 </div>
 
 <div class="card">
