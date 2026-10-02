@@ -260,6 +260,49 @@
   .leituras{ padding:16px 20px; }
   .kpi-row + .section-title, .card + .section-title{ margin-top:22px; }
   .section-desc{ margin-bottom:10px; }
+
+  /* ===== Tema por CAP + fundo cinza ===== */
+  :root{
+    --bg:#eceef1; --card:#ffffff; --border:#e2e4e8; --zebra:#f6f7f9;
+    --gray:#6a6f76; --black:#23262b;
+    --th-bg:#e4e7eb; --th-text:#2f3338;
+    --soft:#f3f4f6;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){ --bg:#141518; --card:#1d1f23; --border:#2c2f34; --zebra:#22252a; --th-bg:#2a2d33; --th-text:#e6e8eb; --soft:#25282d; --black:#eceef1; --gray:#a3a8ae; }
+  }
+  :root[data-theme="dark"]{ --bg:#141518; --card:#1d1f23; --border:#2c2f34; --zebra:#22252a; --th-bg:#2a2d33; --th-text:#e6e8eb; --soft:#25282d; --black:#eceef1; --gray:#a3a8ae; }
+
+  body{ background:var(--bg); }
+  header{ border-top:4px solid var(--brand1); }
+  .edition-pill{
+    background:var(--soft); color:var(--black); border:1px solid var(--border);
+    display:inline-flex; align-items:center; gap:7px;
+  }
+  .edition-pill::before{ content:""; width:7px; height:7px; border-radius:50%; background:var(--brand1); }
+  .section-title::before{ background:var(--brand1); }
+
+  .kpi-card.total{ border-top-color:var(--black); }
+  .kpi-card.fisico{ border-top-color:var(--brand2); }
+  .kpi-card.online{ border-top-color:var(--brand1); }
+  .kpi-card.share{ background:var(--card); border:1px solid var(--border); border-top:3px solid var(--brand1); }
+  .kpi-card.share .label, .kpi-card.share .foot{ color:var(--gray); }
+  .kpi-card.share .value{ color:var(--brand-text); }
+
+  table.valores thead tr{ background:var(--th-bg); }
+  table.valores th{ color:var(--th-text); border-bottom:2px solid var(--brand1); }
+  .table-wrap.scroll-y thead th{ background:var(--th-bg); }
+  .table-wrap.scroll-y::-webkit-scrollbar-thumb{ background:#c3c7cd; }
+  .table-wrap.scroll-y{ scrollbar-color:#c3c7cd transparent; }
+  table.valores tr.tt td{ border-top:1px solid #9aa0a6; background:var(--soft); }
+  .table-wrap.scroll-y tr.group td, table.valores tr.group td{ background:var(--soft); }
+
+  .note{ background:var(--soft); border:1px solid var(--border); }
+  .leituras{ border-left:5px solid var(--brand1); }
+  .leituras li b{ color:var(--brand-text); }
+  .peca-links a{ color:var(--brand-text); border-color:var(--brand-text); }
+  .peca-links a:hover{ background:var(--brand-text); color:#fff; }
+  :root{ --brand1:#fdc300; --brand2:#86b13c; --brand-text:#5f8526; }
 </style>
 </head>
 <body>
