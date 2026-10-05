@@ -395,19 +395,38 @@
         <tr><th>Origem</th><th>Vendas</th><th>% do online</th><th>Investimento</th><th>Receita</th><th>ROAS</th><th>CPA</th></tr>
       </thead>
       <tbody>
-        <tr class="group"><td>Mídia</td><td>2.882</td><td>6,5%</td><td>R$ 11.754,49</td><td>R$ 43.230,00</td><td>3,7</td><td>R$ 4,08</td></tr>
+        <tr class="group"><td>Mídia</td><td>2.415</td><td>5,4%</td><td>R$ 21.468,00</td><td>R$ 36.225,00</td><td>1,7</td><td>R$ 8,89</td></tr>
         <tr class="group"><td>CRM</td><td>297</td><td>0,7%</td><td>R$ 15.225,00</td><td>R$ 4.455,00</td><td>0,3</td><td>R$ 51,26</td></tr>
-        <tr class="tt"><td>Online geral</td><td>44.425</td><td>100%</td><td>R$ 26.979,49</td><td>R$ 666.375,00</td><td>24,7</td><td>R$ 0,61</td></tr>
+        <tr class="tt"><td>Online geral</td><td>44.425</td><td>100%</td><td>R$ 36.693,00</td><td>R$ 666.375,00</td><td>18,2</td><td>R$ 0,83</td></tr>
       </tbody>
     </table>
   </div>
-  <div class="note">Mídia considera apenas campanhas de conversão, com vendas e investimento direto das plataformas: Google Ads (PMax e Demand Gen, 2.882 vendas e R$ 11.754,49). Não houve campanha de conversão no Meta Ads na semana. Vendas de CRM vêm do GA4 (compras das sessões de web push, e-mail, pop-up e SMS, incluindo as UTMs de Architect); investimento de CRM semanal de R$ 15.225 (mensal de R$ 60.900). O investimento do Online geral soma mídia e CRM.</div>
-  <div class="note alert"><b>Atenção à leitura do CRM:</b> no GA4 do Minas Cap, <b>92% das compras da semana</b> (45.082 de 48.942) estão em "Não atribuído", sem origem identificada. Por isso, as vendas de CRM medidas no GA4 tendem a estar subnotificadas, e o ROAS de CRM (0,3) deve ser lido com cautela. Como referência, o Insider atribui <b>561 conversões</b> ao CRM na mesma semana. O problema já está sendo revisto pelo <b>time de Tecnologia</b>, e os ajustes entram na <b>próxima release, em 05/10</b>.</div>
+  <div class="note">Vendas e investimento de mídia vêm da Tabela - Minas Cap (colunas Mídia e Investimento), considerando todos os canais de mídia. Vendas de CRM vêm do GA4 (agrupamento "Sessão Minas Cap"); investimento de CRM semanal de R$ 15.225. O investimento do Online geral soma mídia e CRM.</div>
+  <div class="note alert"><b>Atenção à leitura do CRM:</b> no GA4 do Minas Cap, <b>92% das compras da semana</b> (44.852 de 48.942) estão em "Não atribuído", sem origem identificada. Por isso, as vendas de CRM medidas no GA4 tendem a estar subnotificadas, e o ROAS de CRM (0,3) deve ser lido com cautela. Como referência, o Insider atribui <b>561 conversões</b> ao CRM na mesma semana. O problema já está sendo revisto pelo <b>time de Tecnologia</b>, e os ajustes entram na <b>próxima release, em 05/10</b>.</div>
+</div>
+
+<div class="card">
+  <h3>Mídia de conversão · Meta e Google</h3>
+  <p class="hint">Apenas campanhas de conversão, com vendas e investimento direto das plataformas (Windsor.ai), sem imposto. Período de 20/09 a 26/09/2026. % calculado sobre o total de vendas online da edição.</p>
+  <div class="table-wrap">
+    <table class="valores">
+      <thead><tr><th>Campanha</th><th>Vendas</th><th>% do online</th><th>Investimento</th><th>Receita</th><th>ROAS</th><th>CPA</th></tr></thead>
+      <tbody>
+        <tr class="group pending"><td>Meta Ads</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+        <tr class="sub"><td>Sem campanha de conversão na semana</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+        <tr class="group"><td>Google Ads</td><td>3.446</td><td>7,8%</td><td>R$ 11.754,49</td><td>R$ 51.690,00</td><td>4,4</td><td>R$ 3,41</td></tr>
+        <tr class="sub"><td>PMAX_minas-cap_AON</td><td>3.322</td><td>7,5%</td><td>R$ 9.008,89</td><td>R$ 49.830,00</td><td>5,5</td><td>R$ 2,71</td></tr>
+        <tr class="sub"><td>DEMAND-GEN_minas-cap_AON</td><td>124</td><td>0,3%</td><td>R$ 2.745,60</td><td>R$ 1.860,00</td><td>0,7</td><td>R$ 22,14</td></tr>
+        <tr class="tt"><td>Total conversão</td><td>3.446</td><td>7,8%</td><td>R$ 11.754,49</td><td>R$ 51.690,00</td><td>4,4</td><td>R$ 3,41</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="note">As vendas do Google são atribuídas à data do clique e podem crescer nos dias seguintes ao fim da semana, à medida que compras atrasadas são registradas.</div>
 </div>
 
 <!-- CARD 4 -->
 <h2 class="section-title">Sessões por origem</h2>
-<p class="section-desc">Google Analytics 4, site Minas Cap, de 20/09 a 26/09/2026. Origem pelo agrupamento padrão de canais da sessão.</p>
+<p class="section-desc">Google Analytics 4, site Minas Cap, de 20/09 a 26/09/2026. Origem pelo agrupamento de canais "Sessão Minas Cap", criado pelo time no GA4.</p>
 
 <div class="card">
   <div class="table-wrap scroll-y">
@@ -416,22 +435,16 @@
         <tr><th>Origem</th><th>Sessões</th><th>Usuários</th><th>Novos usuários</th><th>Add to cart</th><th>Finalização</th><th>Compras</th></tr>
       </thead>
       <tbody>
-        <tr><td>Direto</td><td>251.794</td><td>144.931</td><td>26.017</td><td>28.482</td><td>10.627</td><td>3.091</td></tr>
-        <tr><td>Cross-network (PMax)</td><td>75.582</td><td>44.196</td><td>9.059</td><td>11.106</td><td>6.191</td><td>383</td></tr>
-        <tr><td>Não atribuído</td><td>45.255</td><td>125.016</td><td>800</td><td>20.325</td><td>15.650</td><td>44.962</td></tr>
-        <tr><td>Busca orgânica</td><td>25.687</td><td>16.870</td><td>5.254</td><td>1.944</td><td>681</td><td>175</td></tr>
-        <tr><td>Push mobile (CRM)</td><td>16.218</td><td>8.367</td><td>124</td><td>4.167</td><td>2.498</td><td>177</td></tr>
-        <tr><td>Social pago</td><td>15.684</td><td>8.748</td><td>14.794</td><td>140</td><td>62</td><td>0</td></tr>
-        <tr><td>E-mail (CRM)</td><td>5.638</td><td>3.580</td><td>1.036</td><td>1.708</td><td>827</td><td>109</td></tr>
-        <tr><td>Paid Other</td><td>2.057</td><td>1.672</td><td>2.144</td><td>32</td><td>3</td><td>0</td></tr>
-        <tr><td>Display</td><td>1.119</td><td>612</td><td>44</td><td>173</td><td>126</td><td>3</td></tr>
-        <tr><td>Social orgânico</td><td>533</td><td>396</td><td>209</td><td>379</td><td>103</td><td>24</td></tr>
-        <tr><td>Pop-up (CRM)</td><td>295</td><td>183</td><td>14</td><td>80</td><td>26</td><td>11</td></tr>
-        <tr><td>Vídeo orgânico</td><td>235</td><td>161</td><td>17</td><td>73</td><td>11</td><td>0</td></tr>
-        <tr><td>Referência</td><td>179</td><td>117</td><td>43</td><td>22</td><td>9</td><td>5</td></tr>
-        <tr><td>Busca paga</td><td>146</td><td>87</td><td>14</td><td>22</td><td>10</td><td>2</td></tr>
-        <tr><td>Assistentes de IA</td><td>22</td><td>15</td><td>13</td><td>2</td><td>2</td><td>0</td></tr>
-        <tr><td>Outros CRM</td><td>10</td><td>7</td><td>0</td><td>3</td><td>3</td><td>0</td></tr>
+        <tr><td>Direct</td><td>251.794</td><td>144.931</td><td>26.017</td><td>28.482</td><td>10.627</td><td>3.091</td></tr>
+        <tr><td>Pago</td><td>94.147</td><td>55.160</td><td>26.055</td><td>11.473</td><td>6.392</td><td>388</td></tr>
+        <tr><td>Nativo</td><td>35.907</td><td>19.155</td><td>640</td><td>19.934</td><td>15.517</td><td>110</td></tr>
+        <tr><td>Organic Search</td><td>25.687</td><td>16.870</td><td>5.254</td><td>1.944</td><td>681</td><td>175</td></tr>
+        <tr><td>CRM</td><td>21.736</td><td>11.815</td><td>1.177</td><td>5.906</td><td>3.312</td><td>297</td></tr>
+        <tr><td>Unassigned</td><td>10.639</td><td>106.429</td><td>143</td><td>397</td><td>171</td><td>44.852</td></tr>
+        <tr><td>Redes Sociais</td><td>802</td><td>577</td><td>239</td><td>461</td><td>115</td><td>28</td></tr>
+        <tr><td>Referral</td><td>143</td><td>90</td><td>32</td><td>13</td><td>8</td><td>1</td></tr>
+        <tr><td>QR Code</td><td>66</td><td>40</td><td>14</td><td>46</td><td>4</td><td>0</td></tr>
+        <tr><td>IA's</td><td>20</td><td>13</td><td>11</td><td>2</td><td>2</td><td>0</td></tr>
         <tr class="tt"><td>Total</td><td>440.306</td><td>301.281</td><td>59.582</td><td>68.658</td><td>36.829</td><td>48.942</td></tr>
       </tbody>
     </table>
@@ -512,7 +525,7 @@
   </ul>
   <h3 class="sub-h">Mensuração</h3>
   <ul>
-    <li>O resultado de compras por origem no GA4 está comprometido: <b>92% das compras</b> (45.082 de 48.942) caem em "Não atribuído", porque o evento de compra chega sem a sessão de origem. Isso subnotifica principalmente o <b>CRM</b> (297 compras no GA4 contra 561 conversões no Insider) e a mídia, e explica o ROAS de CRM de 0,3. O problema já está sendo revisto pelo <b>time de Tecnologia</b>, e os ajustes entram na <b>próxima release, em 05/10</b>.</li>
+    <li>O resultado de compras por origem no GA4 está comprometido: <b>92% das compras</b> (44.852 de 48.942) caem em "Não atribuído", porque o evento de compra chega sem a sessão de origem. Isso subnotifica principalmente o <b>CRM</b> (297 compras no GA4 contra 561 conversões no Insider) e a mídia, e explica o ROAS de CRM de 0,3. O problema já está sendo revisto pelo <b>time de Tecnologia</b>, e os ajustes entram na <b>próxima release, em 05/10</b>.</li>
   </ul>
 </div>
 
@@ -560,40 +573,53 @@
     <table class="valores">
       <thead><tr><th>Origem</th><th>Vendas</th><th>% do online</th><th>Investimento</th><th>Receita</th><th>ROAS</th><th>CPA</th></tr></thead>
       <tbody>
-        <tr class="group"><td>Mídia (parcial: Google Ads)</td><td>2.242</td><td>4,9%</td><td>R$ 5.964,73</td><td>R$ 33.630,00</td><td>5,6</td><td>R$ 2,66</td></tr>
-        <tr class="group"><td>CRM</td><td>1.142</td><td>2,5%</td><td><span class="pend">aguardando</span></td><td>R$ 17.130,00</td><td>—</td><td>—</td></tr>
-        <tr class="tt"><td>Online geral</td><td>46.005</td><td>100%</td><td><span class="pend">aguardando</span></td><td>R$ 690.075,00</td><td>—</td><td>—</td></tr>
+        <tr class="group"><td>Mídia</td><td>5.357</td><td>11,6%</td><td>R$ 22.422,00</td><td>R$ 80.355,00</td><td>3,6</td><td>R$ 4,19</td></tr>
+        <tr class="group"><td>CRM</td><td>1.128</td><td>2,5%</td><td>R$ 15.225,00</td><td>R$ 16.920,00</td><td>1,1</td><td>R$ 13,50</td></tr>
+        <tr class="tt"><td>Online geral</td><td>46.005</td><td>100%</td><td>R$ 37.647,00</td><td>R$ 690.075,00</td><td>18,3</td><td>R$ 0,82</td></tr>
       </tbody>
     </table>
   </div>
-  <div class="note">Mídia considera apenas campanhas de conversão, com vendas e investimento direto das plataformas: Google Ads (PMax e Demand Gen, 2.242 vendas e R$ 5.964,73). Meta Ads conversão (CONVERSAO_Minas-Cap_AON, nova conta) aguardando vendas e investimento. Vendas de CRM vêm do GA4 (compras das sessões de web push, e-mail, pop-up e SMS, incluindo as UTMs de Architect); investimento de CRM aguardando. Investimento, ROAS e CPA do Online geral aguardando o Meta Ads conversão e o investimento de CRM.</div>
+  <div class="note">Vendas e investimento de mídia vêm da Tabela - Minas Cap (colunas Mídia e Investimento), considerando todos os canais de mídia. Vendas de CRM vêm do GA4 (agrupamento "Sessão Minas Cap"); investimento de CRM semanal de R$ 15.225. O investimento do Online geral soma mídia e CRM.</div>
+</div>
+
+<div class="card">
+  <h3>Mídia de conversão · Meta e Google</h3>
+  <p class="hint">Apenas campanhas de conversão, com vendas e investimento direto das plataformas (Windsor.ai), sem imposto. Período de 27/09 a 03/10/2026. % calculado sobre o total de vendas online da edição.</p>
+  <div class="table-wrap">
+    <table class="valores">
+      <thead><tr><th>Campanha</th><th>Vendas</th><th>% do online</th><th>Investimento</th><th>Receita</th><th>ROAS</th><th>CPA</th></tr></thead>
+      <tbody>
+        <tr class="group"><td>Meta Ads</td><td>2.665</td><td>5,8%</td><td>R$ 3.192,64</td><td>R$ 39.975,00</td><td>12,5</td><td>R$ 1,20</td></tr>
+        <tr class="sub"><td>CONVERSAO_minas-cap_AON</td><td>2.665</td><td>5,8%</td><td>R$ 3.192,64</td><td>R$ 39.975,00</td><td>12,5</td><td>R$ 1,20</td></tr>
+        <tr class="group"><td>Google Ads</td><td>2.236</td><td>4,9%</td><td>R$ 5.964,73</td><td>R$ 33.540,00</td><td>5,6</td><td>R$ 2,67</td></tr>
+        <tr class="sub"><td>PMAX_minas-cap_AON</td><td>2.167</td><td>4,7%</td><td>R$ 4.868,48</td><td>R$ 32.505,00</td><td>6,7</td><td>R$ 2,25</td></tr>
+        <tr class="sub"><td>DEMAND-GEN_minas-cap_AON</td><td>69</td><td>0,1%</td><td>R$ 1.096,25</td><td>R$ 1.035,00</td><td>0,9</td><td>R$ 15,89</td></tr>
+        <tr class="tt"><td>Total conversão</td><td>4.901</td><td>10,7%</td><td>R$ 9.157,37</td><td>R$ 73.515,00</td><td>8,0</td><td>R$ 1,87</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="note">As vendas do Google são atribuídas à data do clique e podem crescer nos dias seguintes ao fim da semana, à medida que compras atrasadas são registradas.</div>
 </div>
 
 <!-- CARD 4 -->
 <h2 class="section-title">Sessões por origem</h2>
-<p class="section-desc">Google Analytics 4, site Minas Cap, de 27/09 a 03/10/2026. Origem pelo agrupamento padrão de canais da sessão.</p>
+<p class="section-desc">Google Analytics 4, site Minas Cap, de 27/09 a 03/10/2026. Origem pelo agrupamento de canais "Sessão Minas Cap", criado pelo time no GA4.</p>
 
 <div class="card">
   <div class="table-wrap scroll-y">
     <table class="valores">
       <thead><tr><th>Origem</th><th>Sessões</th><th>Usuários</th><th>Novos usuários</th><th>Add to cart</th><th>Finalização</th><th>Compras</th></tr></thead>
       <tbody>
-        <tr><td>Direto</td><td>228.130</td><td>102.723</td><td>23.957</td><td>20.463</td><td>14.351</td><td>3.683</td></tr>
-        <tr><td>Cross-network (PMax)</td><td>80.407</td><td>40.995</td><td>8.719</td><td>12.396</td><td>8.285</td><td>2.050</td></tr>
-        <tr><td>Não atribuído</td><td>43.662</td><td>116.869</td><td>736</td><td>23.996</td><td>18.625</td><td>42.466</td></tr>
-        <tr><td>Social pago</td><td>23.178</td><td>10.397</td><td>18.399</td><td>329</td><td>171</td><td>53</td></tr>
-        <tr><td>Busca orgânica</td><td>22.958</td><td>13.541</td><td>4.883</td><td>1.958</td><td>1.138</td><td>373</td></tr>
-        <tr><td>Push mobile (CRM)</td><td>18.575</td><td>7.291</td><td>132</td><td>5.430</td><td>3.861</td><td>771</td></tr>
-        <tr><td>E-mail (CRM)</td><td>5.896</td><td>2.969</td><td>1.234</td><td>2.084</td><td>1.371</td><td>367</td></tr>
-        <tr><td>Paid Other</td><td>1.616</td><td>1.015</td><td>1.867</td><td>24</td><td>8</td><td>4</td></tr>
-        <tr><td>Display</td><td>1.016</td><td>474</td><td>26</td><td>226</td><td>171</td><td>28</td></tr>
-        <tr><td>Social orgânico</td><td>632</td><td>373</td><td>353</td><td>386</td><td>170</td><td>68</td></tr>
-        <tr><td>Pop-up (CRM)</td><td>339</td><td>164</td><td>18</td><td>87</td><td>39</td><td>4</td></tr>
-        <tr><td>Vídeo orgânico</td><td>271</td><td>140</td><td>8</td><td>41</td><td>20</td><td>9</td></tr>
-        <tr><td>Referência</td><td>178</td><td>96</td><td>39</td><td>20</td><td>11</td><td>1</td></tr>
-        <tr><td>Busca paga</td><td>145</td><td>59</td><td>23</td><td>31</td><td>20</td><td>7</td></tr>
-        <tr><td>Assistentes de IA</td><td>15</td><td>9</td><td>13</td><td>3</td><td>2</td><td>2</td></tr>
-        <tr><td>Outros CRM</td><td>15</td><td>9</td><td>0</td><td>4</td><td>3</td><td>0</td></tr>
+        <tr><td>Direct</td><td>228.130</td><td>102.723</td><td>23.957</td><td>20.463</td><td>14.351</td><td>3.683</td></tr>
+        <tr><td>Pago</td><td>104.101</td><td>53.237</td><td>29.034</td><td>13.006</td><td>8.655</td><td>2.142</td></tr>
+        <tr><td>Nativo</td><td>40.298</td><td>19.181</td><td>600</td><td>23.822</td><td>18.526</td><td>3.695</td></tr>
+        <tr><td>CRM</td><td>24.656</td><td>10.100</td><td>1.383</td><td>7.540</td><td>5.215</td><td>1.128</td></tr>
+        <tr><td>Organic Search</td><td>22.958</td><td>13.541</td><td>4.883</td><td>1.958</td><td>1.138</td><td>373</td></tr>
+        <tr><td>Unassigned</td><td>3.606</td><td>98.662</td><td>113</td><td>228</td><td>146</td><td>38.785</td></tr>
+        <tr><td>Redes Sociais</td><td>934</td><td>526</td><td>374</td><td>429</td><td>190</td><td>77</td></tr>
+        <tr><td>Referral</td><td>147</td><td>76</td><td>26</td><td>18</td><td>11</td><td>1</td></tr>
+        <tr><td>QR Code</td><td>69</td><td>35</td><td>24</td><td>11</td><td>12</td><td>0</td></tr>
+        <tr><td>IA's</td><td>15</td><td>9</td><td>13</td><td>3</td><td>2</td><td>2</td></tr>
         <tr class="tt"><td>Total</td><td>415.416</td><td>243.658</td><td>60.407</td><td>67.478</td><td>48.246</td><td>49.886</td></tr>
       </tbody>
     </table>
@@ -638,11 +664,11 @@
       <tbody>
         <tr><td>ERP (online)</td><td>46.005</td><td>—</td></tr>
         <tr><td>GA4</td><td>49.886</td><td>+3.881 (+8,4%)</td></tr>
-        <tr class="pending"><td>Insider</td><td>—</td><td>—</td></tr>
+        <tr><td>Insider</td><td>8.223</td><td>−37.782 (−82,1%)</td></tr>
       </tbody>
     </table>
   </div>
-  <div class="note">Insider (total de compradores da semana) aguardando os dados da edição 540.</div>
+  <div class="note">Insider: total de compradores que entraram na plataforma de 27/09 a 03/10, não apenas os atribuídos ao CRM. A Insider ainda não recebe as compras feitas via PIX e, por isso, o número fica abaixo do ERP. A integração já está na esteira do time de Tecnologia para ser resolvida.</div>
 </div>
 
 <!-- LEITURA FINAL -->
@@ -651,20 +677,21 @@
 <div class="leituras">
   <h3>Mídia</h3>
   <ul>
-    <li>O <b>Meta Ads</b> (nova conta) ganhou uma campanha de <b>conversão</b> a partir de 29/09, com <b>R$ 2.958</b> investidos na semana.</li>
-    <li>O <b>Google Ads</b> (PMax e Demand Gen) gerou <b>2.242 vendas</b> com R$ 5.965 investidos, CPA de <b>R$ 2,66</b>.</li>
+    <li>O <b>Meta Ads</b> (nova conta) ganhou uma campanha de <b>conversão</b> a partir de 29/09, que gerou <b>2.665 vendas</b> com R$ 3.193 investidos, CPA de <b>R$ 1,20</b>.</li>
+    <li>O <b>Google Ads</b> (PMax e Demand Gen) gerou <b>2.222 vendas</b> com R$ 5.965 investidos, CPA de <b>R$ 2,68</b>.</li>
     <li>O <b>TikTok Ads</b> seguiu na veiculação, com R$ 4.105 investidos em cliques e vídeo, e trouxe <b>17.802 sessões</b> ao site. É a <b>segunda maior origem de visitas da mídia paga</b>, atrás apenas do Google Ads (81.665 sessões).</li>
   </ul>
   <h3 class="sub-h">CRM</h3>
   <ul>
-    <li>O CRM gerou <b>1.142 vendas</b> no GA4. Investimento, ROAS e CPA aguardando os dados da semana.</li>
-    <li>Na comparação com a edição anterior de mesmo valor (<b>ed. 539</b>, de 20/09 a 26/09, R$ 15), as vendas de CRM no GA4 subiram de <b>297 para 1.142</b> (+284,5%). O web push foi de 177 para 771 e o e-mail de 109 para 367.</li>
+    <li>O CRM gerou <b>1.128 vendas</b> no GA4 (2,5% do online), com R$ 15.225 investidos na semana: <b>ROAS de 1,1</b> e CPA de <b>R$ 13,50</b>.</li>
+    <li>Na comparação com a edição anterior de mesmo valor (<b>ed. 539</b>, de 20/09 a 26/09, R$ 15), as vendas de CRM no GA4 subiram de <b>297 para 1.128</b> (+279,8%). O web push foi de 177 para 771 e o e-mail de 109 para 367.</li>
     <li>O <b>web push</b> concentrou 75% das sessões de CRM e 68% das vendas (771). O <b>e-mail</b> respondeu por 367 vendas (32%) e o <b>pop-up</b> por 4.</li>
     <li>Na conversão de sessão em compra, o <b>e-mail</b> teve 6,2%, o web push 4,1% e o pop-up 1,2%.</li>
+      <li>Os dados de compras voltaram a ser computados no <b>Google Analytics</b>.</li>
   </ul>
   <h3 class="sub-h">Mensuração</h3>
   <ul>
-    <li>As compras em "Não atribuído" no GA4 caíram de 92% para <b>85%</b> do total (42.466 de 49.886), o que ajuda a explicar a alta das vendas de CRM medidas no GA4. Os ajustes do <b>time de Tecnologia</b> entram na <b>release de 05/10</b>, depois do período desta edição.</li>
+    <li>As compras em "Não atribuído" no GA4 caíram de 92% para <b>78%</b> do total (38.785 de 49.886), o que ajuda a explicar a alta das vendas de CRM medidas no GA4. Os ajustes do <b>time de Tecnologia</b> entram na <b>release de 05/10</b>, depois do período desta edição.</li>
   </ul>
 </div>
 </section>
