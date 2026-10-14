@@ -574,13 +574,13 @@
     <table class="valores">
       <thead><tr><th>Origem</th><th>Vendas</th><th>% do online</th><th>Investimento</th><th>Receita</th><th>ROAS</th><th>CPA</th></tr></thead>
       <tbody>
-        <tr class="group"><td>Mídia</td><td>7.031</td><td>15,7%</td><td>R$ 32.401,00</td><td>R$ 140.620,00</td><td>4,3</td><td>R$ 4,61</td></tr>
-        <tr class="group"><td>CRM</td><td>—</td><td>—</td><td>R$ 15.225,00</td><td>—</td><td>—</td><td>—</td></tr>
-        <tr class="tt"><td>Online geral</td><td>44.895</td><td>100%</td><td>R$ 47.626,00</td><td>R$ 897.900,00</td><td>18,9</td><td>R$ 1,06</td></tr>
+        <tr class="group"><td>Mídia</td><td>7.074</td><td>15,8%</td><td>R$ 32.436,00</td><td>R$ 141.480,00</td><td>4,4</td><td>R$ 4,59</td></tr>
+        <tr class="group"><td>CRM</td><td>1.537</td><td>3,4%</td><td>R$ 15.225,00</td><td>R$ 30.740,00</td><td>2,0</td><td>R$ 9,91</td></tr>
+        <tr class="tt"><td>Online geral</td><td>44.895</td><td>100%</td><td>R$ 47.661,00</td><td>R$ 897.900,00</td><td>18,8</td><td>R$ 1,06</td></tr>
       </tbody>
     </table>
   </div>
-  <div class="note">Vendas e investimento de mídia vêm da Tabela - Minas Cap (colunas Mídia e Investimento), considerando todos os canais de mídia. Investimento de CRM semanal fixo de R$ 15.225; vendas de CRM aguardando os dados da Insider. O investimento do Online geral soma mídia e CRM.</div>
+  <div class="note">Vendas e investimento de mídia vêm da Tabela - Minas Cap (colunas Mídia e Investimento), considerando todos os canais de mídia. Vendas de CRM vêm do GA4 (agrupamento "Sessão Minas Cap"); investimento de CRM semanal fixo de R$ 15.225. O investimento do Online geral soma mídia e CRM.</div>
 </div>
 
 <div class="card">
@@ -689,7 +689,7 @@
   </ul>
   <h3 class="sub-h">CRM</h3>
   <ul>
-    <li>O CRM tem investimento semanal fixo de <b>R$ 15.225</b>. Vendas, ROAS e CPA aguardando os dados da Insider.</li>
+    <li>O CRM gerou <b>1.537 vendas</b> (3,4% do online), com R$ 15.225 investidos na semana: <b>ROAS de 2,0</b> e CPA de <b>R$ 9,91</b>.</li>
     <li>O <b>web push</b> concentrou 77% das sessões de CRM e 71% das compras no GA4 (1.096). O <b>e-mail</b> respondeu por 432 compras (28%) e o <b>pop-up</b> por 8.</li>
     <li>Na conversão de sessão em compra, o <b>e-mail</b> teve 7,6%, o web push 5,5% e o pop-up 2,2%.</li>
   </ul>
@@ -742,7 +742,7 @@
     <table class="valores">
       <thead><tr><th>Origem</th><th>Vendas</th><th>% do online</th><th>Investimento</th><th>Receita</th><th>ROAS</th><th>CPA</th></tr></thead>
       <tbody>
-        <tr class="group"><td>Mídia</td><td>5.357</td><td>11,6%</td><td>R$ 22.422,00</td><td>R$ 80.355,00</td><td>3,6</td><td>R$ 4,19</td></tr>
+        <tr class="group"><td>Mídia</td><td>6.263</td><td>13,6%</td><td>R$ 22.422,00</td><td>R$ 93.945,00</td><td>4,2</td><td>R$ 3,58</td></tr>
         <tr class="group"><td>CRM</td><td>1.128</td><td>2,5%</td><td>R$ 15.225,00</td><td>R$ 16.920,00</td><td>1,1</td><td>R$ 13,50</td></tr>
         <tr class="tt"><td>Online geral</td><td>46.005</td><td>100%</td><td>R$ 37.647,00</td><td>R$ 690.075,00</td><td>18,3</td><td>R$ 0,82</td></tr>
       </tbody>
@@ -880,10 +880,7 @@
     document.querySelectorAll("section.edition").forEach(function(sec){ sec.hidden = sec.getAttribute("data-ed")!==ed; });
     document.getElementById("ed-periodo").textContent=ED[ed].periodo;
     document.getElementById("ed-footer").textContent=ED[ed].footer;
-    try{ localStorage.setItem("mc-edicao",ed); }catch(e){}
   }
-  var saved=null; try{ saved=localStorage.getItem("mc-edicao"); }catch(e){}
-  if(saved && ED[saved]) sel.value=saved;
   sel.addEventListener("change",function(){ show(sel.value); });
   show(sel.value);
 })();
