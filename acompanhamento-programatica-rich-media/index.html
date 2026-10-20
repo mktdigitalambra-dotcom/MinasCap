@@ -55,6 +55,7 @@
   .tabbtn:hover{ background:rgba(255,255,255,.08); color:#fff; }
   .tabbtn.active{ background:var(--card); color:var(--ink); }
   .tabbtn.active.tab-prog{ box-shadow:inset 0 3px 0 var(--mc); }
+  .tabbtn.active.tab-vid{ box-shadow:inset 0 3px 0 var(--mc); }
   .tabbtn.active.tab-rich{ box-shadow:inset 0 3px 0 var(--rich); }
   .tabbtn:disabled{ opacity:.45; cursor:not-allowed; }
   .tabbtn:disabled:hover{ background:transparent; color:#c9cbe0; }
@@ -157,48 +158,49 @@
   </div>
 
   <div class="tabbar">
-    <button class="tabbtn tab-prog active" data-tab="prog">📊 Programática</button>
+    <button class="tabbtn tab-prog active" data-tab="prog">📊 Programática · Display</button>
+    <button class="tabbtn tab-vid" data-tab="vid">🎬 Programática · Vídeos</button>
     <button class="tabbtn tab-rich" data-tab="rich">🎨 Rich Media</button>
   </div>
 
   <!-- ══════════════════════ TAB: PROGRAMÁTICA ══════════════════════ -->
   <div class="tabpanel active" id="panel-prog">
 
-    <div class="section-title">OVERVIEW <span class="st-period">15/09 a 12/10/2026</span></div>
+    <div class="section-title">OVERVIEW <span class="st-period">15/09 a 19/10/2026</span></div>
     <div class="content">
       <a class="btn-report" href="https://portal.publya.com/report/campaign/minas-cap/v2/e54e952e-027e-4492-aecf-35091e3e4b12" target="_blank" rel="noopener">
         <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 3H4a1 1 0 00-1 1v12a1 1 0 001 1h12a1 1 0 001-1v-5"/><path d="M12 3h5v5"/><path d="M8.5 11.5L17 3"/></svg>
         Ver relatório detalhado na Publya
       </a>
       <div class="kpi-grid g5">
-        <div class="kpi accent-prog"><div class="kpi-label">Investimento</div><div class="kpi-value">R$ 10.165</div><div class="kpi-note">Publya</div></div>
-        <div class="kpi accent-prog"><div class="kpi-label">Cliques</div><div class="kpi-value">10.907</div></div>
-        <div class="kpi accent-prog"><div class="kpi-label">Impressões</div><div class="kpi-value">1.116.902</div></div>
-        <div class="kpi accent-prog"><div class="kpi-label">CPC</div><div class="kpi-value">R$ 0,93</div></div>
-        <div class="kpi accent-prog"><div class="kpi-label">CTR</div><div class="kpi-value">0,98%</div></div>
-        <div class="kpi accent-prog"><div class="kpi-label">Sessões</div><div class="kpi-value">7.605</div><div class="kpi-note">GA4</div></div>
-        <div class="kpi accent-prog"><div class="kpi-label">Custo por Visita</div><div class="kpi-value">R$ 1,34</div><div class="kpi-note">Investimento / Sessões</div></div>
-        <div class="kpi accent-prog"><div class="kpi-label">Taxa de Engajamento</div><div class="kpi-value">12,5%</div><div class="kpi-note">GA4</div></div>
-        <div class="kpi accent-prog"><div class="kpi-label">Purchase</div><div class="kpi-value">7</div></div>
+        <div class="kpi accent-prog"><div class="kpi-label">Investimento</div><div class="kpi-value">R$ 11.076</div><div class="kpi-note">Publya · Display</div></div>
+        <div class="kpi accent-prog"><div class="kpi-label">Cliques</div><div class="kpi-value">14.136</div></div>
+        <div class="kpi accent-prog"><div class="kpi-label">Impressões</div><div class="kpi-value">1.166.890</div></div>
+        <div class="kpi accent-prog"><div class="kpi-label">CPC</div><div class="kpi-value">R$ 0,78</div></div>
+        <div class="kpi accent-prog"><div class="kpi-label">CTR</div><div class="kpi-value">1,21%</div></div>
+        <div class="kpi accent-prog"><div class="kpi-label">Sessões</div><div class="kpi-value">9.386</div><div class="kpi-note">GA4</div></div>
+        <div class="kpi accent-prog"><div class="kpi-label">Custo por Visita</div><div class="kpi-value">R$ 1,18</div><div class="kpi-note">Investimento / Sessões</div></div>
+        <div class="kpi accent-prog"><div class="kpi-label">Taxa de Engajamento</div><div class="kpi-value">12,7%</div><div class="kpi-note">GA4</div></div>
+        <div class="kpi accent-prog"><div class="kpi-label">Purchase</div><div class="kpi-value">9</div></div>
         <div class="kpi accent-prog"><div class="kpi-label">Taxa de Conversão</div><div class="kpi-value">0,06%</div><div class="kpi-note">Purchase / Cliques</div></div>
       </div>
 
     </div>
 
-    <div class="section-title">CONTRATO</div>
+    <div class="section-title">CONTRATO <span class="st-period">Display + Vídeo</span></div>
     <div class="content">
       <div class="panel" style="margin-top:0;">
         <div class="contrato-grid">
           <div>
             <div class="contrato-item">
-              <div class="contrato-labels"><span class="l1">Investimento</span><span class="l2">R$ 10.165 / R$ 10.000</span></div>
-              <div class="bar-track"><div class="bar-fill prog" style="width:100%;"><span class="bar-pct">101,7%</span></div></div>
+              <div class="contrato-labels"><span class="l1">Investimento</span><span class="l2">R$ 13.289 / R$ 10.000</span></div>
+              <div class="bar-track"><div class="bar-fill prog" style="width:100%;"><span class="bar-pct">132,9%</span></div></div>
             </div>
           </div>
           <div>
             <div class="contrato-item">
-              <div class="contrato-labels"><span class="l1">Impressões</span><span class="l2">1.116.902 / 1.478.197</span></div>
-              <div class="bar-track"><div class="bar-fill prog" style="width:75.6%;"><span class="bar-pct">75,6%</span></div></div>
+              <div class="contrato-labels"><span class="l1">Impressões</span><span class="l2">1.451.124 / 1.478.197</span></div>
+              <div class="bar-track"><div class="bar-fill prog" style="width:98.2%;"><span class="bar-pct">98,2%</span></div></div>
             </div>
           </div>
         </div>
@@ -220,61 +222,38 @@
             <tr><th>Edição</th><th>Data do sorteio</th><th>Período de veiculação</th><th class="num">Investimento</th><th class="num">Cliques</th><th class="num">Impressões</th><th class="num">CPC</th><th class="num">CTR</th><th class="num">Sessões</th><th class="num">Custo por Visita</th><th class="num">Tx. Engajamento</th><th class="num">Purchase</th><th class="num">Tx. Conversão</th></tr>
           </thead>
           <tbody>
-            <tr>
-              <td>Edição 538</td><td>20/09/2026</td><td>15/09 a 19/09</td>
-              <td class="num">R$ 2.000,88</td><td class="num">1.608</td><td class="num">215.117</td>
-              <td class="num">R$ 1,24</td><td class="num">0,75%</td><td class="num">1.992</td><td class="num">R$ 1,00</td><td class="num">9,4%</td><td class="num">2</td><td class="num">0,12%</td>
-            </tr>
-            <tr>
-              <td>Edição 539</td><td>27/09/2026</td><td>20/09 a 26/09</td>
-              <td class="num">R$ 2.976,67</td><td class="num">2.931</td><td class="num">298.154</td>
-              <td class="num">R$ 1,02</td><td class="num">0,98%</td><td class="num">1.777</td><td class="num">R$ 1,68</td><td class="num">10,4%</td><td class="num">0</td><td class="num">0,00%</td>
-            </tr>
-            <tr>
-              <td>Edição 540</td><td>04/10/2026</td><td>27/09 a 03/10</td>
-              <td class="num">R$ 1.983,59</td><td class="num">2.579</td><td class="num">253.037</td>
-              <td class="num">R$ 0,77</td><td class="num">1,02%</td><td class="num">1.425</td><td class="num">R$ 1,39</td><td class="num">16,1%</td><td class="num">2</td><td class="num">0,08%</td>
-            </tr>
-            <tr>
-              <td>Edição 541</td><td>11/10/2026</td><td>04/10 a 10/10</td>
-              <td class="num">R$ 2.985,25</td><td class="num">3.224</td><td class="num">327.511</td>
-              <td class="num">R$ 0,93</td><td class="num">0,98%</td><td class="num">1.881</td><td class="num">R$ 1,59</td><td class="num">14,8%</td><td class="num">3</td><td class="num">0,09%</td>
-            </tr>
-            <tr>
-              <td>Edição 542</td><td>18/10/2026 (em andamento)</td><td>11/10 a 12/10</td>
-              <td class="num">R$ 219,07</td><td class="num">565</td><td class="num">23.083</td>
-              <td class="num">R$ 0,39</td><td class="num">2,45%</td><td class="num">530</td><td class="num">R$ 0,41</td><td class="num">12,8%</td><td class="num">0</td><td class="num">0,00%</td>
-            </tr>
+            <tr><td>Edição 538</td><td>20/09/2026</td><td>15/09 a 19/09</td><td class="num">R$ 2.000,88</td><td class="num">1.608</td><td class="num">215.117</td><td class="num">R$ 1,24</td><td class="num">0,75%</td><td class="num">1.992</td><td class="num">R$ 1,00</td><td class="num">9,4%</td><td class="num">2</td><td class="num">0,12%</td></tr>
+            <tr><td>Edição 539</td><td>27/09/2026</td><td>20/09 a 26/09</td><td class="num">R$ 2.976,67</td><td class="num">2.931</td><td class="num">298.154</td><td class="num">R$ 1,02</td><td class="num">0,98%</td><td class="num">1.777</td><td class="num">R$ 1,68</td><td class="num">10,4%</td><td class="num">0</td><td class="num">0,00%</td></tr>
+            <tr><td>Edição 540</td><td>04/10/2026</td><td>27/09 a 03/10</td><td class="num">R$ 1.983,59</td><td class="num">2.579</td><td class="num">253.037</td><td class="num">R$ 0,77</td><td class="num">1,02%</td><td class="num">1.425</td><td class="num">R$ 1,39</td><td class="num">16,1%</td><td class="num">2</td><td class="num">0,08%</td></tr>
+            <tr><td>Edição 541</td><td>11/10/2026</td><td>04/10 a 10/10</td><td class="num">R$ 1.984,81</td><td class="num">2.976</td><td class="num">203.351</td><td class="num">R$ 0,67</td><td class="num">1,46%</td><td class="num">1.690</td><td class="num">R$ 1,17</td><td class="num">13,9%</td><td class="num">3</td><td class="num">0,10%</td></tr>
+            <tr><td>Edição 542</td><td>18/10/2026</td><td>11/10 a 17/10</td><td class="num">R$ 1.993,86</td><td class="num">3.605</td><td class="num">184.546</td><td class="num">R$ 0,55</td><td class="num">1,95%</td><td class="num">2.204</td><td class="num">R$ 0,90</td><td class="num">14,6%</td><td class="num">1</td><td class="num">0,03%</td></tr>
+            <tr><td>Edição 543</td><td>25/10/2026 (em andamento)</td><td>18/10 a 19/10</td><td class="num">R$ 135,84</td><td class="num">437</td><td class="num">12.685</td><td class="num">R$ 0,31</td><td class="num">3,45%</td><td class="num">298</td><td class="num">R$ 0,46</td><td class="num">10,1%</td><td class="num">1</td><td class="num">0,23%</td></tr>
           </tbody>
           <tbody>
-            <tr class="tfoot-row"><td>Total</td><td></td><td>15/09 a 12/10</td><td class="num">R$ 10.165,46</td><td class="num">10.907</td><td class="num">1.116.902</td><td class="num">R$ 0,93</td><td class="num">0,98%</td><td class="num">7.605</td><td class="num">R$ 1,34</td><td class="num">12,5%</td><td class="num">7</td><td class="num">0,06%</td></tr>
+            <tr class="tfoot-row"><td>Total</td><td></td><td>15/09 a 19/10</td><td class="num">R$ 11.075,65</td><td class="num">14.136</td><td class="num">1.166.890</td><td class="num">R$ 0,78</td><td class="num">1,21%</td><td class="num">9.386</td><td class="num">R$ 1,18</td><td class="num">12,7%</td><td class="num">9</td><td class="num">0,06%</td></tr>
           </tbody>
         </table>
       </div>
-      <div class="callout callout-info">
-        <span>🎬</span>
-        <span><strong>Edição 541 — campanha de vídeo:</strong> nos dias 09 e 10/10 rodou uma campanha exclusiva de vídeo com o VTB da edição (124.065 visualizações de vídeo). O investimento, as impressões e os cliques desses dois dias já incluem essa campanha.</span>
-      </div>
     </div>
 
-    <div class="section-title">TRÁFEGO POR CAMPANHA <span class="st-period">15/09 a 16/10/2026</span></div>
+    <div class="section-title">TRÁFEGO POR CAMPANHA <span class="st-period">15/09 a 19/10/2026</span></div>
     <div class="content">
       <div class="table-scroll">
         <table>
           <thead><tr><th>Campanha</th><th class="num">Sessões</th><th class="num">Tx. Engajamento</th><th class="num">Pageviews</th><th class="num">Purchase</th></tr></thead>
           <tbody>
-            <tr><td>institucional-a_15-09-2026</td><td class="num">4.484</td><td class="num">16,8%</td><td class="num">5.596</td><td class="num">4</td></tr>
-            <tr><td>ed-538-premiacao</td><td class="num">1.052</td><td class="num">7,1%</td><td class="num">1.136</td><td class="num">0</td></tr>
-            <tr><td>ed-539-premiacao</td><td class="num">828</td><td class="num">6,4%</td><td class="num">907</td><td class="num">0</td></tr>
-            <tr><td>ed-540-premiacao</td><td class="num">591</td><td class="num">10,8%</td><td class="num">855</td><td class="num">3</td></tr>
-            <tr><td>ed-541-premiacao</td><td class="num">609</td><td class="num">9,5%</td><td class="num">797</td><td class="num">1</td></tr>
-            <tr><td>ed-541-video-premiacao</td><td class="num">196</td><td class="num">24,0%</td><td class="num">270</td><td class="num">0</td></tr>
-            <tr><td>ed-542-premiacao</td><td class="num">392</td><td class="num">3,8%</td><td class="num">482</td><td class="num">0</td></tr>
-            <tr><td>institucional-b-gif_14-10-2026</td><td class="num">310</td><td class="num">9,7%</td><td class="num">391</td><td class="num">0</td></tr>
+            <tr><td>institucional-a_15-09-2026</td><td class="num">4.583</td><td class="num">16,6%</td><td class="num">5.720</td><td class="num">4</td></tr>
+            <tr><td>ed-538-premiacao</td><td class="num">1.059</td><td class="num">7,2%</td><td class="num">1.139</td><td class="num">0</td></tr>
+            <tr><td>ed-539-premiacao</td><td class="num">827</td><td class="num">6,4%</td><td class="num">907</td><td class="num">0</td></tr>
+            <tr><td>ed-540-premiacao</td><td class="num">596</td><td class="num">10,7%</td><td class="num">860</td><td class="num">3</td></tr>
+            <tr><td>ed-541-premiacao</td><td class="num">637</td><td class="num">9,1%</td><td class="num">828</td><td class="num">1</td></tr>
+            <tr><td>ed-542-premiacao</td><td class="num">675</td><td class="num">4,3%</td><td class="num">825</td><td class="num">0</td></tr>
+            <tr><td>ed-543-premiacao</td><td class="num">156</td><td class="num">0,6%</td><td class="num">187</td><td class="num">0</td></tr>
+            <tr><td>institucional-b-gif_14-10-2026</td><td class="num">851</td><td class="num">16,9%</td><td class="num">1.121</td><td class="num">1</td></tr>
             <tr><td>institucional-c-gif_14-10-2026</td><td class="num">2</td><td class="num">100,0%</td><td class="num">5</td><td class="num">0</td></tr>
           </tbody>
           <tbody>
-            <tr class="tfoot-row"><td>Total</td><td class="num">8.464</td><td class="num">13,0%</td><td class="num">10.439</td><td class="num">8</td></tr>
+            <tr class="tfoot-row"><td>Total</td><td class="num">9.386</td><td class="num">12,7%</td><td class="num">11.592</td><td class="num">9</td></tr>
           </tbody>
         </table>
       </div>
@@ -330,12 +309,88 @@
           <div class="creative-caption"><span class="tag tag-prog">Edição 541</span> 728x90</div>
         </div>
         <div class="creative-card">
-          <div class="creative-frame" style="max-width:320px;"><img src="assets/vtb-edicao-541.jpg" alt="VTB Edição 541 Minas Cap" loading="lazy" style="max-width:320px;"></div>
-          <div class="creative-caption"><span class="tag tag-prog">VTB · Edição 541</span> 09 e 10/10</div>
-        </div>
-        <div class="creative-card">
           <div class="creative-frame"><img src="assets/peca-edicao-542.png" alt="Peça Edição 542 Minas Cap" loading="lazy"></div>
           <div class="creative-caption"><span class="tag tag-prog">Edição 542</span> 728x90</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ══════════════════════ TAB: PROGRAMÁTICA · VÍDEOS ══════════════════════ -->
+  <div class="tabpanel" id="panel-vid">
+
+    <div class="section-title">OVERVIEW <span class="st-period">09/10 a 19/10/2026</span></div>
+    <div class="content">
+      <a class="btn-report" href="https://portal.publya.com/report/campaign/minas-cap/v2/7ac76dff-1691-4d73-a7bd-2b26a13f357c?startDate=2026-10-18&amp;endDate=2026-10-19&amp;language=pt-BR&amp;currency=BRL" target="_blank" rel="noopener">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 3H4a1 1 0 00-1 1v12a1 1 0 001 1h12a1 1 0 001-1v-5"/><path d="M12 3h5v5"/><path d="M8.5 11.5L17 3"/></svg>
+        Ver relatório de Vídeos na Publya
+      </a>
+      <div class="kpi-grid g6">
+        <div class="kpi accent-prog"><div class="kpi-label">Investimento</div><div class="kpi-value">R$ 2.213</div><div class="kpi-note">Publya · Vídeo</div></div>
+        <div class="kpi accent-prog"><div class="kpi-label">Cliques</div><div class="kpi-value">520</div></div>
+        <div class="kpi accent-prog"><div class="kpi-label">Impressões</div><div class="kpi-value">284.234</div></div>
+        <div class="kpi accent-prog"><div class="kpi-label">Visualizações de Vídeo</div><div class="kpi-value">284.065</div></div>
+        <div class="kpi accent-prog"><div class="kpi-label">Custo por Visualização</div><div class="kpi-value">R$ 0,008</div><div class="kpi-note">Investimento / Views</div></div>
+        <div class="kpi accent-prog"><div class="kpi-label">CPC</div><div class="kpi-value">R$ 4,26</div></div>
+        <div class="kpi accent-prog"><div class="kpi-label">CTR</div><div class="kpi-value">0,18%</div></div>
+        <div class="kpi accent-prog"><div class="kpi-label">Sessões</div><div class="kpi-value">417</div><div class="kpi-note">GA4</div></div>
+        <div class="kpi accent-prog"><div class="kpi-label">Custo por Visita</div><div class="kpi-value">R$ 5,31</div><div class="kpi-note">Investimento / Sessões</div></div>
+        <div class="kpi accent-prog"><div class="kpi-label">Taxa de Engajamento</div><div class="kpi-value">20,6%</div><div class="kpi-note">GA4</div></div>
+        <div class="kpi accent-prog"><div class="kpi-label">Purchase</div><div class="kpi-value">0</div></div>
+        <div class="kpi accent-prog"><div class="kpi-label">Taxa de Conversão</div><div class="kpi-value">0,00%</div><div class="kpi-note">Purchase / Cliques</div></div>
+      </div>
+    </div>
+
+    <div class="section-title">INVESTIMENTO + CLIQUES + SESSÕES (DIÁRIO)</div>
+    <div class="content">
+      <div class="panel" style="margin-top:0;">
+        <div class="chart-box"><canvas id="chartVidCombo"></canvas></div>
+      </div>
+    </div>
+
+    <div class="section-title">RESULTADOS POR EDIÇÃO</div>
+    <div class="content">
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr><th>Edição</th><th>Data do sorteio</th><th>Período de veiculação</th><th class="num">Investimento</th><th class="num">Cliques</th><th class="num">Impressões</th><th class="num">Visualizações</th><th class="num">CPC</th><th class="num">CTR</th><th class="num">Sessões</th><th class="num">Custo por Visita</th><th class="num">Tx. Engajamento</th><th class="num">Purchase</th><th class="num">Tx. Conversão</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Edição 541</td><td>11/10/2026</td><td>09/10 a 10/10</td><td class="num">R$ 999,45</td><td class="num">247</td><td class="num">124.160</td><td class="num">124.054</td><td class="num">R$ 4,05</td><td class="num">0,20%</td><td class="num">191</td><td class="num">R$ 5,23</td><td class="num">23,0%</td><td class="num">0</td><td class="num">0,00%</td></tr>
+            <tr><td>Edição 542</td><td>18/10/2026</td><td>16/10 a 17/10</td><td class="num">R$ 1.010,70</td><td class="num">185</td><td class="num">115.432</td><td class="num">115.399</td><td class="num">R$ 5,46</td><td class="num">0,16%</td><td class="num">144</td><td class="num">R$ 7,02</td><td class="num">24,3%</td><td class="num">0</td><td class="num">0,00%</td></tr>
+            <tr><td>Edição 543</td><td>25/10/2026 (em andamento)</td><td>18/10 a 19/10</td><td class="num">R$ 203,26</td><td class="num">88</td><td class="num">44.642</td><td class="num">44.612</td><td class="num">R$ 2,31</td><td class="num">0,20%</td><td class="num">82</td><td class="num">R$ 2,48</td><td class="num">8,5%</td><td class="num">0</td><td class="num">0,00%</td></tr>
+          </tbody>
+          <tbody>
+            <tr class="tfoot-row"><td>Total</td><td></td><td>09/10 a 19/10</td><td class="num">R$ 2.213,41</td><td class="num">520</td><td class="num">284.234</td><td class="num">284.065</td><td class="num">R$ 4,26</td><td class="num">0,18%</td><td class="num">417</td><td class="num">R$ 5,31</td><td class="num">20,6%</td><td class="num">0</td><td class="num">0,00%</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="section-title">TRÁFEGO POR CAMPANHA <span class="st-period">09/10 a 19/10/2026</span></div>
+    <div class="content">
+      <div class="table-scroll">
+        <table>
+          <thead><tr><th>Campanha</th><th class="num">Sessões</th><th class="num">Tx. Engajamento</th><th class="num">Pageviews</th><th class="num">Purchase</th></tr></thead>
+          <tbody>
+            <tr><td>ed-541-video-premiacao</td><td class="num">198</td><td class="num">23,7%</td><td class="num">272</td><td class="num">0</td></tr>
+            <tr><td>ed-542-video-premiacao</td><td class="num">150</td><td class="num">20,0%</td><td class="num">224</td><td class="num">0</td></tr>
+            <tr><td>ed-543-video-premiacao</td><td class="num">69</td><td class="num">13,0%</td><td class="num">101</td><td class="num">0</td></tr>
+          </tbody>
+          <tbody>
+            <tr class="tfoot-row"><td>Total</td><td class="num">417</td><td class="num">20,6%</td><td class="num">597</td><td class="num">0</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="section-title">PEÇAS DE EXEMPLO</div>
+    <div class="content">
+      <div class="creative-grid">
+        <div class="creative-card">
+          <div class="creative-frame" style="max-width:320px;"><img src="assets/vtb-edicao-541.jpg" alt="VTB Edição 541 Minas Cap" loading="lazy" style="max-width:320px;"></div>
+          <div class="creative-caption"><span class="tag tag-prog">VTB · Edição 541</span> vídeo</div>
         </div>
       </div>
     </div>
@@ -540,10 +595,10 @@ document.getElementById('searchCitiesProg').addEventListener('input', function()
 });
 
 /* ---------- charts ---------- */
-const progDates = ["15/09","16/09","17/09","18/09","19/09","20/09","21/09","22/09","23/09","24/09","25/09","26/09","27/09","28/09","29/09","30/09","01/10","02/10","03/10","04/10","05/10","06/10","07/10","08/10","09/10","10/10","11/10","12/10"];
-const progSpend = [49.53,163.51,163.91,815.84,808.09,140.19,141.06,140.41,647.58,640.16,624.86,642.41,99.26,98.40,337.77,353.23,354.45,362.35,378.13,68.49,69.27,68.39,68.49,569.21,879.95,1261.45,109.65,109.42];
-const progClicks = [30,145,112,381,940,192,147,197,392,659,726,618,242,223,288,347,469,460,550,205,185,155,178,738,856,907,290,275];
-const progSessions = [328,268,119,611,666,237,386,165,144,217,345,283,147,101,245,184,199,217,332,176,141,91,141,379,428,525,270,260];
+const progDates = ["15/09", "16/09", "17/09", "18/09", "19/09", "20/09", "21/09", "22/09", "23/09", "24/09", "25/09", "26/09", "27/09", "28/09", "29/09", "30/09", "01/10", "02/10", "03/10", "04/10", "05/10", "06/10", "07/10", "08/10", "09/10", "10/10", "11/10", "12/10", "13/10", "14/10", "15/10", "16/10", "17/10", "18/10", "19/10"];
+const progSpend = [49.53, 163.51, 163.91, 815.84, 808.09, 140.19, 141.06, 140.41, 647.58, 640.16, 624.86, 642.41, 99.26, 98.4, 337.77, 353.23, 354.45, 362.35, 378.13, 68.49, 69.27, 68.39, 68.49, 569.21, 567.89, 573.07, 109.65, 109.42, 109.1, 108.44, 510.52, 512.84, 533.89, 68.02, 67.82];
+const progClicks = [30, 145, 112, 381, 940, 192, 147, 197, 392, 659, 726, 618, 242, 223, 288, 347, 469, 460, 550, 205, 185, 155, 178, 738, 784, 731, 290, 275, 228, 311, 743, 781, 977, 257, 180];
+const progSessions = [328, 268, 119, 611, 666, 237, 386, 165, 144, 217, 345, 283, 147, 101, 245, 184, 199, 217, 332, 176, 141, 91, 139, 377, 373, 393, 267, 258, 359, 244, 360, 401, 315, 149, 149];
 
 new Chart(document.getElementById('chartProgCombo'), {
   data:{
@@ -594,6 +649,19 @@ new Chart(document.getElementById('chartRichCombo'), {
       y1:{ position:'right', grid:{display:false}, ticks:baseTicks(), beginAtZero:true }
     }
   }
+});
+
+new Chart(document.getElementById('chartVidCombo'), {
+  data:{ labels:["09/10", "10/10", "11/10", "12/10", "13/10", "14/10", "15/10", "16/10", "17/10", "18/10", "19/10"], datasets:[
+    { type:'bar', label:'Investimento (R$)', data:[311.75, 687.7, 0, 0, 0, 0, 0, 150.79, 859.91, 42.98, 160.28], backgroundColor:'#e30613', borderRadius:4, yAxisID:'y', order:2 },
+    { type:'line', label:'Cliques', data:[71, 176, 0, 0, 0, 0, 0, 37, 148, 31, 57], borderColor:'#1a1a2e', backgroundColor:'#1a1a2e', tension:.3, yAxisID:'y1', order:1 },
+    { type:'line', label:'Sessões (GA4)', data:[55, 132, 3, 2, 0, 0, 0, 36, 103, 25, 57], borderColor:'#2e7d32', backgroundColor:'#2e7d32', tension:.3, yAxisID:'y1', order:0 }
+  ]},
+  options:{ responsive:true, maintainAspectRatio:false,
+    plugins:{ legend:{ position:'bottom', labels:{ boxWidth:10, font:{size:10} } }, datalabels:{ display:false } },
+    scales:{ x:{ grid:{display:false}, ticks:baseTicks() },
+      y:{ position:'left', grid:baseGrid(), ticks:{...baseTicks(), callback:(v)=>'R$'+v}, beginAtZero:true },
+      y1:{ position:'right', grid:{display:false}, ticks:baseTicks(), beginAtZero:true } } }
 });
 </script>
 </body>
