@@ -206,7 +206,7 @@
       </div>
     </div>
 
-    <div class="section-title">INVESTIMENTO + CLIQUES + SESSÕES (DIÁRIO)</div>
+    <div class="section-title">INVESTIMENTO + CLIQUES + SESSÕES (SEMANAL · POR EDIÇÃO)</div>
     <div class="content">
       <div class="panel" style="margin-top:0;">
         <div class="chart-box"><canvas id="chartProgCombo"></canvas></div>
@@ -347,7 +347,7 @@
       </div>
     </div>
 
-    <div class="section-title">INVESTIMENTO + CLIQUES + SESSÕES (DIÁRIO)</div>
+    <div class="section-title">INVESTIMENTO + CLIQUES + SESSÕES (SEMANAL · POR EDIÇÃO)</div>
     <div class="content">
       <div class="panel" style="margin-top:0;">
         <div class="chart-box"><canvas id="chartVidCombo"></canvas></div>
@@ -444,7 +444,7 @@
       </div>
     </div>
 
-    <div class="section-title">INVESTIMENTO + CLIQUES + SESSÕES (DIÁRIO)</div>
+    <div class="section-title">INVESTIMENTO + CLIQUES + SESSÕES (SEMANAL · POR EDIÇÃO)</div>
     <div class="content">
       <div class="panel" style="margin-top:0;">
         <div class="chart-box"><canvas id="chartRichCombo"></canvas></div>
@@ -625,69 +625,43 @@ const progSpend = [49.53, 163.51, 163.91, 815.84, 808.09, 140.19, 141.06, 140.41
 const progClicks = [30, 145, 112, 381, 940, 192, 147, 197, 392, 659, 726, 618, 242, 223, 288, 347, 469, 460, 550, 205, 185, 155, 178, 738, 784, 731, 290, 275, 228, 311, 743, 781, 977, 257, 180, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null];
 const progSessions = [328, 268, 119, 611, 666, 237, 386, 165, 144, 217, 345, 283, 147, 101, 245, 184, 199, 217, 332, 176, 141, 91, 139, 377, 373, 393, 267, 258, 359, 244, 360, 401, 315, 149, 149, 164, 161, 85, 300, 340, 275, 283, 194, 162, 185, 188, 220, 244, 299, 193];
 
-new Chart(document.getElementById('chartProgCombo'), {
-  data:{
-    labels:progDates,
-    datasets:[
-      { type:'bar', label:'Investimento (R$)', data:progSpend, backgroundColor:'#e30613', borderRadius:4, yAxisID:'y', order:2 },
-      { type:'line', label:'Cliques', data:progClicks, borderColor:'#1a1a2e', backgroundColor:'#1a1a2e', tension:.3, yAxisID:'y1', order:1 },
-      { type:'line', label:'Sessões (GA4)', data:progSessions, borderColor:'#2e7d32', backgroundColor:'#2e7d32', tension:.3, yAxisID:'y1', order:0 }
-    ]
-  },
-  options:{
-    responsive:true, maintainAspectRatio:false,
-    plugins:{
-      legend:{ position:'bottom', labels:{ boxWidth:10, font:{size:10} } },
-      datalabels:{ display:false }
-    },
-    scales:{
-      x:{ grid:{display:false}, ticks:baseTicks() },
-      y:{ position:'left', grid:baseGrid(), ticks:{...baseTicks(), callback:(v)=>'R$'+v}, beginAtZero:true },
-      y1:{ position:'right', grid:{display:false}, ticks:baseTicks(), beginAtZero:true }
-    }
-  }
-});
 
 const richDates = ["24/09", "25/09", "26/09", "27/09", "28/09", "29/09", "30/09", "01/10", "02/10", "03/10", "04/10", "05/10", "06/10", "07/10", "08/10", "09/10", "10/10", "11/10", "12/10", "13/10", "14/10", "15/10", "16/10", "17/10", "18/10", "19/10", "20/10", "21/10", "22/10", "23/10", "24/10", "25/10", "26/10", "27/10", "28/10", "29/10", "30/10", "31/10", "01/11", "02/11", "03/11"];
 const richSpend = [171.47, 514.42, 843.41, 0, 141.3, 250.0, 244.41, 246.52, 244.62, 248.38, 245.2, 244.86, 245.29, 247.09, 182.81, 183.05, 180.54, 183.8, 181.93, 184.5, 183.36, 182.39, 183.06, 186.55, 182.34, 185.29, 181.01, 181.39, 90.9, 92.05, 90.41, 182.9, 182.4, 180.2, 180.36, 180.82, 180.85, 180.05, 181.39, 181.4, null];
 const richClicks = [23, 79, 105, 0, 21, 41, 23, 35, 34, 36, 27, 26, 49, 26, 20, 25, 26, 16, 15, 18, 19, 16, 26, 21, 21, 26, 20, 9, 12, 19, 13, 31, 33, 19, 39, 33, 32, 30, 30, 31, null];
 const richSessions = [25, 42, 99, 0, 12, 20, 17, 36, 29, 28, 22, 19, 34, 24, 23, 26, 18, 17, 14, 14, 9, 15, 17, 20, 19, 28, 21, 9, 8, 20, 14, 20, 26, 16, 27, 31, 24, 31, 23, 31, 24];
 
-new Chart(document.getElementById('chartRichCombo'), {
-  data:{
-    labels:richDates,
-    datasets:[
-      { type:'bar', label:'Investimento (R$)', data:richSpend, backgroundColor:'#8e44ad', borderRadius:4, yAxisID:'y', order:2 },
-      { type:'line', label:'Cliques', data:richClicks, borderColor:'#1a1a2e', backgroundColor:'#1a1a2e', tension:.3, yAxisID:'y1', order:1 },
-      { type:'line', label:'Sessões (GA4)', data:richSessions, borderColor:'#2e7d32', backgroundColor:'#2e7d32', tension:.3, yAxisID:'y1', order:0 }
-    ]
-  },
-  options:{
-    responsive:true, maintainAspectRatio:false,
-    plugins:{
-      legend:{ position:'bottom', labels:{ boxWidth:10, font:{size:10} } },
-      datalabels:{ display:false }
-    },
-    scales:{
-      x:{ grid:{display:false}, ticks:baseTicks() },
-      y:{ position:'left', grid:baseGrid(), ticks:{...baseTicks(), callback:(v)=>'R$'+v}, beginAtZero:true },
-      y1:{ position:'right', grid:{display:false}, ticks:baseTicks(), beginAtZero:true }
-    }
-  }
-});
 
-new Chart(document.getElementById('chartVidCombo'), {
-  data:{ labels:["09/10", "10/10", "11/10", "12/10", "13/10", "14/10", "15/10", "16/10", "17/10", "18/10", "19/10", "20/10", "21/10", "22/10", "23/10", "24/10", "25/10", "26/10", "27/10", "28/10", "29/10", "30/10", "31/10", "01/11", "02/11", "03/11"], datasets:[
-    { type:'bar', label:'Investimento (R$)', data:[311.75, 687.7, 0, 0, 0, 0, 0, 150.79, 859.91, 42.98, 160.28, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null], backgroundColor:'#e30613', borderRadius:4, yAxisID:'y', order:2 },
-    { type:'line', label:'Cliques', data:[71, 176, 0, 0, 0, 0, 0, 37, 148, 31, 57, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null], borderColor:'#1a1a2e', backgroundColor:'#1a1a2e', tension:.3, yAxisID:'y1', order:1 },
-    { type:'line', label:'Sessões (GA4)', data:[55, 132, 3, 2, 0, 0, 0, 36, 103, 25, 57, 11, 29, 23, 29, 15, 0, 1, 0, 1, 0, 0, 0, 0, 0], borderColor:'#2e7d32', backgroundColor:'#2e7d32', tension:.3, yAxisID:'y1', order:0 }
-  ]},
-  options:{ responsive:true, maintainAspectRatio:false,
-    plugins:{ legend:{ position:'bottom', labels:{ boxWidth:10, font:{size:10} } }, datalabels:{ display:false } },
-    scales:{ x:{ grid:{display:false}, ticks:baseTicks() },
-      y:{ position:'left', grid:baseGrid(), ticks:{...baseTicks(), callback:(v)=>'R$'+v}, beginAtZero:true },
-      y1:{ position:'right', grid:{display:false}, ticks:baseTicks(), beginAtZero:true } } }
-});
+
+/* ---------- grafico semanal por edicao (lido da tabela "Resultados por Edicao" da aba) ---------- */
+function weeklyChart(canvasId, panelId, barColor){
+  const panel = document.getElementById(panelId);
+  const table = [...panel.querySelectorAll('table')].find(t => [...t.querySelectorAll('thead th')].some(th => th.textContent.trim()==='Período de veiculação'));
+  const heads = [...table.querySelectorAll('thead th')].map(th => th.textContent.trim());
+  const iInv=heads.indexOf('Investimento'), iClk=heads.indexOf('Cliques'), iSes=heads.indexOf('Sessões');
+  const num = s => { const v=parseFloat(s.replace('R$','').replace(/\./g,'').replace(',','.').trim()); return isNaN(v)?null:v; };
+  const rows = [...table.tBodies[0].rows];
+  const labels = rows.map(r => ['Ed. '+r.cells[0].textContent.replace('Edição','').trim(), r.cells[2].textContent.trim()]);
+  const spend  = rows.map(r => num(r.cells[iInv].textContent));
+  const clicks = rows.map(r => num(r.cells[iClk].textContent));
+  const sess   = rows.map(r => num(r.cells[iSes].textContent));
+  new Chart(document.getElementById(canvasId), {
+    data:{ labels, datasets:[
+      { type:'bar',  label:'Investimento (R$)', data:spend,  backgroundColor:barColor, borderRadius:4, maxBarThickness:46, yAxisID:'y',  order:2 },
+      { type:'line', label:'Cliques',           data:clicks, borderColor:'#1a1a2e', backgroundColor:'#1a1a2e', tension:.25, pointRadius:4, yAxisID:'y1', order:1 },
+      { type:'line', label:'Sessões (GA4)',     data:sess,   borderColor:'#2e7d32', backgroundColor:'#2e7d32', tension:.25, pointRadius:4, yAxisID:'y1', order:0 }
+    ]},
+    options:{ responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{ position:'bottom', labels:{ boxWidth:10, font:{size:10} } }, datalabels:{ display:false },
+        tooltip:{ callbacks:{ title:(items)=> items[0].label.join(' · ') } } },
+      scales:{ x:{ grid:{display:false}, ticks:baseTicks() },
+        y:{ position:'left', grid:baseGrid(), ticks:{...baseTicks(), callback:(v)=>'R$'+v.toLocaleString('pt-BR')}, beginAtZero:true },
+        y1:{ position:'right', grid:{display:false}, ticks:baseTicks(), beginAtZero:true } } }
+  });
+}
+weeklyChart('chartProgCombo','panel-prog','#e30613');
+weeklyChart('chartVidCombo','panel-vid','#e30613');
+weeklyChart('chartRichCombo','panel-rich','#8e44ad');
 </script>
 </body>
 </html>
