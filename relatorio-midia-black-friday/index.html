@@ -421,6 +421,7 @@ ul.resumo li::before{content:"";position:absolute;left:0;top:7px;width:7px;heigh
 .et-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;}
 @media (max-width:900px){.et-grid{grid-template-columns:repeat(2,minmax(0,1fr));}}
 .et-grid .c3 b{font-size:40px;}
+.vis-card{margin-bottom:14px;}
 .mm{margin:14px 0 4px;padding:12px 16px;border:1px solid var(--border);border-radius:12px;background:#fff;}
 .mm-c{margin:12px 0 0;padding:10px 0 12px;border:0;border-bottom:1px solid rgba(0,0,0,.07);border-radius:0;}
 .mm-h{display:flex;justify-content:space-between;align-items:baseline;}
@@ -690,13 +691,18 @@ table.tq tr.tot td{background:#f1f1ec!important;border-top:2px solid rgba(0,0,0,
   <section class="card sec" id="secKpi">
     <div class="sh"><div><h2>Resultados</h2><p id="kpi2Ctx"></p></div></div>
     <div class="objs" id="objStrip"></div>
-    <div class="kgrp ent"><div class="kgrp-h">Entrega<small>o que a mídia entregou</small></div><div id="kEntrega"></div></div>
+    <div class="kgrp ent"><div class="kgrp-h">Entrega<small>o que a mídia entregou · dados das plataformas</small></div><div id="kEntrega"></div></div>
     <div id="kPerf"></div>
     <div class="dest" id="destaques"></div>
   </section>
 
   <section class="card sec" id="secDaily">
     <div class="sh"><div><h2>Evolução diária</h2><p>Como o investimento e os resultados se distribuíram no período</p></div></div>
+    <div class="lcard vis-card" id="visBox">
+      <div class="ct">Visitantes por dia · LP × site <small>usuários de mídia paga no GA4 · cada linha é um destino</small></div>
+      <div class="cw" style="height:220px"><canvas id="cVis" role="img" aria-label="Visitantes por dia na LP e no site"></canvas></div>
+      <p class="hint" id="visHint"></p>
+    </div>
     <div id="geralLines" style="display:none">
       <div class="vbig">
         <div class="vb-h">
@@ -726,8 +732,8 @@ table.tq tr.tot td{background:#f1f1ec!important;border-top:2px solid rgba(0,0,0,
       <p class="hint" id="dailyHint"></p>
     </div>
     <div id="vendasBox">
-      <div class="ct">Investimento, vendas e CPA por dia <small id="vendasCtx"></small></div>
-      <div class="cw" id="wVendas" style="height:290px"><canvas id="cVendas" role="img" aria-label="Investimento, vendas e CPA por dia"></canvas><div class="ph-empty"><b>Aguardando dados</b>Sem compras registradas na Black Friday</div></div>
+      <div class="ct">Investimento, compras e CPA por dia <small id="vendasCtx"></small></div>
+      <div class="cw" id="wVendas" style="height:290px"><canvas id="cVendas" role="img" aria-label="Investimento, compras e CPA por dia"></canvas><div class="ph-empty"><b>Aguardando dados</b>Sem compras registradas na Black Friday</div></div>
       <p class="hint">Barras: investimento (R$, eixo esquerdo). Linha preta: compras atribuídas pelas plataformas (eixo direito). Linha dourada tracejada: CPA (R$, valor no rótulo).</p>
     </div>
     <div id="cplBox" class="lcard" style="display:none;margin-bottom:16px"><div class="ct">CPL diário <small>investimento ÷ cadastros na LP (GA4, mídia paga) · dias com pelo menos 5 cadastros</small></div><div class="cw" style="height:170px"><canvas id="cCpl"></canvas></div></div>
@@ -893,6 +899,11 @@ const OBJETIVOS = {
 const DATA = {
   minascap: {
     nome: 'Minas Cap',
+    // visitantes (usuários) de mídia paga por dia: LP (páginas da Black, 558042593) e site (260399536, só na semana da Black)
+    visitantes: {
+      lp: { '2026-11-06': 184, '2026-11-07': 1786, '2026-11-08': 3252, '2026-11-09': 1021, '2026-11-10': 3024, '2026-11-11': 3196, '2026-11-12': 3164, '2026-11-13': 2365, '2026-11-14': 2528, '2026-11-15': 2659, '2026-11-16': 2253, '2026-11-17': 3940, '2026-11-18': 5109, '2026-11-19': 3283, '2026-11-20': 3263, '2026-11-21': 2194, '2026-11-22': 11246, '2026-11-23': 9626, '2026-11-24': 9166, '2026-11-25': 1669 },
+      site: { '2026-11-22': 17325, '2026-11-23': 8675, '2026-11-24': 9836, '2026-11-25': 3029 }
+    },
     // meta de investimento (planejado c/ imposto Meta) — planilha "[Minas Cap] Semanal - Novembro 2026", aba "Consolidado - AON+Black Friday" (SharePoint Marketing)
     metasInvest: {
       esquenta: { meta: 6011, google: 6500, tiktok: 2000, uol: 1992, programatica: 3500 },
@@ -1332,9 +1343,8 @@ const DATA = {
         metaMidia: { desejada: 48750, minima: 42000 },
         campanhas: [],
         midia: [
-          // Windsor.ai (APIs de Meta, Google e TikTok), campanhas BLACK, 22–25/11/2026. 25/11 é dia em andamento (atualização de 25/11).
-          // Meta: conversoes = compras (omni_purchase, igual ao Gerenciador); receita = valor da compra registrado no pixel (action_values).
-          // Google YouTube (vídeo): videoViews = visualizações completas (impressões × taxa de 100% do Google Ads); sem conversões, não entra no CPA.
+          // Windsor.ai (APIs de Meta, Google e TikTok), conferido em 25/11: campanhas BLACK no Meta e no TikTok; todas as campanhas do Google na semana da Black. 25/11 parcial.
+          // conversoes = compras atribuídas pela plataforma; receita = valor das compras atribuído pela plataforma (pixel do Meta / valor de conversão do Google).
           { data: '2026-11-22', plataforma: 'meta', campanha: 'ALCANCE_Minas-Cap_BLACK-FRIDAY-2026', investimento: 2011.07, impressoes: 1304406, cliques: 1811, lpv: 904, leads: 69, videoViews: 4300, conversoes: 109, receita: 1360 },
           { data: '2026-11-22', plataforma: 'meta', campanha: 'TRÁFEGO_Minas-Cap_BLACK-FRIDAY-2026', investimento: 1202.46, impressoes: 160922, cliques: 4355, lpv: 2611, leads: 31, videoViews: 2701, conversoes: 35, receita: 325 },
           { data: '2026-11-22', plataforma: 'meta', campanha: 'CONVERSÃO_Minas-Cap_BLACK-FRIDAY-2026', investimento: 2345.17, impressoes: 205551, cliques: 2894, lpv: 1745, leads: 168, videoViews: 3840, conversoes: 612, receita: 7605 },
@@ -1343,35 +1353,34 @@ const DATA = {
           { data: '2026-11-23', plataforma: 'meta', campanha: 'TRÁFEGO_Minas-Cap_BLACK-FRIDAY-2026', investimento: 623.03, impressoes: 85980, cliques: 2204, lpv: 1454, leads: 52, videoViews: 1256, conversoes: 46, receita: 535 },
           { data: '2026-11-23', plataforma: 'meta', campanha: 'CONVERSÃO_Minas-Cap_BLACK-FRIDAY-2026', investimento: 1253.14, impressoes: 131380, cliques: 1466, lpv: 806, leads: 197, videoViews: 2224, conversoes: 594, receita: 7240 },
           { data: '2026-11-23', plataforma: 'meta', campanha: 'REMARKET ING_Minas-Cap_BLACK-FRIDAY-2026', investimento: 646.27, impressoes: 60170, cliques: 712, lpv: 375, leads: 67, videoViews: 1334, conversoes: 282, receita: 3105 },
-          { data: '2026-11-24', plataforma: 'meta', campanha: 'ALCANCE_Minas-Cap_BLACK-FRIDAY-2026', investimento: 647.69, impressoes: 387997, cliques: 468, lpv: 242, leads: 24, videoViews: 999, conversoes: 48, receita: 610 },
-          { data: '2026-11-24', plataforma: 'meta', campanha: 'TRÁFEGO_Minas-Cap_BLACK-FRIDAY-2026', investimento: 1240.63, impressoes: 139745, cliques: 3442, lpv: 1644, leads: 23, videoViews: 4227, conversoes: 43, receita: 505 },
-          { data: '2026-11-24', plataforma: 'meta', campanha: 'CONVERSÃO_Minas-Cap_BLACK-FRIDAY-2026', investimento: 2694.32, impressoes: 294454, cliques: 2532, lpv: 1563, leads: 324, videoViews: 5507, conversoes: 877, receita: 9765 },
-          { data: '2026-11-24', plataforma: 'meta', campanha: 'REMARKET ING_Minas-Cap_BLACK-FRIDAY-2026', investimento: 1498.11, impressoes: 148579, cliques: 1415, lpv: 859, leads: 150, videoViews: 2874, conversoes: 512, receita: 5850 },
-          { data: '2026-11-25', plataforma: 'meta', campanha: 'ALCANCE_Minas-Cap_BLACK-FRIDAY-2026', investimento: 297.81, impressoes: 170940, cliques: 186, lpv: 78, leads: 31, videoViews: 576, conversoes: 34, receita: 415 },
-          { data: '2026-11-25', plataforma: 'meta', campanha: 'TRÁFEGO_Minas-Cap_BLACK-FRIDAY-2026', investimento: 772.3, impressoes: 40481, cliques: 1415, lpv: 960, leads: 4, videoViews: 2728, conversoes: 9, receita: 105 },
-          { data: '2026-11-25', plataforma: 'meta', campanha: 'CONVERSÃO_Minas-Cap_BLACK-FRIDAY-2026', investimento: 1065.24, impressoes: 85346, cliques: 860, lpv: 558, leads: 135, videoViews: 1385, conversoes: 324, receita: 3490 },
-          { data: '2026-11-25', plataforma: 'meta', campanha: 'REMARKET ING_Minas-Cap_BLACK-FRIDAY-2026', investimento: 587.4, impressoes: 46468, cliques: 525, lpv: 351, leads: 79, videoViews: 779, conversoes: 159, receita: 1915 },
-          // Google: todas as campanhas da conta na semana da Black (22–25/11) são da Black. Conversões = compras (data-driven, podem ter fração); receita = valor da conversão.
-          { data: '2026-11-22', plataforma: 'google', campanha: 'PMAX_minas-cap_AON', objetivo: 'conversao', investimento: 388.3116, impressoes: 54968, cliques: 1363, conversoes: 150.4412, receita: 1904.9449 },
-          { data: '2026-11-22', plataforma: 'google', campanha: 'DEMAND-GEN_minas-cap_AON', objetivo: 'trafego', investimento: 90.3661, impressoes: 2806, cliques: 77, conversoes: 3.0, receita: 35.0 },
-          { data: '2026-11-22', plataforma: 'google', campanha: 'Search_minas-cap_AON', objetivo: 'conversao', investimento: 209.1833, impressoes: 3658, cliques: 1133, conversoes: 66.9002, receita: 919.1293 },
+          { data: '2026-11-24', plataforma: 'meta', campanha: 'ALCANCE_Minas-Cap_BLACK-FRIDAY-2026', investimento: 647.88, impressoes: 388141, cliques: 468, lpv: 242, leads: 24, videoViews: 999, conversoes: 48, receita: 610 },
+          { data: '2026-11-24', plataforma: 'meta', campanha: 'TRÁFEGO_Minas-Cap_BLACK-FRIDAY-2026', investimento: 1241.14, impressoes: 139800, cliques: 3444, lpv: 1644, leads: 23, videoViews: 4233, conversoes: 43, receita: 505 },
+          { data: '2026-11-24', plataforma: 'meta', campanha: 'CONVERSÃO_Minas-Cap_BLACK-FRIDAY-2026', investimento: 2694.89, impressoes: 294524, cliques: 2532, lpv: 1563, leads: 324, videoViews: 5508, conversoes: 877, receita: 9765 },
+          { data: '2026-11-24', plataforma: 'meta', campanha: 'REMARKET ING_Minas-Cap_BLACK-FRIDAY-2026', investimento: 1498.43, impressoes: 148611, cliques: 1415, lpv: 859, leads: 150, videoViews: 2875, conversoes: 512, receita: 5850 },
+          { data: '2026-11-25', plataforma: 'meta', campanha: 'ALCANCE_Minas-Cap_BLACK-FRIDAY-2026', investimento: 486.05, impressoes: 274920, cliques: 306, lpv: 138, leads: 46, videoViews: 880, conversoes: 54, receita: 610 },
+          { data: '2026-11-25', plataforma: 'meta', campanha: 'TRÁFEGO_Minas-Cap_BLACK-FRIDAY-2026', investimento: 1351.55, impressoes: 74683, cliques: 2514, lpv: 1864, leads: 6, videoViews: 5618, conversoes: 17, receita: 165 },
+          { data: '2026-11-25', plataforma: 'meta', campanha: 'CONVERSÃO_Minas-Cap_BLACK-FRIDAY-2026', investimento: 1639.73, impressoes: 137285, cliques: 1364, lpv: 883, leads: 230, videoViews: 2227, conversoes: 564, receita: 6140 },
+          { data: '2026-11-25', plataforma: 'meta', campanha: 'REMARKET ING_Minas-Cap_BLACK-FRIDAY-2026', investimento: 908.66, impressoes: 73947, cliques: 801, lpv: 529, leads: 120, videoViews: 1200, conversoes: 296, receita: 3360 },
+          { data: '2026-11-22', plataforma: 'google', campanha: 'PMAX_minas-cap_AON', objetivo: 'conversao', investimento: 388.3116, impressoes: 54968, cliques: 1363, conversoes: 163.7937, receita: 2072.5568 },
+          { data: '2026-11-22', plataforma: 'google', campanha: 'DEMAND-GEN_minas-cap_AON', objetivo: 'trafego', investimento: 90.3661, impressoes: 2806, cliques: 77, conversoes: 4.0, receita: 65.0 },
+          { data: '2026-11-22', plataforma: 'google', campanha: 'Search_minas-cap_AON', objetivo: 'conversao', investimento: 209.1833, impressoes: 3658, cliques: 1133, conversoes: 68.195, receita: 925.6029 },
           { data: '2026-11-22', plataforma: 'google', campanha: 'YOUTUBE_Minas-Cap_BLACK-FRIDAY', objetivo: 'video', investimento: 142.8389, impressoes: 15424, cliques: 14, videoViews: 11745 },
-          { data: '2026-11-23', plataforma: 'google', campanha: 'PMAX_minas-cap_AON', objetivo: 'conversao', investimento: 382.7552, impressoes: 43599, cliques: 806, conversoes: 63.345, receita: 850.409 },
-          { data: '2026-11-23', plataforma: 'google', campanha: 'DEMAND-GEN_minas-cap_AON', objetivo: 'trafego', investimento: 208.2301, impressoes: 15735, cliques: 119, conversoes: 23.0167, receita: 268.6128 },
-          { data: '2026-11-23', plataforma: 'google', campanha: 'Search_minas-cap_AON', objetivo: 'conversao', investimento: 420.1635, impressoes: 4689, cliques: 2247, conversoes: 172.0945, receita: 2065.3591 },
+          { data: '2026-11-23', plataforma: 'google', campanha: 'PMAX_minas-cap_AON', objetivo: 'conversao', investimento: 382.7552, impressoes: 43599, cliques: 806, conversoes: 78.9049, receita: 1049.759 },
+          { data: '2026-11-23', plataforma: 'google', campanha: 'DEMAND-GEN_minas-cap_AON', objetivo: 'trafego', investimento: 208.2301, impressoes: 15735, cliques: 119, conversoes: 31.5167, receita: 353.6128 },
+          { data: '2026-11-23', plataforma: 'google', campanha: 'Search_minas-cap_AON', objetivo: 'conversao', investimento: 420.1635, impressoes: 4689, cliques: 2247, conversoes: 175.0945, receita: 2080.3591 },
           { data: '2026-11-23', plataforma: 'google', campanha: 'YOUTUBE_Minas-Cap_BLACK-FRIDAY', objetivo: 'video', investimento: 142.9089, impressoes: 20887, cliques: 20, videoViews: 15968 },
-          { data: '2026-11-24', plataforma: 'google', campanha: 'PMAX_minas-cap_AON', objetivo: 'conversao', investimento: 1026.3624, impressoes: 90184, cliques: 1847, conversoes: 82.5519, receita: 1191.7938 },
-          { data: '2026-11-24', plataforma: 'google', campanha: 'DEMAND-GEN_minas-cap_AON', objetivo: 'trafego', investimento: 294.8418, impressoes: 17576, cliques: 280, conversoes: 7.3827, receita: 112.1697 },
-          { data: '2026-11-24', plataforma: 'google', campanha: 'Search_minas-cap_AON', objetivo: 'conversao', investimento: 319.0825, impressoes: 4247, cliques: 1326, conversoes: 175.3801, receita: 2268.1964 },
-          { data: '2026-11-24', plataforma: 'google', campanha: 'YOUTUBE_Minas-Cap_BLACK-FRIDAY', objetivo: 'video', investimento: 342.7199, impressoes: 53370, cliques: 57, videoViews: 39200 },
-          { data: '2026-11-25', plataforma: 'google', campanha: 'PMAX_minas-cap_AON', objetivo: 'conversao', investimento: 568.186, impressoes: 48285, cliques: 961, conversoes: 24.0, receita: 335.0 },
-          { data: '2026-11-25', plataforma: 'google', campanha: 'DEMAND-GEN_minas-cap_AON', objetivo: 'trafego', investimento: 213.8044, impressoes: 9457, cliques: 168, conversoes: 1.0, receita: 5.0 },
-          { data: '2026-11-25', plataforma: 'google', campanha: 'Search_minas-cap_AON', objetivo: 'conversao', investimento: 188.7748, impressoes: 1330, cliques: 371, conversoes: 15.0, receita: 190.0 },
-          { data: '2026-11-25', plataforma: 'google', campanha: 'YOUTUBE_Minas-Cap_BLACK-FRIDAY', objetivo: 'video', investimento: 100.2056, impressoes: 16351, cliques: 9, videoViews: 10785 },
+          { data: '2026-11-24', plataforma: 'google', campanha: 'PMAX_minas-cap_AON', objetivo: 'conversao', investimento: 1026.3624, impressoes: 90193, cliques: 1847, conversoes: 108.679, receita: 1622.796 },
+          { data: '2026-11-24', plataforma: 'google', campanha: 'DEMAND-GEN_minas-cap_AON', objetivo: 'trafego', investimento: 294.8418, impressoes: 17581, cliques: 280, conversoes: 13.6738, receita: 205.0806 },
+          { data: '2026-11-24', plataforma: 'google', campanha: 'Search_minas-cap_AON', objetivo: 'conversao', investimento: 319.0825, impressoes: 4247, cliques: 1326, conversoes: 185.3801, receita: 2378.1964 },
+          { data: '2026-11-24', plataforma: 'google', campanha: 'YOUTUBE_Minas-Cap_BLACK-FRIDAY', objetivo: 'video', investimento: 342.7155, impressoes: 53369, cliques: 57, videoViews: 39200 },
+          { data: '2026-11-25', plataforma: 'google', campanha: 'PMAX_minas-cap_AON', objetivo: 'conversao', investimento: 810.0668, impressoes: 66018, cliques: 1308, conversoes: 48.8896, receita: 716.3843 },
+          { data: '2026-11-25', plataforma: 'google', campanha: 'DEMAND-GEN_minas-cap_AON', objetivo: 'trafego', investimento: 268.2591, impressoes: 11796, cliques: 216, conversoes: 4.0, receita: 40.0 },
+          { data: '2026-11-25', plataforma: 'google', campanha: 'Search_minas-cap_AON', objetivo: 'conversao', investimento: 274.5938, impressoes: 2283, cliques: 621, conversoes: 44.3904, receita: 498.904 },
+          { data: '2026-11-25', plataforma: 'google', campanha: 'YOUTUBE_Minas-Cap_BLACK-FRIDAY', objetivo: 'video', investimento: 183.2991, impressoes: 29879, cliques: 23, videoViews: 19989 },
           { data: '2026-11-22', plataforma: 'tiktok', campanha: 'CLIQUE_Minas-Cap_BLACK-FRIDAY-26', investimento: 774.1, impressoes: 79008, cliques: 13413 },
           { data: '2026-11-23', plataforma: 'tiktok', campanha: 'CLIQUE_Minas-Cap_BLACK-FRIDAY-26', investimento: 1042.85, impressoes: 96053, cliques: 19426 },
           { data: '2026-11-24', plataforma: 'tiktok', campanha: 'CLIQUE_Minas-Cap_BLACK-FRIDAY-26', investimento: 1075.31, impressoes: 92767, cliques: 18632 },
-          { data: '2026-11-25', plataforma: 'tiktok', campanha: 'CLIQUE_Minas-Cap_BLACK-FRIDAY-26', investimento: 216.32, impressoes: 15959, cliques: 3626 },
+          { data: '2026-11-25', plataforma: 'tiktok', campanha: 'CLIQUE_Minas-Cap_BLACK-FRIDAY-26', investimento: 466.35, impressoes: 36716, cliques: 8088 },
           // UOL ads: relatório da plataforma (custom-report 22–25/11/2026), por campanha e dia. 25/11 é dia parcial.
           { data: '2026-11-22', plataforma: 'uol', campanha: 'Impressões_MinasCap_BLACK-FRIDAY-26', objetivo: 'alcance', investimento: 41.78, impressoes: 17026, cliques: 7 },
           { data: '2026-11-22', plataforma: 'uol', campanha: 'Cliques_MinasCap_BLACK-FRIDAY-26', objetivo: 'trafego', investimento: 54.48, impressoes: 22174, cliques: 13 },
@@ -1390,31 +1399,45 @@ const DATA = {
         // GA4: sessões de mídia paga em 22/11 na LP (propriedade 558042593) + site (260399536), por origem/mídia.
         // Site com a métrica padrão de sessões (não a personalizada "Sessões Minas Cap").
         ga4: [
-          // GA4: sessões de mídia paga (cpc/paid) na LP (558042593) + site (260399536), 22–25/11, por origem/mídia.
-          { data: '2026-11-22', plataforma: 'meta', sessoes: 5871 },
-          { data: '2026-11-22', plataforma: 'google', sessoes: 25669 },
-          { data: '2026-11-22', plataforma: 'tiktok', sessoes: 6204 },
-          { data: '2026-11-22', plataforma: 'programatica', sessoes: 936 },
-          { data: '2026-11-22', plataforma: 'uol', sessoes: 84 },
-          { data: '2026-11-22', plataforma: 'rich-media', sessoes: 3 },
-          { data: '2026-11-23', plataforma: 'meta', sessoes: 2951 },
-          { data: '2026-11-23', plataforma: 'google', sessoes: 12172 },
-          { data: '2026-11-23', plataforma: 'tiktok', sessoes: 8204 },
-          { data: '2026-11-23', plataforma: 'programatica', sessoes: 450 },
-          { data: '2026-11-23', plataforma: 'uol', sessoes: 40 },
-          { data: '2026-11-23', plataforma: 'rich-media', sessoes: 5 },
-          { data: '2026-11-24', plataforma: 'meta', sessoes: 5024 },
-          { data: '2026-11-24', plataforma: 'google', sessoes: 11992 },
-          { data: '2026-11-24', plataforma: 'tiktok', sessoes: 7864 },
-          { data: '2026-11-24', plataforma: 'programatica', sessoes: 347 },
-          { data: '2026-11-24', plataforma: 'uol', sessoes: 48 },
-          { data: '2026-11-24', plataforma: 'rich-media', sessoes: 3 },
-          // 25/11: GA4 parcial (o dia ainda está sendo processado)
-          { data: '2026-11-25', plataforma: 'meta', sessoes: 615 },
-          { data: '2026-11-25', plataforma: 'google', sessoes: 1165 },
-          { data: '2026-11-25', plataforma: 'tiktok', sessoes: 546 },
-          { data: '2026-11-25', plataforma: 'programatica', sessoes: 30 },
-          { data: '2026-11-25', plataforma: 'uol', sessoes: 3 }
+          // GA4, sessões de mídia paga (cpc/paid), 22–25/11 (25/11 parcial). prop 'lp' = LP (558042593, páginas da Black); prop 'site' = site (260399536).
+          { data: '2026-11-22', prop: 'lp', plataforma: 'meta', sessoes: 5851 },
+          { data: '2026-11-22', prop: 'lp', plataforma: 'tiktok', sessoes: 6188 },
+          { data: '2026-11-22', prop: 'lp', plataforma: 'programatica', sessoes: 801 },
+          { data: '2026-11-22', prop: 'lp', plataforma: 'google', sessoes: 561 },
+          { data: '2026-11-22', prop: 'lp', plataforma: 'uol', sessoes: 80 },
+          { data: '2026-11-23', prop: 'lp', plataforma: 'meta', sessoes: 2933 },
+          { data: '2026-11-23', prop: 'lp', plataforma: 'tiktok', sessoes: 8185 },
+          { data: '2026-11-23', prop: 'lp', plataforma: 'programatica', sessoes: 426 },
+          { data: '2026-11-23', prop: 'lp', plataforma: 'google', sessoes: 856 },
+          { data: '2026-11-23', prop: 'lp', plataforma: 'uol', sessoes: 39 },
+          { data: '2026-11-24', prop: 'lp', plataforma: 'meta', sessoes: 3077 },
+          { data: '2026-11-24', prop: 'lp', plataforma: 'tiktok', sessoes: 7838 },
+          { data: '2026-11-24', prop: 'lp', plataforma: 'programatica', sessoes: 159 },
+          { data: '2026-11-24', prop: 'lp', plataforma: 'google', sessoes: 727 },
+          { data: '2026-11-24', prop: 'lp', plataforma: 'uol', sessoes: 40 },
+          { data: '2026-11-25', prop: 'lp', plataforma: 'meta', sessoes: 775 },
+          { data: '2026-11-25', prop: 'lp', plataforma: 'tiktok', sessoes: 928 },
+          { data: '2026-11-25', prop: 'lp', plataforma: 'programatica', sessoes: 3 },
+          { data: '2026-11-25', prop: 'lp', plataforma: 'google', sessoes: 135 },
+          { data: '2026-11-22', prop: 'site', plataforma: 'google', sessoes: 25096 },
+          { data: '2026-11-22', prop: 'site', plataforma: 'programatica', sessoes: 45 },
+          { data: '2026-11-22', prop: 'site', plataforma: 'meta', sessoes: 17 },
+          { data: '2026-11-22', prop: 'site', plataforma: 'uol', sessoes: 4 },
+          { data: '2026-11-22', prop: 'site', plataforma: 'rich-media', sessoes: 3 },
+          { data: '2026-11-23', prop: 'site', plataforma: 'google', sessoes: 11286 },
+          { data: '2026-11-23', prop: 'site', plataforma: 'programatica', sessoes: 23 },
+          { data: '2026-11-23', prop: 'site', plataforma: 'meta', sessoes: 14 },
+          { data: '2026-11-23', prop: 'site', plataforma: 'rich-media', sessoes: 5 },
+          { data: '2026-11-24', prop: 'site', plataforma: 'google', sessoes: 11237 },
+          { data: '2026-11-24', prop: 'site', plataforma: 'meta', sessoes: 1947 },
+          { data: '2026-11-24', prop: 'site', plataforma: 'programatica', sessoes: 184 },
+          { data: '2026-11-24', prop: 'site', plataforma: 'uol', sessoes: 6 },
+          { data: '2026-11-24', prop: 'site', plataforma: 'rich-media', sessoes: 3 },
+          { data: '2026-11-24', prop: 'site', plataforma: 'tiktok', sessoes: 2 },
+          { data: '2026-11-25', prop: 'site', plataforma: 'google', sessoes: 3076 },
+          { data: '2026-11-25', prop: 'site', plataforma: 'meta', sessoes: 928 },
+          { data: '2026-11-25', prop: 'site', plataforma: 'programatica', sessoes: 71 },
+          { data: '2026-11-25', prop: 'site', plataforma: 'uol', sessoes: 8 }
         ],
         erp: [],
         insights: {
@@ -1752,7 +1775,9 @@ function agg(rows) {
     ['ctr', 'cpc', 'cpl', 'cpa'].forEach(k => { if (ok(r[k])) (REP[k] = REP[k] || []).push(r[k]); });
   });
   const q = (n, m = 1) => P[n] && P[n][1] > 0 ? P[n][0] / P[n][1] * m : null;
-  Object.assign(a, { ctr: q('ctr', 100), cpc: q('cpc'), cpm: q('cpm', 1000), cpa: q('cpa'), roas: q('roas'), cpl: q('cpl'), cpv: q('cpv'), clpv: q('clpv'), tx: q('tx', 100), txcad: q('txcad', 100) });
+  Object.assign(a, { ctr: q('ctr', 100), cpc: q('cpc'), cpm: q('cpm', 1000),
+    cpa: ok(a.conv) && a.conv > 0 && ok(a.inv) ? a.inv / a.conv : null,
+    roas: ok(a.rec) && ok(a.inv) && a.inv > 0 ? a.rec / a.inv : null, cpl: q('cpl'), cpv: q('cpv'), clpv: q('clpv'), tx: q('tx', 100), txcad: q('txcad', 100) });
   // só usa o valor do arquivo quando não há base para calcular e há uma única linha informando
   a.rep = new Set();
   Object.entries(REP).forEach(([k, vs]) => { if (!ok(a[k]) && vs.length === 1) { a[k] = vs[0]; a.rep.add(k); } });
@@ -2768,12 +2793,15 @@ function renderQuadros() {
   // Quadro 2 · Black
   const rB = rowsOf('midia', ['black']), sB = rowsOf('ga4', ['black']);
   const sesB = p => sumField(sB.filter(r => normPlat(r.plataforma) === p), 'sessoes');
-  const lineB = (label, rs, ses, cls = '') => { const a = agg(rs); return `<tr class="${cls}"><td>${label}</td><td>${F.brl(a.inv)}</td><td>${F.int(ses)}</td><td>${F.int(a.conv)}</td><td>${F.brl2(a.cpa)}</td><td>${F.brl(a.rec)}</td><td>${F.x(a.roas)}</td></tr>`; };
+  const LPq = temLP('black');
+  const sesPP = (p, prop) => sumField(sB.filter(r => normPlat(r.plataforma) === p && r.prop === prop), 'sessoes');
+  const sesCols = (lp, site) => (LPq ? `<td>${F.int(lp)}</td>` : '') + `<td>${F.int(site)}</td>`;
+  const lineB = (label, rs, lp, site, cls = '') => { const a = agg(rs); return `<tr class="${cls}"><td>${label}</td><td>${F.brl(a.inv)}</td>${sesCols(lp, site)}<td>${F.int(a.conv)}</td><td>${F.int(ok(a.rec) ? Math.round(a.rec / TITULO) : null)}</td><td>${F.brl2(a.cpa)}</td><td>${F.brl(a.rec)}</td><td>${F.x(a.roas)}</td></tr>`; };
   const pb = parts('black');
-  $('#quadroBlk').innerHTML = `<thead><tr><th>Plataforma</th><th>Investimento</th><th>Sessões LP + site</th><th>Compras</th><th>CPA</th><th>Receita</th><th>ROAS</th></tr></thead><tbody>` +
-    pb.map(p => pend(p, 'black') ? (ok(sesB(p)) ? `<tr><td>${platLabel(p)}</td><td colspan="1" class="l" style="color:#8A5A00">aguardando relatório</td><td>${F.int(sesB(p))}</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>` : `<tr><td>${platLabel(p)}</td><td colspan="6" class="l" style="color:#8A5A00">Aguardando relatório desta plataforma</td></tr>`)
-      : lineB(platLabel(p), rB.filter(r => r.plataforma === p), sesB(p))).join('') +
-    lineB('Total mídia paga', rB, sessPagas(sB), 'tot') + '</tbody>';
+  $('#quadroBlk').innerHTML = `<thead><tr><th>Plataforma</th><th>Investimento</th>${LPq ? '<th>Sessões na LP</th>' : ''}<th>Sessões no site</th><th>Compras</th><th>Títulos</th><th>CPA</th><th>Receita</th><th>ROAS</th></tr></thead><tbody>` +
+    pb.map(p => pend(p, 'black') ? (ok(sesB(p)) ? `<tr><td>${platLabel(p)}</td><td class="l" style="color:#8A5A00">aguardando relatório</td>${sesCols(sesPP(p, 'lp'), sesPP(p, 'site'))}<td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>` : `<tr><td>${platLabel(p)}</td><td colspan="${LPq ? 8 : 7}" class="l" style="color:#8A5A00">Aguardando relatório desta plataforma</td></tr>`)
+      : lineB(platLabel(p), rB.filter(r => r.plataforma === p), sesPP(p, 'lp'), sesPP(p, 'site'))).join('') +
+    lineB('Total mídia paga', rB, sessPagas(sB.filter(r => r.prop === 'lp')), sessPagas(sB.filter(r => r.prop === 'site')), 'tot') + '</tbody>';
 }
 function renderVisitas() {
   kill('gl_vis');
@@ -3107,7 +3135,8 @@ function etapasDe(f) {
     return [
       { k: 'trafego', n: 'Tráfego', d: 'Quanto a mídia levou de pessoas para a LP e o site. Esta mídia não tem venda atribuída na Black.', m: [
         ['Cliques', F.intC(a.cli), 'pl', '', 1], ['Custo por visita', F.brl2(ok(a.inv) && sesP ? a.inv / sesP : null), 'mx', 'investimento ÷ sessões', 1],
-        ['CTR', F.pct(a.ctr), 'pl', 'cliques ÷ impressões'], ['CPC', F.brl2(a.cpc), 'pl', 'custo por clique'], ['Sessões LP + site', F.intC(sesP), 'ga', 'mídia paga']] },
+        ['CTR', F.pct(a.ctr), 'pl', 'cliques ÷ impressões'], ['CPC', F.brl2(a.cpc), 'pl', 'custo por clique'],
+        ...(temLP(f) ? [['Sessões na LP', F.intC(sesProp(f, 'lp')), 'ga', 'mídia paga'], ['Sessões no site', F.intC(sesProp(f, 'site')), 'ga', 'mídia paga']] : [['Sessões no site', F.intC(sesProp(f, 'site')), 'ga', 'mídia paga']])] },
       { k: 'alcance', n: 'Alcance', d: 'Quantas pessoas a mídia atingiu, com que frequência e a que custo.', m: [
         ['Impressões', F.intC(a.imp), 'pl', '', 1], ['Alcance', F.intC(al.v), 'pl', ok(al.v) ? 'pessoas' : 'a plataforma não informa alcance', 1],
         ['Frequência', F.dec(al.freq), 'pl', 'impressões ÷ alcance'], ['CPM', F.brl2(a.cpm), 'pl', 'custo por mil impressões', 1]] },
@@ -3119,17 +3148,19 @@ function etapasDe(f) {
   const esqC = ['todas', 'meta'].includes(state.plataforma) && !temFiltro() ? cli().fases[f].esquentaCompras : null;
   return [
     { k: 'conversao', n: 'Conversão', d: 'Foco principal da Black: vendas. Total atribuído pelas plataformas (Meta + Google) e, abaixo, de onde vieram, incluindo o remarketing.', m: [
-      ['Vendas', F.intC(a.conv), 'pl', state.plataforma === 'todas' ? 'Meta + Google' : PLATAFORMAS[state.plataforma].nome, 1], ['CPA', F.brl2(a.cpa), 'pl', 'investimento ÷ vendas', 1],
-      ['Receita da mídia', F.brlC(a.rec), 'pl', 'compras atribuídas aos anúncios', 1], ['ROAS', F.x(a.roas), 'pl', 'receita da mídia ÷ investimento', 1],
-      ['SEP', 'De onde vieram as vendas'],
+      ['Compras', F.intC(a.conv), 'pl', state.plataforma === 'todas' ? 'Meta + Google' : PLATAFORMAS[state.plataforma].nome, 1], ['CPA', F.brl2(a.cpa), 'pl', 'investimento ÷ compras', 1],
+      ['Receita da mídia', F.brlC(a.rec), 'pl', 'valor das compras atribuídas aos anúncios', 1], ['ROAS', F.x(a.roas), 'pl', 'receita da mídia ÷ investimento', 1],
+      ['Títulos vendidos', F.intC(ok(a.rec) ? Math.round(a.rec / TITULO) : null), 'pl', 'receita da mídia ÷ R$ 5', 1],
+      ['SEP', 'De onde vieram as compras'],
       ...[['Meta · Conversão', r => r.plataforma === 'meta' && r.objetivo === 'conversao'],
         ['Meta · Remarketing', r => r.plataforma === 'meta' && r.objetivo === 'remarketing', 'público: visitantes da LP do Esquenta + site · taxa de conversão ' + F.pct(rm.tx)],
         ['Meta · Alcance + Tráfego', r => r.plataforma === 'meta' && (r.objetivo === 'alcance' || r.objetivo === 'trafego')],
         ['Google · PMAX + Search', r => r.plataforma === 'google' && r.objetivo === 'conversao'], ['Google · Demand Gen', r => r.plataforma === 'google' && r.objetivo === 'trafego']]
-        .map(([n, fn, extra]) => { const x = agg(rows.filter(fn)); return ok(x.conv) && x.conv > 0 ? [n, F.intC(x.conv), 'pl', /Alcance|Demand/.test(n) ? 'vendas · campanha medida por alcance e tráfego, não por CPA' : 'vendas · CPA ' + F.brl2(x.cpa) + (extra ? ' · ' + extra : '')] : null; }).filter(Boolean),
-      ...(ok(esqC) ? [['Meta · campanhas do Esquenta', F.intC(esqC), 'pl', 'vendas na Black atribuídas às campanhas do Esquenta (já desligadas) · não entram no total acima']] : [])] },
+        .map(([n, fn, extra]) => { const x = agg(rows.filter(fn)); return ok(x.conv) && x.conv > 0 ? [n, F.intC(x.conv), 'pl', /Alcance|Demand/.test(n) ? 'compras · campanha medida por alcance e tráfego, não por CPA' : 'compras · CPA ' + F.brl2(x.cpa) + (extra ? ' · ' + extra : '')] : null; }).filter(Boolean),
+      ...(ok(esqC) ? [['Meta · campanhas do Esquenta', F.intC(esqC), 'pl', 'compras na Black atribuídas às campanhas do Esquenta (já desligadas) · não entram no total acima']] : [])] },
     { k: 'trafego', n: 'Tráfego', d: 'Quanto os anúncios levaram de pessoas para a LP e o site.', m: [
-      ['Sessões LP + site', F.intC(ses), 'ga', 'mídia paga', 1], ['Cliques', F.intC(a.cli), 'pl', 'nos anúncios', 1],
+      ...(temLP(f) ? [['Sessões na LP', F.intC(sesProp(f, 'lp')), 'ga', 'mídia paga', 1], ['Sessões no site', F.intC(sesProp(f, 'site')), 'ga', 'mídia paga', 1]]
+        : [['Sessões no site', F.intC(sesProp(f, 'site')), 'ga', 'mídia paga', 1]]), ['Cliques', F.intC(a.cli), 'pl', 'nos anúncios', 1],
       ['Custo por visita', F.brl2(ok(a.inv) && ses ? a.inv / ses : null), 'mx', 'investimento ÷ sessões', 1],
       ['CTR', F.pct(a.ctr), 'pl', 'cliques ÷ impressões'], ['CPC', F.brl2(a.cpc), 'pl', 'custo por clique'],
       ['Clique para compra', F.pct(todas && L.sessoes ? L.sessoesCompra / L.sessoes * 100 : null), 'ga', 'sessões da LP com clique em comprar']] },
@@ -3137,20 +3168,22 @@ function etapasDe(f) {
   ].filter(Boolean);
 }
 const FTN = { pl: 'Plataformas', ga: 'GA4', px: 'Meta pixel', bi: 'BI', mx: 'Plataformas + GA4' };
-const card3 = ([l, v, ft, s, hl]) => l === 'SEP' ? `<div class="c3-sep">${v}</div>` : `<div class="c3 ${hl ? 'hl' : ''}"><span title="${esc(glossFor(l))}">${l}</span><b class="${v === '—' ? 'empty-v' : ''}">${v}</b><small><i class="f3 f3-${ft}">${FTN[ft]}</i>${s ? ' · ' + s : ''}</small></div>`;
+let _ftOculta = false;
+const cards3 = list => { const L = list.filter(Boolean), fs = new Set(L.filter(x => x[0] !== 'SEP').map(x => x[2])); _ftOculta = fs.size <= 1; const out = L.map(card3).join(''); _ftOculta = false; return out; };
+const card3 = ([l, v, ft, s, hl]) => l === 'SEP' ? `<div class="c3-sep">${v}</div>` : `<div class="c3 ${hl ? 'hl' : ''}"><span title="${esc(glossFor(l))}">${l}</span><b class="${v === '—' ? 'empty-v' : ''}">${v}</b><small>${_ftOculta ? (s || '') : `<i class="f3 f3-${ft}">${FTN[ft]}</i>${s ? ' · ' + s : ''}`}</small></div>`;
 
 /* ---------- meta da mídia (Black) ---------- */
 function metaMidiaHtml(compacto) {
   const z = cli().fases.black, M = z.metaMidia; if (!M || !['todas'].includes(state.plataforma) || temFiltro()) return '';
-  // atingimento = vendas de mídia (compras atribuídas por Meta + Google) ÷ meta de mídia (desejada e mínima)
-  const a = agg(rowsOf('midia', ['black'])), v = Math.round(a.conv || 0), pc = v / M.desejada * 100;
+  // atingimento = títulos vendidos pela mídia (receita atribuída pelas plataformas ÷ R$ 5) ÷ meta de mídia; não usa vendas totais
+  const a = agg(rowsOf('midia', ['black'])), v = Math.round((a.rec || 0) / TITULO), pc = v / M.desejada * 100;
   const dias = (x, y) => Math.round((new Date(y) - new Date(x)) / 864e5) + 1;
   const ult = [...new Set(rowsOf('midia', ['black']).map(r => r.data).filter(Boolean))].sort().pop();
   const ritmo = ult ? Math.min(1, dias(z.inicio, ult) / dias(z.inicio, z.fim)) : null;
   return `<div class="mm ${compacto ? 'mm-c' : ''}">
-    <div class="mm-h"><span>Meta da mídia · vendas</span><b>${nf(pc, 2)}%</b></div>
+    <div class="mm-h"><span>Meta da mídia · títulos vendidos</span><b>${nf(pc, 2)}%</b></div>
     <div class="mm-bar"><i style="width:${Math.min(pc, 100)}%"></i>${ritmo != null && ritmo < 1 ? `<em style="left:${ritmo * 100}%"></em>` : ''}</div>
-    <small>Vendas de mídia: ${F.int(v)} · meta desejada: ${F.int(M.desejada)} (${nf(pc, 2)}%) · meta mínima: ${F.int(M.minima)} (${nf(v / M.minima * 100, 2)}%)${ritmo != null && ritmo < 1 ? ` · linha preta: ${nf(ritmo * 100, 0)}% da semana decorrida` : ''}</small>
+    <small>Títulos vendidos pela mídia: ${F.int(v)} (receita da mídia ${F.brl(a.rec)} ÷ R$ 5; ${F.int(a.conv)} compras) · meta desejada: ${F.int(M.desejada)} (${nf(pc, 2)}%) · meta mínima: ${F.int(M.minima)} (${nf(v / M.minima * 100, 2)}%)${ritmo != null && ritmo < 1 ? ` · linha preta: ${nf(ritmo * 100, 0)}% da semana decorrida` : ''}</small>
   </div>`;
 }
 
@@ -3174,17 +3207,17 @@ function renderKpis2() {
       const pickL = (k, l) => (et.find(x => x.k === k) || { m: [] }).m.find(x => x && x[0] === l);
       const usaBase = cli().fases.esquenta.cadastrosFonte !== 'pixel';
       const sec = f === 'esquenta' ? [pickL('trafego', 'Sessões na LP'), usaBase ? pickL('leads', 'Taxa de cadastro') : pickL('trafego', 'Cliques'), pickL('trafego', 'Custo por visita'), ok(baseInativa()) ? pickL('base', 'Inativos alcançados') : pickL('trafego', 'CTR')]
-        : [pickL('conversao', 'Receita da mídia'), pickL('conversao', 'ROAS'), pickL('trafego', 'Sessões LP + site'), pickL('trafego', 'Clique para compra')];
+        : [pickL('conversao', 'Receita da mídia'), pickL('conversao', 'ROAS'), pickL('conversao', 'Títulos vendidos'), temLP(f) ? pickL('trafego', 'Sessões na LP') : pickL('trafego', 'Sessões no site')];
       if (f === 'black') { const a = agg(rowsOf('midia', [f])), Bq = cli().bi || {}, biOk = state.plataforma === 'todas';
-        hero[0] = ['Vendas', F.intC(a.conv), 'pl', 'Meta + Google', 1]; hero[1] = ['CPA', F.brl2(a.cpa), 'pl', 'investimento ÷ vendas', 1];
+        hero[0] = ['Compras', F.intC(a.conv), 'pl', 'Meta + Google', 1]; hero[1] = ['CPA', F.brl2(a.cpa), 'pl', 'investimento ÷ compras', 1];
         sec[0] = ['Receita da mídia', F.brlC(a.rec), 'pl', 'compras atribuídas aos anúncios']; sec[1] = ['ROAS', F.x(a.roas), 'pl', 'receita da mídia ÷ investimento'];
 }
       return `<div class="ovc ${f === 'esquenta' ? 'esq' : 'blk'}">
         <div class="ovc-h"><span class="ph-pill ${f === 'esquenta' ? 'esq' : 'blk'}">${FASES[f].nome}</span><small>${f === 'esquenta' ? 'captação de cadastros, base e reativação' : 'vendas, receita, CPA e ROAS'}</small></div>
-        <div class="ovc-hero">${hero.filter(Boolean).map(card3).join('')}</div>
+        <div class="ovc-hero">${cards3(hero)}</div>
         ${f === 'black' ? metaMidiaHtml(true) : ''}
-        <div class="ovc-sec">${sec.filter(Boolean).map(x => card3([...x.slice(0, 4), 0])).join('')}</div>
-        <div class="ovc-ent"><div class="ovc-lbl">Entrega</div>${ent(f).map(card3).join('')}</div>
+        <div class="ovc-sec">${cards3(sec.filter(Boolean).map(x => [...x.slice(0, 4), 0]))}</div>
+        <div class="ovc-ent"><div class="ovc-lbl">Entrega · plataformas</div>${cards3(ent(f))}</div>
       </div>`; }).join('')}</div>`;
   } else {
     const f = fases[0], et = etapasDe(f);
@@ -3192,10 +3225,10 @@ function renderKpis2() {
     if (!et.some(x => x.k === state.etapa[f])) state.etapa[f] = et[0].k;
     const cur = et.find(x => x.k === state.etapa[f]);
     $('#objStrip').innerHTML = `<div class="obj3 ${f === 'esquenta' ? 'esq' : 'blk'}">${OBJ_TXT[f]}</div>`;
-    $('#kEntrega').innerHTML = `<div class="ent3">${ent(f).map(card3).join('')}</div>`;
+    $('#kEntrega').innerHTML = `<div class="ent3">${cards3(ent(f))}</div>`;
     $('#kPerf').innerHTML = (f === 'black' ? metaMidiaHtml(false) : '') + `<div class="kgrp-h" style="margin-top:16px">Performance<small>escolha a etapa</small></div>
       <div class="chips tabs et-tabs">${et.map(x => `<button class="chip ${x.k === cur.k ? 'on' : ''}" data-et="${x.k}">${x.n}</button>`).join('')}</div>
-      <div class="et-panel ${f === 'esquenta' ? 'esq' : 'blk'}"><p class="et-d">${cur.d}</p><div class="et-grid">${cur.m.map(card3).join('')}</div></div>`;
+      <div class="et-panel ${f === 'esquenta' ? 'esq' : 'blk'}"><p class="et-d">${cur.d}</p><div class="et-grid">${cards3(cur.m)}</div></div>`;
   }
   const D = cli().destaques || {};
   const it = G ? fases.flatMap(f => (D[f] || []).slice(0, 2).map(x => [...x, f])) : (D[fases[0]] || []).map(x => [...x, fases[0]]);
@@ -3246,8 +3279,37 @@ function renderMetaInvest() {
   }).join('');
 }
 
+
+/* sessões de mídia paga por destino (GA4): prop 'lp' = landing page, 'site' = site */
+const temLP = f => (cli().fases[f].ga4 || []).some(r => r.prop === 'lp');
+const sesProp = (f, prop) => sessPagas(rowsOf('ga4', [f]).filter(r => r.prop === prop)) ?? null;
+const TITULO = 5;   // valor do título na semana da Black (R$ 5,00 nas três praças)
+
+/* ---------- visitantes por dia: LP × site (GA4, usuários de mídia paga) ---------- */
+function renderVisitantes() {
+  kill('cVis');
+  const V = cli().visitantes, box = $('#visBox');
+  if (!V || !window.Chart) { box.style.display = 'none'; return; }
+  box.style.display = '';
+  const bIni = cli().fases.black.inicio;
+  const fase = state.visao;
+  let dates = [...new Set([...Object.keys(V.lp || {}), ...Object.keys(V.site || {})])].sort().filter(inPeriod);
+  if (fase === 'esquenta') dates = dates.filter(d => d < bIni);
+  if (fase === 'black') dates = dates.filter(d => d >= bIni);
+  const serie = (src, cor, nome) => ({ type: 'line', label: nome, data: dates.map(d => ok(src[d]) ? src[d] : null), borderColor: cor, backgroundColor: cor,
+    borderWidth: 2.5, pointRadius: 3, tension: .3, spanGaps: false });
+  const ds = [serie(V.lp || {}, '#D9A520', 'LP'), serie(V.site || {}, '#1E5BB8', 'Site')].filter(d => d.data.some(v => v != null));
+  const o = baseOpts();
+  o.scales.y = { beginAtZero: true, grid: { color: 'rgba(0,0,0,.05)' }, ticks: { color: '#888', font: { size: 10 }, callback: v => compact(v) } };
+  o.plugins.tooltip = { callbacks: { title: c => dBR(dates[c[0].dataIndex]), label: c => c.parsed.y == null ? null : c.dataset.label + ': ' + F.int(c.parsed.y) + ' visitantes' } };
+  charts.cVis = new Chart($('#cVis'), { type: 'line', data: { labels: dates.map(dBR), datasets: ds }, options: o });
+  const soma = src => dates.reduce((s, d) => s + (src[d] || 0), 0);
+  $('#visHint').innerHTML = `LP: ${F.int(soma(V.lp || {}))} visitantes · site: ${F.int(soma(V.site || {}))} visitantes no período. Visitantes = usuários do dia; a soma dos dias pode contar a mesma pessoa mais de uma vez. ` +
+    (fase !== 'black' ? 'No Esquenta, a mídia levou só para a LP; o site entra a partir da Black.' : '') + ' 25/11 parcial.';
+}
+
 function renderAll() {
-  renderNav(); renderPlatChips(); renderHero(); renderResumo(); renderKpis2();
+  renderNav(); renderPlatChips(); renderHero(); renderResumo(); renderKpis2(); renderVisitantes();
   const G = state.visao === 'geral';
 
   $('#quadros').style.display = ''; $('#platPhase').style.display = G ? 'none' : '';
