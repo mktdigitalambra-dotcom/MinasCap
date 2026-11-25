@@ -877,7 +877,7 @@ const DATA = {
         ['📈', '<b>Base cresceu no BI</b>: 2.039 novos clientes nas edições 546 e 547, +15,5% sobre as duas edições anteriores (1.765).']
       ],
       black: [
-        ['🛒', '<b>4.055 vendas atribuídas pelo Meta em 22–25/11</b>: CPA R$ 5,23 e ROAS 2,22 sobre o valor das compras.'],
+        ['🛒', '<b>4.839 vendas atribuídas em 22–25/11</b> (Meta 4.055 + Google 784): CPA R$ 5,28 e ROAS 2,25 sobre o valor das compras.'],
         ['🏆', '<b>Conversão</b>: 2.407 vendas a CPA R$ 3,43 (ROAS 3,41). <b>Remarketing</b>: 1.173 a R$ 3,77 (ROAS 3,06), com o público da LP do Esquenta.'],
         ['🧾', '<b>BI · edição 548</b>: 53.926 títulos e 18.614 compradores até 24/11. <b>1.391 clientes reativados</b> (sem compra desde abril/26) voltaram a comprar.'],
         ['🖱️', '<b>LP /blackfridaychegou</b>: 37.234 sessões e 2.657 sessões com clique em “comprar” (7,1%). Mais 31 vendas foram atribuídas às campanhas do Esquenta.']
@@ -1304,10 +1304,23 @@ const DATA = {
           { data: '2026-11-25', plataforma: 'meta', campanha: 'TRÁFEGO_Minas-Cap_BLACK-FRIDAY-2026', investimento: 772.3, impressoes: 40481, cliques: 1415, lpv: 960, leads: 4, videoViews: 2728, conversoes: 9, receita: 105 },
           { data: '2026-11-25', plataforma: 'meta', campanha: 'CONVERSÃO_Minas-Cap_BLACK-FRIDAY-2026', investimento: 1065.24, impressoes: 85346, cliques: 860, lpv: 558, leads: 135, videoViews: 1385, conversoes: 324, receita: 3490 },
           { data: '2026-11-25', plataforma: 'meta', campanha: 'REMARKET ING_Minas-Cap_BLACK-FRIDAY-2026', investimento: 587.4, impressoes: 46468, cliques: 525, lpv: 351, leads: 79, videoViews: 779, conversoes: 159, receita: 1915 },
+          // Google: todas as campanhas da conta na semana da Black (22–25/11) são da Black. Conversões = compras (data-driven, podem ter fração); receita = valor da conversão.
+          { data: '2026-11-22', plataforma: 'google', campanha: 'PMAX_minas-cap_AON', objetivo: 'conversao', investimento: 388.3116, impressoes: 54968, cliques: 1363, conversoes: 150.4412, receita: 1904.9449 },
+          { data: '2026-11-22', plataforma: 'google', campanha: 'DEMAND-GEN_minas-cap_AON', objetivo: 'trafego', investimento: 90.3661, impressoes: 2806, cliques: 77, conversoes: 3.0, receita: 35.0 },
+          { data: '2026-11-22', plataforma: 'google', campanha: 'Search_minas-cap_AON', objetivo: 'conversao', investimento: 209.1833, impressoes: 3658, cliques: 1133, conversoes: 66.9002, receita: 919.1293 },
           { data: '2026-11-22', plataforma: 'google', campanha: 'YOUTUBE_Minas-Cap_BLACK-FRIDAY', objetivo: 'video', investimento: 142.8389, impressoes: 15424, cliques: 14, videoViews: 11745 },
+          { data: '2026-11-23', plataforma: 'google', campanha: 'PMAX_minas-cap_AON', objetivo: 'conversao', investimento: 382.7552, impressoes: 43599, cliques: 806, conversoes: 63.345, receita: 850.409 },
+          { data: '2026-11-23', plataforma: 'google', campanha: 'DEMAND-GEN_minas-cap_AON', objetivo: 'trafego', investimento: 208.2301, impressoes: 15735, cliques: 119, conversoes: 23.0167, receita: 268.6128 },
+          { data: '2026-11-23', plataforma: 'google', campanha: 'Search_minas-cap_AON', objetivo: 'conversao', investimento: 420.1635, impressoes: 4689, cliques: 2247, conversoes: 172.0945, receita: 2065.3591 },
           { data: '2026-11-23', plataforma: 'google', campanha: 'YOUTUBE_Minas-Cap_BLACK-FRIDAY', objetivo: 'video', investimento: 142.9089, impressoes: 20887, cliques: 20, videoViews: 15968 },
+          { data: '2026-11-24', plataforma: 'google', campanha: 'PMAX_minas-cap_AON', objetivo: 'conversao', investimento: 1026.3624, impressoes: 90184, cliques: 1847, conversoes: 82.5519, receita: 1191.7938 },
+          { data: '2026-11-24', plataforma: 'google', campanha: 'DEMAND-GEN_minas-cap_AON', objetivo: 'trafego', investimento: 294.8418, impressoes: 17576, cliques: 280, conversoes: 7.3827, receita: 112.1697 },
+          { data: '2026-11-24', plataforma: 'google', campanha: 'Search_minas-cap_AON', objetivo: 'conversao', investimento: 319.0825, impressoes: 4247, cliques: 1326, conversoes: 175.3801, receita: 2268.1964 },
           { data: '2026-11-24', plataforma: 'google', campanha: 'YOUTUBE_Minas-Cap_BLACK-FRIDAY', objetivo: 'video', investimento: 342.7199, impressoes: 53370, cliques: 57, videoViews: 39200 },
-          { data: '2026-11-25', plataforma: 'google', campanha: 'YOUTUBE_Minas-Cap_BLACK-FRIDAY', objetivo: 'video', investimento: 97.6676, impressoes: 15877, cliques: 9, videoViews: 10457 },
+          { data: '2026-11-25', plataforma: 'google', campanha: 'PMAX_minas-cap_AON', objetivo: 'conversao', investimento: 568.186, impressoes: 48285, cliques: 961, conversoes: 24.0, receita: 335.0 },
+          { data: '2026-11-25', plataforma: 'google', campanha: 'DEMAND-GEN_minas-cap_AON', objetivo: 'trafego', investimento: 213.8044, impressoes: 9457, cliques: 168, conversoes: 1.0, receita: 5.0 },
+          { data: '2026-11-25', plataforma: 'google', campanha: 'Search_minas-cap_AON', objetivo: 'conversao', investimento: 188.7748, impressoes: 1330, cliques: 371, conversoes: 15.0, receita: 190.0 },
+          { data: '2026-11-25', plataforma: 'google', campanha: 'YOUTUBE_Minas-Cap_BLACK-FRIDAY', objetivo: 'video', investimento: 100.2056, impressoes: 16351, cliques: 9, videoViews: 10785 },
           { data: '2026-11-22', plataforma: 'tiktok', campanha: 'CLIQUE_Minas-Cap_BLACK-FRIDAY-26', investimento: 774.1, impressoes: 79008, cliques: 13413 },
           { data: '2026-11-23', plataforma: 'tiktok', campanha: 'CLIQUE_Minas-Cap_BLACK-FRIDAY-26', investimento: 1042.85, impressoes: 96053, cliques: 19426 },
           { data: '2026-11-24', plataforma: 'tiktok', campanha: 'CLIQUE_Minas-Cap_BLACK-FRIDAY-26', investimento: 1075.31, impressoes: 92767, cliques: 18632 },
@@ -1390,7 +1403,7 @@ const CONTEUDO = {
     conclusao: {
       resultados: [
         'Esquenta (06–21/11): R$ 19.718 em cinco plataformas e 1.295 cadastros na LP pelo GA4, sendo 930 da mídia paga (R$ 21,20 por cadastro).',
-        'Black Friday (22–25/11, 25/11 parcial): 4.055 vendas atribuídas pelo Meta (CPA R$ 5,23). No BI, a edição 548 soma 53.926 títulos (R$ 269.630) até 24/11.'
+        'Black Friday (22–25/11, 25/11 parcial): R$ 33 mil em mídia e 4.839 vendas atribuídas (Meta 4.055 + Google 784), CPA R$ 5,28. No BI, a edição 548 soma 53.926 títulos (R$ 269.630) até 24/11.'
       ],
       aprendizados: [
         'Para captar cadastro, o Meta foi o canal mais eficiente (taxa de cadastro de 7,0% das sessões); Google e TikTok geraram volume de visitas com conversão baixa.',
@@ -3007,18 +3020,33 @@ function etapasDe(f) {
       video
     ].filter(Boolean);
   }
+  // mídias sem venda atribuída (Google YouTube, TikTok, UOL, Programática): só os KPIs de mídia, tráfego e alcance
+  if (!['todas', 'meta', 'google'].includes(state.plataforma)) {
+    const al = alcanceFase(f), sesP = sessPagas(rowsOf('ga4', [f]));
+    return [
+      { k: 'trafego', n: 'Tráfego', d: 'Quanto a mídia levou de pessoas para a LP e o site. Esta mídia não tem venda atribuída na Black.', m: [
+        ['Cliques', F.intC(a.cli), 'pl', '', 1], ['CTR', F.pct(a.ctr), 'pl', 'cliques ÷ impressões', 1], ['CPC', F.brl2(a.cpc), 'pl', 'custo por clique', 1],
+        ['Sessões LP + site', F.intC(sesP), 'ga', 'mídia paga'], ['Custo por sessão', F.brl2(ok(a.inv) && sesP ? a.inv / sesP : null), 'mx', 'investimento ÷ sessões']] },
+      { k: 'alcance', n: 'Alcance', d: 'Quantas pessoas a mídia atingiu, com que frequência e a que custo.', m: [
+        ['Impressões', F.intC(a.imp), 'pl', '', 1], ['Alcance', F.intC(al.v), 'pl', ok(al.v) ? 'pessoas' : 'a plataforma não informa alcance', 1],
+        ['Frequência', F.dec(al.freq), 'pl', 'impressões ÷ alcance'], ['CPM', F.brl2(a.cpm), 'pl', 'custo por mil impressões', 1]] },
+      video
+    ].filter(Boolean);
+  }
   const ses = sessPagas(rowsOf('ga4', [f])), L = cli().fases[f].lp || {}, e8 = biEd(548), B = cli().bi || {};
   const c = agg(rows.filter(r => r.objetivo === 'conversao')), rm = agg(rows.filter(r => r.objetivo === 'remarketing'));
   return [
     { k: 'trafego', n: 'Tráfego', d: 'Quanto os anúncios levaram de pessoas para a LP e o site.', m: [
       ['Sessões LP + site', F.intC(ses), 'ga', 'mídia paga', 1], ['CTR', F.pct(a.ctr), 'pl', 'cliques ÷ impressões'], ['CPC', F.brl2(a.cpc), 'pl', 'custo por clique'],
       ['Clique para compra', F.pct(todas && L.sessoes ? L.sessoesCompra / L.sessoes * 100 : null), 'ga', 'sessões da LP com clique em comprar', 1]] },
-    { k: 'conversao', n: 'Vendas', d: 'Objetivo principal da Black: vendas. Total de todas as campanhas da Black e, abaixo, quanto veio de cada uma.', m: [
-      ['Vendas', F.intC(a.conv), 'pl', 'todas as campanhas', 1], ['CPA', F.brl2(a.cpa), 'pl', 'investimento ÷ vendas', 1],
-      ['Receita atribuída', F.brlC(a.rec), 'px', 'valor das compras', 1], ['ROAS', F.x(a.roas), 'px', 'receita ÷ investimento', 1],
+    { k: 'conversao', n: 'Vendas', d: 'Objetivo principal da Black: vendas. Total atribuído pelas plataformas (Meta + Google) e, abaixo, de onde vieram.', m: [
+      ['Vendas', F.intC(a.conv), 'pl', 'Meta + Google', 1], ['CPA', F.brl2(a.cpa), 'pl', 'investimento ÷ vendas', 1],
+      ['Receita atribuída', F.brlC(a.rec), 'pl', 'valor das compras', 1], ['ROAS', F.x(a.roas), 'pl', 'receita ÷ investimento', 1],
       ['SEP', 'De onde vieram as vendas'],
-      ['Campanha Conversão', F.intC(c.conv), 'pl', 'vendas · CPA ' + F.brl2(c.cpa)], ['Campanha Remarketing', F.intC(rm.conv), 'pl', 'vendas · CPA ' + F.brl2(rm.cpa)],
-      ['Campanhas Alcance + Tráfego', F.intC(agg(rows.filter(r => r.objetivo === 'alcance' || r.objetivo === 'trafego')).conv), 'pl', 'vendas · medidas por CPM e custo por visita']] },
+      ...[['Meta · Conversão', r => r.plataforma === 'meta' && r.objetivo === 'conversao'], ['Meta · Remarketing', r => r.plataforma === 'meta' && r.objetivo === 'remarketing'],
+        ['Meta · Alcance + Tráfego', r => r.plataforma === 'meta' && (r.objetivo === 'alcance' || r.objetivo === 'trafego')],
+        ['Google · PMAX + Search', r => r.plataforma === 'google' && r.objetivo === 'conversao'], ['Google · Demand Gen', r => r.plataforma === 'google' && r.objetivo === 'trafego']]
+        .map(([n, fn]) => { const x = agg(rows.filter(fn)); return ok(x.conv) && x.conv > 0 ? [n, F.intC(x.conv), 'pl', /Alcance|Demand/.test(n) ? 'vendas · campanha medida por alcance e tráfego, não por CPA' : 'vendas · CPA ' + F.brl2(x.cpa)] : null; }).filter(Boolean)] },
     { k: 'remarketing', n: 'Remarketing', d: 'Vendas de quem já visitou a LP do Esquenta ou o site.', m: [
       ['Vendas', F.intC(rm.conv), 'pl', 'atribuídas', 1], ['CPA', F.brl2(rm.cpa), 'pl', 'investimento ÷ vendas', 1],
       ['ROAS', F.x(rm.roas), 'px', 'receita ÷ investimento'], ['Taxa de conversão', F.pct(rm.tx), 'pl', 'vendas ÷ cliques'],
@@ -3029,7 +3057,7 @@ function etapasDe(f) {
       ['Clientes reativados', F.intC(biOk ? B.blackReativados : null), 'bi', biOk ? nf(B.blackReativados / B.blackCompradores * 100, 1) + '% dos compradores' : '', 1],
       ['Novos clientes', F.intC(biOk ? e8.novos : null), 'bi']] },
     video
-  ].filter(Boolean);
+  ].filter(Boolean).filter(x => state.plataforma !== 'google' || ['trafego', 'conversao', 'video'].includes(x.k));
 }
 const FTN = { pl: 'Plataformas', ga: 'GA4', px: 'Meta pixel', bi: 'BI', mx: 'Plataformas + GA4' };
 const card3 = ([l, v, ft, s, hl]) => l === 'SEP' ? `<div class="c3-sep">${v}</div>` : `<div class="c3 ${hl ? 'hl' : ''}"><span title="${esc(glossFor(l))}">${l}</span><b class="${v === '—' ? 'empty-v' : ''}">${v}</b><small><i class="f3 f3-${ft}">${FTN[ft]}</i>${s ? ' · ' + s : ''}</small></div>`;
@@ -3047,7 +3075,7 @@ function renderKpis2() {
       const et = etapasDe(f), pick = (k, i) => (et.find(x => x.k === k) || { m: [] }).m[i];
       const hero = f === 'esquenta' ? [pick('leads', 0), pick('leads', 1)] : [pick('conversao', 0), pick('conversao', 1)];
       const sec = f === 'esquenta' ? [pick('trafego', 0), pick('leads', 2), pick('base', 0), pick('base', 1)] : [pick('conversao', 2), pick('conversao', 3), pick('remarketing', 0), pick('bi', 0)];
-      if (f === 'black') { const a = agg(rowsOf('midia', [f])); hero[0] = ['Vendas', F.intC(a.conv), 'pl', 'todas as campanhas', 1]; hero[1] = ['CPA', F.brl2(a.cpa), 'pl', 'investimento ÷ vendas', 1]; sec[0] = ['Receita atribuída', F.brlC(a.rec), 'px', 'valor das compras']; sec[1] = ['ROAS', F.x(a.roas), 'px']; sec[2] = ['Vendas no remarketing', sec[2][1], 'pl', 'CPA ' + F.brl2(agg(rowsOf('midia', [f]).filter(r => r.objetivo === 'remarketing')).cpa)]; }
+      if (f === 'black') { const a = agg(rowsOf('midia', [f])); hero[0] = ['Vendas', F.intC(a.conv), 'pl', 'Meta + Google', 1]; hero[1] = ['CPA', F.brl2(a.cpa), 'pl', 'investimento ÷ vendas', 1]; sec[0] = ['Receita atribuída', F.brlC(a.rec), 'pl', 'valor das compras']; sec[1] = ['ROAS', F.x(a.roas), 'pl']; sec[2] = ['Vendas no remarketing', sec[2][1], 'pl', 'CPA ' + F.brl2(agg(rowsOf('midia', [f]).filter(r => r.objetivo === 'remarketing')).cpa)]; }
       return `<div class="ovc ${f === 'esquenta' ? 'esq' : 'blk'}">
         <div class="ovc-h"><span class="ph-pill ${f === 'esquenta' ? 'esq' : 'blk'}">${FASES[f].nome}</span><small>${f === 'esquenta' ? 'captação de cadastros, base e reativação' : 'vendas, receita, CPA e ROAS'}</small></div>
         <div class="ovc-hero">${hero.filter(Boolean).map(card3).join('')}</div>
