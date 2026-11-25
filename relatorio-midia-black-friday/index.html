@@ -507,7 +507,12 @@ ul.resumo li::before{content:"";position:absolute;left:0;top:7px;width:7px;heigh
 .lpb-h{display:flex;flex-direction:column;gap:4px;margin-bottom:10px;}
 .lpb-h b{font-size:13.5px;}
 .lpb-h a{font-size:12px;color:var(--red);font-weight:600;word-break:break-all;}
-.lpb table.tq{min-width:0;width:100%;}
+.lpb table.tq{min-width:0;width:100%;table-layout:fixed;}
+.lpb table.tq th,.lpb table.tq td{white-space:normal;overflow-wrap:anywhere;}
+.lpb table.tq th:nth-child(1),.lpb table.tq td:nth-child(1){width:56%;}
+.lpb table.tq th:nth-child(2),.lpb table.tq td:nth-child(2){width:18%;}
+.lpb table.tq th:nth-child(3),.lpb table.tq td:nth-child(3){width:26%;}
+.lpb{min-width:0;}
 .srcb{display:inline-block;font-size:10px;font-weight:700;padding:2px 7px;border-radius:999px;}
 .srcb.ga{background:#E8F0FE;color:#1A4FB0;}
 .srcb.px{background:#E9F6EE;color:#1E6B3F;}
@@ -2930,7 +2935,7 @@ function renderLP() {
         ['Sessões com clique em “comprar” (btn_compra)', F.int(L.sessoesCompra), 'GA4'],
         ['Taxa de clique para compra', F.pct(ok(L.sessoesCompra) && L.sessoes ? L.sessoesCompra / L.sessoes * 100 : null), 'GA4'],
         ['Cliques em “comprar” (total de eventos)', F.int(L.btnCompra), 'GA4'],
-        ['Cadastros e CPL', 'não se aplica', 'LP de compra, sem formulário de cadastro']
+        ['Cadastros e CPL', '—', 'não se aplica (LP de compra)']
       ];
     }
     return `<div class="lpb ${f === 'esquenta' ? 'esq' : 'blk'}"><div class="lpb-h"><b>${FASES[f].nome}</b><span>${links || '<em class="na">link pendente</em>'}</span></div>
