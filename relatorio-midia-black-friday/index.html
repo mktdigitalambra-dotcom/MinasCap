@@ -3142,16 +3142,15 @@ const card3 = ([l, v, ft, s, hl]) => l === 'SEP' ? `<div class="c3-sep">${v}</di
 /* ---------- meta da mídia (Black) ---------- */
 function metaMidiaHtml(compacto) {
   const z = cli().fases.black, M = z.metaMidia; if (!M || !['todas'].includes(state.plataforma) || temFiltro()) return '';
-  // a meta da projeção está em títulos (vendas TT/online/mídia em títulos de R$ 5); as plataformas contam compras.
-  // títulos da mídia = receita da mídia (valor das compras) ÷ R$ 5 por título
-  const a = agg(rowsOf('midia', ['black'])), v = Math.round((a.rec || 0) / 5), pc = v / M.desejada * 100;
+  // atingimento = vendas de mídia (compras atribuídas por Meta + Google) ÷ meta de mídia (desejada e mínima)
+  const a = agg(rowsOf('midia', ['black'])), v = Math.round(a.conv || 0), pc = v / M.desejada * 100;
   const dias = (x, y) => Math.round((new Date(y) - new Date(x)) / 864e5) + 1;
   const ult = [...new Set(rowsOf('midia', ['black']).map(r => r.data).filter(Boolean))].sort().pop();
   const ritmo = ult ? Math.min(1, dias(z.inicio, ult) / dias(z.inicio, z.fim)) : null;
   return `<div class="mm ${compacto ? 'mm-c' : ''}">
-    <div class="mm-h"><span>Meta da mídia · títulos vendidos</span><b>${nf(pc, 1)}%</b></div>
+    <div class="mm-h"><span>Meta da mídia · vendas</span><b>${nf(pc, 2)}%</b></div>
     <div class="mm-bar"><i style="width:${Math.min(pc, 100)}%"></i>${ritmo != null && ritmo < 1 ? `<em style="left:${ritmo * 100}%"></em>` : ''}</div>
-    <small>${F.int(v)} de ${F.int(M.desejada)} títulos (meta desejada) · mínima ${F.int(M.minima)} (${nf(v / M.minima * 100, 1)}%) · títulos = receita da mídia ÷ R$ 5 (${F.int(a.conv)} compras)${ritmo != null && ritmo < 1 ? ` · linha preta: ${nf(ritmo * 100, 0)}% da semana decorrida` : ''}</small>
+    <small>Vendas de mídia: ${F.int(v)} · meta desejada: ${F.int(M.desejada)} (${nf(pc, 2)}%) · meta mínima: ${F.int(M.minima)} (${nf(v / M.minima * 100, 2)}%)${ritmo != null && ritmo < 1 ? ` · linha preta: ${nf(ritmo * 100, 0)}% da semana decorrida` : ''}</small>
   </div>`;
 }
 
