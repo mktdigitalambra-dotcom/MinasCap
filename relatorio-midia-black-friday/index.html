@@ -686,12 +686,6 @@ table.tq tr.tot td{background:#f1f1ec!important;border-top:2px solid rgba(0,0,0,
     <div class="dest" id="destaques"></div>
   </section>
 
-  <section class="card sec" id="secMeta">
-    <div class="sh"><div><h2>Acompanhamento da meta de investimento</h2><p id="metaCtx"></p></div></div>
-    <div id="metaBody" class="mt-grid"></div>
-    <p class="hint">Planejado: planilha semanal do Minas Cap (aba “Consolidado - AON+Black Friday”), Meta com imposto. Realizado: plataformas e relatórios de UOL e Programática, como no restante do relatório.</p>
-  </section>
-
   <section class="card sec" id="secDaily">
     <div class="sh"><div><h2>Evolução diária</h2><p>Como o investimento e os resultados se distribuíram no período</p></div></div>
     <div id="geralLines" style="display:none">
@@ -748,7 +742,7 @@ table.tq tr.tot td{background:#f1f1ec!important;border-top:2px solid rgba(0,0,0,
       <div class="tw"><table class="t tq esq" id="quadroEsq"></table></div></div>
       <div id="qBlkBox"><div class="ct" style="margin-top:18px">Quadro 2 · Black Friday <small>principais indicadores de vendas por plataforma</small></div>
       <div class="tw"><table class="t tq blk" id="quadroBlk"></table></div></div>
-      <p class="hint">Meta com imposto. Alcance só no Meta e no TikTok (as demais mídias não informam pessoas alcançadas); o total soma as duas plataformas e pode ter sobreposição. Sessões e cadastros pelo GA4, por origem da sessão. Vendas atribuídas pela própria plataforma; receita = valor das compras no pixel do Meta. Vendas e receita oficiais estão no BI.</p>
+      <p class="hint">Meta com imposto. Alcance só no Meta e no TikTok (as demais mídias não informam pessoas alcançadas); o total soma as duas plataformas e pode ter sobreposição. Sessões e cadastros pelo GA4, por origem da sessão. Vendas atribuídas pela própria plataforma (Meta e Google); receita = valor das compras atribuídas aos anúncios.</p>
     </div>
     <div id="platPhase">
     <div class="tw" style="display:none"><table class="t" id="platTable"></table></div>
@@ -915,7 +909,7 @@ const DATA = {
         ['🎯', '<b>930 cadastros na LP vindos da mídia paga</b> (GA4), a R$ 21,20 por cadastro.'],
         ['📣', '<b>1,34 milhão de pessoas alcançadas</b>; cerca de 211 mil nos conjuntos de reativação (sem compra desde abr/26).'],
         ['🏆', '<b>Meta</b> gerou 68% dos cadastros da mídia paga com 30% da verba (CPL R$ 9,34). A campanha LEADS teve CPL de R$ 1,36 no pixel.'],
-        ['📈', '<b>Base cresceu no BI</b>: 2.039 novos clientes nas edições 546 e 547, +15,5% sobre as duas edições anteriores (1.765).']
+        ['🚦', '<b>Google e TikTok</b> levaram 38,9 mil sessões à LP (78% do tráfego pago), com CPC de R$ 0,14 e R$ 0,08.']
       ],
       black: [
         ['🛒', '<b>4.839 vendas atribuídas em 22–25/11</b> (Meta 4.055 + Google 784): CPA R$ 5,28 e ROAS 2,25 sobre o valor das compras.'],
@@ -1445,16 +1439,16 @@ const CONTEUDO = {
     conclusao: {
       resultados: [
         'Esquenta (06–21/11): R$ 19.718 em cinco plataformas e 1.295 cadastros na LP pelo GA4, sendo 930 da mídia paga (R$ 21,20 por cadastro).',
-        'Black Friday (22–25/11, 25/11 parcial): R$ 33 mil em mídia e 4.839 vendas atribuídas (Meta 4.055 + Google 784), CPA R$ 5,28. No BI, a edição 548 soma 53.926 títulos (R$ 269.630) até 24/11.'
+        'Black Friday (22–25/11, 25/11 parcial): R$ 33 mil em mídia e 4.839 vendas atribuídas (Meta 4.055 + Google 784), CPA R$ 5,28.'
       ],
       aprendizados: [
         'Para captar cadastro, o Meta foi o canal mais eficiente (taxa de cadastro de 7,0% das sessões); Google e TikTok geraram volume de visitas com conversão baixa.',
         'A campanha LEADS, que só entrou em 16/11, teve o menor custo por lead do Esquenta (R$ 1,36 no pixel).'
       ],
       limitacoes: [
-        'O BI mostra crescimento da base (+15,5% de novos clientes nas edições do Esquenta), mas sem CPF/e-mail dos cadastros da LP não dá para ligar cada cadastro a uma compra na Black.',
+        'Sem CPF/e-mail dos cadastros da LP não dá para ligar cada cadastro do Esquenta a uma compra na Black.',
         'Públicos com Advantage+ ligado: os resultados “por público” não ficam restritos às listas do Insider.',
-        'UOL e Programática da Black ainda não recebidos. A separação entre comprador reativado e comprador novo no BI depende de uma consulta pesada, ainda não rodada.'
+        'Vendas atribuídas pelas plataformas: Meta e Google medem cada um pelo seu lado e a mesma compra pode aparecer nas duas.'
       ],
       proximos: [
         'Cruzar os cadastros do Esquenta (CPF/e-mail) com as vendas da Black no ERP.',
@@ -2210,7 +2204,7 @@ const GLOSS = {
   'CPA': 'Custo por aquisição: investimento ÷ compras atribuídas.',
   'Receita ERP': 'Receita registrada no sistema de vendas: a fonte oficial.',
   'Vendas ERP': 'Vendas registradas no sistema de vendas: a fonte oficial.',
-  'Receita': 'Receita da mídia: valor das compras que Meta e Google atribuem aos anúncios. Receita total da edição: todas as vendas da edição no BI, de qualquer canal.',
+  'Receita': 'Receita da mídia: valor das compras que Meta e Google atribuem aos anúncios.',
   'Receita da mídia': 'Valor das compras que Meta e Google atribuem aos próprios anúncios (pixel/tag de conversão).',
   'Receita total da edição': 'Todas as vendas da edição 548 registradas no BI, de qualquer canal (mídia, orgânico, CRM, lojas físicas).',
   'Novos clientes Minas Cap': 'Pessoas que se cadastraram pela primeira vez no Minas Cap (BI), por qualquer canal, nas edições do Esquenta. Não são visitantes nem cadastros da LP.',
@@ -3082,9 +3076,8 @@ function etapasDe(f) {
       { k: 'leads', n: 'Leads', d: 'Objetivo principal do Esquenta: cadastros na LP.', m: [
         ['Cadastros na LP', F.intC(ci.v), 'ga', 'mídia paga', 1], ['CPL', F.brl2(ci.cpl), 'mx', 'investimento ÷ cadastros', 1],
         ['Taxa de cadastro', F.pct(tx), 'ga', 'cadastros ÷ sessões'], ['Leads no pixel', F.intC(m.leads), 'px', 'Meta · CPL ' + F.brl2(m.cpl)]] },
-      { k: 'base', n: 'Base e reativação', d: 'Crescimento da base e alcance nos públicos inativos.', m: [
-        ['Novos clientes Minas Cap', F.intC(novos), 'bi', ok(novos) ? `cadastros novos no Minas Cap (qualquer canal) nas edições do Esquenta · ${novos > antes ? '+' : ''}${nf((novos / antes - 1) * 100, 1)}% vs 2 edições anteriores` : 'sem segmentação por mídia', 1],
-        ['Inativos alcançados', F.intC(baseInativa()), 'pl', 'pessoas alcançadas pelos anúncios do Meta nos públicos de reativação (clientes sem compra desde abr/26)', 1]] },
+      { k: 'base', n: 'Reativação', d: 'Alcance dos anúncios nos públicos de clientes inativos (sem compra desde abril/26).', m: [
+        ['Inativos alcançados', F.intC(baseInativa()), 'pl', 'Meta · públicos sem compra desde abr/26', 1]] },
       video
     ].filter(Boolean);
   }
@@ -3140,12 +3133,11 @@ function renderKpis2() {
     $('#kPerf').innerHTML = `<div class="ov2">${fases.map(f => {
       const et = etapasDe(f), pick = (k, i) => (et.find(x => x.k === k) || { m: [] }).m[i];
       const hero = f === 'esquenta' ? [pick('leads', 0), pick('leads', 1)] : [pick('conversao', 0), pick('conversao', 1)];
-      const sec = f === 'esquenta' ? [pick('trafego', 0), pick('leads', 2), pick('base', 0), pick('base', 1)] : [pick('conversao', 2), pick('conversao', 3), pick('remarketing', 0), pick('bi', 0)];
+      const sec = f === 'esquenta' ? [pick('trafego', 0), pick('leads', 2), pick('trafego', 3), pick('base', 0)] : [pick('conversao', 2), pick('conversao', 3), pick('trafego', 0), pick('trafego', 3)];
       if (f === 'black') { const a = agg(rowsOf('midia', [f])), Bq = cli().bi || {}, biOk = state.plataforma === 'todas';
         hero[0] = ['Vendas', F.intC(a.conv), 'pl', 'Meta + Google', 1]; hero[1] = ['CPA', F.brl2(a.cpa), 'pl', 'investimento ÷ vendas', 1];
         sec[0] = ['Receita da mídia', F.brlC(a.rec), 'pl', 'compras atribuídas aos anúncios']; sec[1] = ['ROAS', F.x(a.roas), 'pl', 'receita da mídia ÷ investimento'];
-        sec[2] = ['Receita total da edição', F.brlC(biOk ? biEd(548).receita : null), 'bi', 'todas as vendas, qualquer canal · até 24/11'];
-        sec[3] = ['Clientes reativados', F.intC(biOk ? Bq.blackReativados : null), 'bi', 'sem compra desde abr/26 e voltaram'];}
+}
       return `<div class="ovc ${f === 'esquenta' ? 'esq' : 'blk'}">
         <div class="ovc-h"><span class="ph-pill ${f === 'esquenta' ? 'esq' : 'blk'}">${FASES[f].nome}</span><small>${f === 'esquenta' ? 'captação de cadastros, base e reativação' : 'vendas, receita, CPA e ROAS'}</small></div>
         <div class="ovc-hero">${hero.filter(Boolean).map(card3).join('')}</div>
@@ -3213,7 +3205,7 @@ function renderMetaInvest() {
 }
 
 function renderAll() {
-  renderNav(); renderPlatChips(); renderHero(); renderResumo(); renderKpis2(); renderMetaInvest();
+  renderNav(); renderPlatChips(); renderHero(); renderResumo(); renderKpis2();
   const G = state.visao === 'geral';
 
   $('#quadros').style.display = ''; $('#platPhase').style.display = G ? 'none' : '';
