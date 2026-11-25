@@ -421,6 +421,15 @@ ul.resumo li::before{content:"";position:absolute;left:0;top:7px;width:7px;heigh
 .et-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;}
 @media (max-width:900px){.et-grid{grid-template-columns:repeat(2,minmax(0,1fr));}}
 .et-grid .c3 b{font-size:40px;}
+.mm{margin:14px 0 4px;padding:12px 16px;border:1px solid var(--border);border-radius:12px;background:#fff;}
+.mm-c{margin:12px 0 0;padding:10px 0 12px;border:0;border-bottom:1px solid rgba(0,0,0,.07);border-radius:0;}
+.mm-h{display:flex;justify-content:space-between;align-items:baseline;}
+.mm-h span{font-size:11px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:#888;}
+.mm-h b{font-family:"Bebas Neue","Impact",sans-serif;font-weight:400;font-size:30px;color:var(--red);}
+.mm-bar{position:relative;height:12px;background:#f0f0ec;border-radius:6px;margin:6px 0;}
+.mm-bar i{display:block;height:100%;background:var(--red);border-radius:6px;}
+.mm-bar em{position:absolute;top:-3px;bottom:-3px;width:2px;background:#000;}
+.mm small{font-size:10.5px;color:#888;}
 .mt-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(420px,1fr));gap:14px;}
 .mtb{border:1px solid var(--border);border-radius:14px;padding:14px 16px;}
 .mtb.esq{border-top:3px solid #E0A800;}
@@ -1313,12 +1322,14 @@ const DATA = {
         inicio: '2026-11-22', fim: '2026-11-28',
         plataformas: ['meta',  'google',  'tiktok',  'uol',  'programatica'],
         ticket: null,     // edição 548 = R$ 5 por título (BI); receita usa o valor da compra do pixel, não compras × ticket
-        lp: { urls: ['https://quemsomos.minascap.com/blackfridaychegou/'], sessoes: 37234, sessoesCompra: 2657, btnCompra: 4732,
-          nota: 'GA4 da LP (propriedade 558042593), 22–25/11 (25/11 parcial): sessões com entrada em /blackfridaychegou, todas as origens; btn_compra = clique no botão de compra (4.732 cliques em 2.657 sessões).' },        // R$ por compra na edição da Black: receita = compras × ticket (confirmar)
+        lp: { urls: ['https://quemsomos.minascap.com/blackfridaychegou/'], sessoes: 37522, usuarios: 24838, usuariosUnicos: 25671, sessoesCompra: 2715, btnCompra: 4804,
+          nota: 'GA4 da LP (propriedade 558042593), 22–25/11 (25/11 parcial), sessões com entrada em /blackfridaychegou, todas as origens. Usuários = usuários ativos; usuários únicos = total de usuários distintos. Clique para compra = evento btn_compra (4.804 cliques em 2.715 sessões).' },        // R$ por compra na edição da Black: receita = compras × ticket (confirmar)
         planejado: {},
         alcance: { meta: 1825063, tiktok: 24193 },   // 22–25/11: soma do alcance das campanhas no período (Windsor); pode haver sobreposição
         // compras atribuídas na Black às campanhas do Esquenta (já desligadas): LEADS 20, TRÁFEGO 9, VÍDEO 2 (Meta, 22–25/11)
         esquentaCompras: 31,
+        // meta da mídia — "Minas Cap - Projeções BF.xlsx" (SharePoint Marketing): venda TT desejada 1.250.000; online 375.000; mídia 48.750 (mínima 42.000)
+        metaMidia: { desejada: 48750, minima: 42000 },
         campanhas: [],
         midia: [
           // Windsor.ai (APIs de Meta, Google e TikTok), campanhas BLACK, 22–25/11/2026. 25/11 é dia em andamento (atualização de 25/11).
@@ -2682,13 +2693,13 @@ function renderDayTabs() {
   const cadR = esq && usaBase ? rowsOf('cadastros', ['esquenta']).filter(r => normPlat(r.plataforma) === p) : null;
   const vendeu = !(V === 'black') || agg(rows).conv > 0;
   const l2 = V === 'geral' ? null : esq ? (cadR ? 'Cadastros na LP (GA4)' : 'Leads (pixel)') : vendeu ? 'Compras atribuídas' : 'Cliques';
-  $('#platDayTitle').innerHTML = `${PLATAFORMAS[p].nome}: investimento diário (R$)` + (l2 ? ` × ${l2.charAt(0).toLowerCase() + l2.slice(1)}` : ' por fase');
+  $('#platDayTitle').innerHTML = `${PLATAFORMAS[p].nome}: investimento diário (R$)` + (l2 ? ` × ${l2.charAt(0).toLowerCase() + l2.slice(1)}` : ' por fase') + (V === 'esquenta' ? ' e CPL' : V === 'black' && agg(rows).conv > 0 ? ' e CPA' : '');
   const msg = !rows.length ? 'Aguardando o relatório desta mídia.' : !dates.length ? 'O relatório desta mídia não tem quebra diária (só o total do período).' : '';
   $('#platDayEmpty').textContent = msg;
   setEmpty('wPlatDay', !!msg || !window.Chart);
   $('#platDayHint').innerHTML = msg ? '' : V === 'geral' ? 'Só investimento: os resultados de cada fase são analisados nas abas de cada fase.'
     : esq ? (cadR ? 'Cadastros pelo GA4 da LP com origem nesta mídia.' : 'Leads atribuídos pelo pixel (cadastros do GA4 não confirmados nesta praça).')
-    : vendeu ? 'Compras atribuídas pela própria plataforma (não são vendas confirmadas no ERP).' : 'Esta mídia não tem venda atribuída na Black: o gráfico mostra investimento e cliques por dia (25/11 parcial).';
+    : vendeu ? 'Compras atribuídas pela própria plataforma. Linha dourada: CPA do dia (dias com pelo menos 5 compras).' : 'Esta mídia não tem venda atribuída na Black: o gráfico mostra investimento e cliques por dia (25/11 parcial).';
   ['sv_imp', 'sv_cli', 'sv_alc'].forEach(kill);
   $('#svGrid').style.display = 'none'; $('#wPlatDay').style.display = '';
   if (!msg && V === 'black' && semVenda(p) && window.Chart) {
@@ -2716,13 +2727,22 @@ function renderDayTabs() {
       : vendeu ? dates.map(d => agg(dated.filter(r => r.data === d)).conv) : dates.map(d => agg(dated.filter(r => r.data === d)).cli);
     datasets = [
       { type: 'bar', label: 'Investimento (R$)', money: true, data: dates.map(d => agg(dated.filter(r => r.data === d)).inv), backgroundColor: PLATAFORMAS[p].cor + 'CC', borderRadius: 3, maxBarThickness: 48, yAxisID: 'y' },
-      { type: 'line', label: l2, data: res, borderColor: '#000', backgroundColor: '#D9A520', borderWidth: 2, pointRadius: 3, pointBackgroundColor: '#D9A520', pointBorderColor: '#000', tension: .3, yAxisID: 'y2' }
+      { type: 'line', label: l2, data: res, borderColor: '#000', backgroundColor: '#000', borderWidth: 2, pointRadius: 3, tension: .3, yAxisID: 'y2' }
     ];
+    // custo por resultado na mesma visualização: CPA na Black (Meta, Google), CPL no Esquenta
+    if (esq || vendeu) {
+      datasets.push({ type: 'line', label: esq ? 'CPL' : 'CPA', custo: true, data: dates.map((d, i) => { const x = agg(dated.filter(r => r.data === d)); return !(res[i] >= 5) ? null : esq ? (ok(x.inv) ? x.inv / res[i] : null) : x.cpa; }),
+        borderColor: '#D9A520', backgroundColor: '#D9A520', borderWidth: 2, borderDash: [5, 4], pointRadius: 4, pointStyle: 'rectRot', tension: .3, yAxisID: 'y3', spanGaps: true,
+        datalabels: { display: c => c.dataset.data[c.dataIndex] != null, align: 'top', anchor: 'end', offset: 4, color: '#8A5A00', backgroundColor: '#FFF4DB', borderRadius: 3, padding: 2, font: { size: 10, weight: '600', family: 'Inter' }, formatter: v => 'R$ ' + nf(v, 2) } });
+      o.scales.y3 = { display: false, beginAtZero: true, grace: '25%' };
+    }
     o.scales.y = { position: 'left', grid: { color: 'rgba(0,0,0,.05)' }, ticks: { color: '#888', font: { size: 10 }, callback: brlTick }, title: { display: true, text: 'Investimento (R$)', color: '#888', font: { size: 10 } } };
     o.scales.y2 = { position: 'right', grid: { display: false }, beginAtZero: true, ticks: { color: '#000', font: { size: 10 } }, title: { display: true, text: l2, color: '#888', font: { size: 10 } } };
   }
-  o.plugins.tooltip = { callbacks: { label: c => c.parsed.y == null ? null : c.dataset.label + ': ' + (c.dataset.money ? F.brl(c.parsed.y) : F.int(c.parsed.y)) } };
-  charts.cPlatDay = new Chart($('#cPlatDay'), { type: 'bar', data: { labels: dates.map(dBR), datasets }, options: o });
+  o.plugins.tooltip = { callbacks: { label: c => c.parsed.y == null ? null : c.dataset.label + ': ' + (c.dataset.custo ? F.brl2(c.parsed.y) : c.dataset.money ? F.brl(c.parsed.y) : F.int(c.parsed.y)) } };
+  o.plugins.datalabels = { display: false };
+  o.layout = { padding: { top: 18 } };
+  charts.cPlatDay = new Chart($('#cPlatDay'), { type: 'bar', data: { labels: dates.map(dBR), datasets }, options: o, plugins: window.ChartDataLabels ? [window.ChartDataLabels] : [] });
 }
 $('#dayTabs').addEventListener('click', e => { const b = e.target.closest('[data-dt]'); if (!b) return; state.dayTab = b.dataset.dt; renderDayTabs(); renderCplDaily(); });
 $('#platTabs').addEventListener('click', e => { const b = e.target.closest('[data-pt]'); if (!b) return; state.platTab = b.dataset.pt; renderPlatTabs(); });
@@ -2963,11 +2983,11 @@ function renderLP() {
       ];
     } else {
       lines = [
-        ['Sessões na LP · todas as origens (22–25/11)', F.int(L.sessoes), 'GA4'],
-        ['Sessões com clique em “comprar” (btn_compra)', F.int(L.sessoesCompra), 'GA4'],
-        ['Taxa de clique para compra', F.pct(ok(L.sessoesCompra) && L.sessoes ? L.sessoesCompra / L.sessoes * 100 : null), 'GA4'],
-        ['Cliques em “comprar” (total de eventos)', F.int(L.btnCompra), 'GA4'],
-        ['Cadastros e CPL', '—', 'não se aplica (LP de compra)']
+        ['Sessões', F.int(L.sessoes), 'GA4'],
+        ['Usuários', F.int(L.usuarios), 'GA4'],
+        ['Usuários únicos', F.int(L.usuariosUnicos), 'GA4'],
+        ['Cliques em “comprar”', F.int(L.btnCompra), 'GA4'],
+        ['Taxa de clique para compra', F.pct(ok(L.sessoesCompra) && L.sessoes ? L.sessoesCompra / L.sessoes * 100 : null), 'GA4']
       ];
     }
     return `<div class="lpb ${f === 'esquenta' ? 'esq' : 'blk'}"><div class="lpb-h"><b>${FASES[f].nome}</b><span>${links || '<em class="na">link pendente</em>'}</span></div>
@@ -3071,7 +3091,7 @@ function etapasDe(f) {
     const novos = biOk ? (biEd(546).novos || 0) + (biEd(547).novos || 0) : null, antes = (biEd(544).novos || 0) + (biEd(545).novos || 0);
     return [
       { k: 'trafego', n: 'Tráfego', d: 'Quanto os anúncios levaram de pessoas para a LP.', m: [
-        ['Sessões na LP', F.intC(lp.ses), 'ga', 'mídia paga', 1], ['CTR', F.pct(a.ctr), 'pl', 'cliques ÷ impressões'], ['CPC', F.brl2(a.cpc), 'pl', 'custo por clique'],
+        ['Sessões na LP', F.intC(lp.ses), 'ga', 'mídia paga', 1], ['Cliques', F.intC(a.cli), 'pl', 'nos anúncios', 1], ['CTR', F.pct(a.ctr), 'pl', 'cliques ÷ impressões'], ['CPC', F.brl2(a.cpc), 'pl', 'custo por clique'],
         ['Custo por visita', F.brl2(ok(a.inv) && lp.ses ? a.inv / lp.ses : null), 'mx', 'investimento ÷ sessões', 1]] },
       { k: 'leads', n: 'Leads', d: 'Objetivo principal do Esquenta: cadastros na LP.', m: [
         ['Cadastros na LP', F.intC(ci.v), 'ga', 'mídia paga', 1], ['CPL', F.brl2(ci.cpl), 'mx', 'investimento ÷ cadastros', 1],
@@ -3086,8 +3106,8 @@ function etapasDe(f) {
     const al = alcanceFase(f), sesP = sessPagas(rowsOf('ga4', [f]));
     return [
       { k: 'trafego', n: 'Tráfego', d: 'Quanto a mídia levou de pessoas para a LP e o site. Esta mídia não tem venda atribuída na Black.', m: [
-        ['Cliques', F.intC(a.cli), 'pl', '', 1], ['CTR', F.pct(a.ctr), 'pl', 'cliques ÷ impressões', 1], ['CPC', F.brl2(a.cpc), 'pl', 'custo por clique', 1],
-        ['Sessões LP + site', F.intC(sesP), 'ga', 'mídia paga'], ['Custo por sessão', F.brl2(ok(a.inv) && sesP ? a.inv / sesP : null), 'mx', 'investimento ÷ sessões']] },
+        ['Cliques', F.intC(a.cli), 'pl', '', 1], ['Custo por visita', F.brl2(ok(a.inv) && sesP ? a.inv / sesP : null), 'mx', 'investimento ÷ sessões', 1],
+        ['CTR', F.pct(a.ctr), 'pl', 'cliques ÷ impressões'], ['CPC', F.brl2(a.cpc), 'pl', 'custo por clique'], ['Sessões LP + site', F.intC(sesP), 'ga', 'mídia paga']] },
       { k: 'alcance', n: 'Alcance', d: 'Quantas pessoas a mídia atingiu, com que frequência e a que custo.', m: [
         ['Impressões', F.intC(a.imp), 'pl', '', 1], ['Alcance', F.intC(al.v), 'pl', ok(al.v) ? 'pessoas' : 'a plataforma não informa alcance', 1],
         ['Frequência', F.dec(al.freq), 'pl', 'impressões ÷ alcance'], ['CPM', F.brl2(a.cpm), 'pl', 'custo por mil impressões', 1]] },
@@ -3109,13 +3129,32 @@ function etapasDe(f) {
         .map(([n, fn, extra]) => { const x = agg(rows.filter(fn)); return ok(x.conv) && x.conv > 0 ? [n, F.intC(x.conv), 'pl', /Alcance|Demand/.test(n) ? 'vendas · campanha medida por alcance e tráfego, não por CPA' : 'vendas · CPA ' + F.brl2(x.cpa) + (extra ? ' · ' + extra : '')] : null; }).filter(Boolean),
       ...(ok(esqC) ? [['Meta · campanhas do Esquenta', F.intC(esqC), 'pl', 'vendas na Black atribuídas às campanhas do Esquenta (já desligadas) · não entram no total acima']] : [])] },
     { k: 'trafego', n: 'Tráfego', d: 'Quanto os anúncios levaram de pessoas para a LP e o site.', m: [
-      ['Sessões LP + site', F.intC(ses), 'ga', 'mídia paga', 1], ['CTR', F.pct(a.ctr), 'pl', 'cliques ÷ impressões'], ['CPC', F.brl2(a.cpc), 'pl', 'custo por clique'],
-      ['Clique para compra', F.pct(todas && L.sessoes ? L.sessoesCompra / L.sessoes * 100 : null), 'ga', 'sessões da LP com clique em comprar', 1]] },
+      ['Sessões LP + site', F.intC(ses), 'ga', 'mídia paga', 1], ['Cliques', F.intC(a.cli), 'pl', 'nos anúncios', 1],
+      ['Custo por visita', F.brl2(ok(a.inv) && ses ? a.inv / ses : null), 'mx', 'investimento ÷ sessões', 1],
+      ['CTR', F.pct(a.ctr), 'pl', 'cliques ÷ impressões'], ['CPC', F.brl2(a.cpc), 'pl', 'custo por clique'],
+      ['Clique para compra', F.pct(todas && L.sessoes ? L.sessoesCompra / L.sessoes * 100 : null), 'ga', 'sessões da LP com clique em comprar']] },
     video
   ].filter(Boolean);
 }
 const FTN = { pl: 'Plataformas', ga: 'GA4', px: 'Meta pixel', bi: 'BI', mx: 'Plataformas + GA4' };
 const card3 = ([l, v, ft, s, hl]) => l === 'SEP' ? `<div class="c3-sep">${v}</div>` : `<div class="c3 ${hl ? 'hl' : ''}"><span title="${esc(glossFor(l))}">${l}</span><b class="${v === '—' ? 'empty-v' : ''}">${v}</b><small><i class="f3 f3-${ft}">${FTN[ft]}</i>${s ? ' · ' + s : ''}</small></div>`;
+
+/* ---------- meta da mídia (Black) ---------- */
+function metaMidiaHtml(compacto) {
+  const z = cli().fases.black, M = z.metaMidia; if (!M || !['todas'].includes(state.plataforma) || temFiltro()) return '';
+  // a meta da projeção está em títulos (vendas TT/online/mídia em títulos de R$ 5); as plataformas contam compras.
+  // títulos da mídia = receita da mídia (valor das compras) ÷ R$ 5 por título
+  const a = agg(rowsOf('midia', ['black'])), v = Math.round((a.rec || 0) / 5), pc = v / M.desejada * 100;
+  const dias = (x, y) => Math.round((new Date(y) - new Date(x)) / 864e5) + 1;
+  const ult = [...new Set(rowsOf('midia', ['black']).map(r => r.data).filter(Boolean))].sort().pop();
+  const ritmo = ult ? Math.min(1, dias(z.inicio, ult) / dias(z.inicio, z.fim)) : null;
+  return `<div class="mm ${compacto ? 'mm-c' : ''}">
+    <div class="mm-h"><span>Meta da mídia · títulos vendidos</span><b>${nf(pc, 1)}%</b></div>
+    <div class="mm-bar"><i style="width:${Math.min(pc, 100)}%"></i>${ritmo != null && ritmo < 1 ? `<em style="left:${ritmo * 100}%"></em>` : ''}</div>
+    <small>${F.int(v)} de ${F.int(M.desejada)} títulos (meta desejada) · mínima ${F.int(M.minima)} (${nf(v / M.minima * 100, 1)}%) · títulos = receita da mídia ÷ R$ 5 (${F.int(a.conv)} compras)${ritmo != null && ritmo < 1 ? ` · linha preta: ${nf(ritmo * 100, 0)}% da semana decorrida` : ''}</small>
+  </div>`;
+}
+
 function renderKpis2() {
   const fases = fasesReais(), G = state.visao === 'geral';
   $('#kpi2Ctx').textContent = cli().nome + ' · ' + VISOES[state.visao] + ' · ' + periodoTxt();
@@ -3141,6 +3180,7 @@ function renderKpis2() {
       return `<div class="ovc ${f === 'esquenta' ? 'esq' : 'blk'}">
         <div class="ovc-h"><span class="ph-pill ${f === 'esquenta' ? 'esq' : 'blk'}">${FASES[f].nome}</span><small>${f === 'esquenta' ? 'captação de cadastros, base e reativação' : 'vendas, receita, CPA e ROAS'}</small></div>
         <div class="ovc-hero">${hero.filter(Boolean).map(card3).join('')}</div>
+        ${f === 'black' ? metaMidiaHtml(true) : ''}
         <div class="ovc-sec">${sec.filter(Boolean).map(x => card3([...x.slice(0, 4), 0])).join('')}</div>
         <div class="ovc-ent"><div class="ovc-lbl">Entrega</div>${ent(f).map(card3).join('')}</div>
       </div>`; }).join('')}</div>`;
@@ -3151,13 +3191,13 @@ function renderKpis2() {
     const cur = et.find(x => x.k === state.etapa[f]);
     $('#objStrip').innerHTML = `<div class="obj3 ${f === 'esquenta' ? 'esq' : 'blk'}">${OBJ_TXT[f]}</div>`;
     $('#kEntrega').innerHTML = `<div class="ent3">${ent(f).map(card3).join('')}</div>`;
-    $('#kPerf').innerHTML = `<div class="kgrp-h" style="margin-top:16px">Performance<small>escolha a etapa</small></div>
+    $('#kPerf').innerHTML = (f === 'black' ? metaMidiaHtml(false) : '') + `<div class="kgrp-h" style="margin-top:16px">Performance<small>escolha a etapa</small></div>
       <div class="chips tabs et-tabs">${et.map(x => `<button class="chip ${x.k === cur.k ? 'on' : ''}" data-et="${x.k}">${x.n}</button>`).join('')}</div>
       <div class="et-panel ${f === 'esquenta' ? 'esq' : 'blk'}"><p class="et-d">${cur.d}</p><div class="et-grid">${cur.m.map(card3).join('')}</div></div>`;
   }
   const D = cli().destaques || {};
   const it = G ? fases.flatMap(f => (D[f] || []).slice(0, 2).map(x => [...x, f])) : (D[fases[0]] || []).map(x => [...x, fases[0]]);
-  $('#destaques').innerHTML = it.length ? `<div class="dest-h">Destaques</div><div class="dest-g">${it.map(([ic, t, f]) => `<div class="dst ${f === 'esquenta' ? 'esq' : 'blk'}"><span>${ic}</span><p>${t}</p></div>`).join('')}</div>` : '';
+  $('#destaques').innerHTML = false && it.length ? `<div class="dest-h">Destaques</div><div class="dest-g">${it.map(([ic, t, f]) => `<div class="dst ${f === 'esquenta' ? 'esq' : 'blk'}"><span>${ic}</span><p>${t}</p></div>`).join('')}</div>` : '';
 }
 $('#kPerf').addEventListener('click', e => { const b = e.target.closest('[data-et]'); if (!b) return; state.etapa[state.visao] = b.dataset.et; renderKpis2(); });
 function renderVerbaObj() {
