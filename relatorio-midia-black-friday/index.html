@@ -3171,7 +3171,10 @@ function renderKpis2() {
     $('#kPerf').innerHTML = `<div class="ov2">${fases.map(f => {
       const et = etapasDe(f), pick = (k, i) => (et.find(x => x.k === k) || { m: [] }).m[i];
       const hero = f === 'esquenta' ? [pick('leads', 0), pick('leads', 1)] : [pick('conversao', 0), pick('conversao', 1)];
-      const sec = f === 'esquenta' ? [pick('trafego', 0), pick('leads', 2), pick('trafego', 3), pick('base', 0)] : [pick('conversao', 2), pick('conversao', 3), pick('trafego', 0), pick('trafego', 3)];
+      const pickL = (k, l) => (et.find(x => x.k === k) || { m: [] }).m.find(x => x && x[0] === l);
+      const usaBase = cli().fases.esquenta.cadastrosFonte !== 'pixel';
+      const sec = f === 'esquenta' ? [pickL('trafego', 'Sessões na LP'), usaBase ? pickL('leads', 'Taxa de cadastro') : pickL('trafego', 'Cliques'), pickL('trafego', 'Custo por visita'), ok(baseInativa()) ? pickL('base', 'Inativos alcançados') : pickL('trafego', 'CTR')]
+        : [pickL('conversao', 'Receita da mídia'), pickL('conversao', 'ROAS'), pickL('trafego', 'Sessões LP + site'), pickL('trafego', 'Clique para compra')];
       if (f === 'black') { const a = agg(rowsOf('midia', [f])), Bq = cli().bi || {}, biOk = state.plataforma === 'todas';
         hero[0] = ['Vendas', F.intC(a.conv), 'pl', 'Meta + Google', 1]; hero[1] = ['CPA', F.brl2(a.cpa), 'pl', 'investimento ÷ vendas', 1];
         sec[0] = ['Receita da mídia', F.brlC(a.rec), 'pl', 'compras atribuídas aos anúncios']; sec[1] = ['ROAS', F.x(a.roas), 'pl', 'receita da mídia ÷ investimento'];
