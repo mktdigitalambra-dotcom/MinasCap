@@ -418,7 +418,8 @@ ul.resumo li::before{content:"";position:absolute;left:0;top:7px;width:7px;heigh
 .et-panel.esq{border-top:3px solid #E0A800;}
 .et-panel.blk{border-top:3px solid #000;}
 .et-d{font-size:12px;color:#666;margin:0 0 12px;}
-.et-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:16px;}
+.et-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;}
+@media (max-width:900px){.et-grid{grid-template-columns:repeat(2,minmax(0,1fr));}}
 .et-grid .c3 b{font-size:40px;}
 @media (max-width:900px){.ov2{grid-template-columns:1fr;}.ovc-sec{grid-template-columns:repeat(2,minmax(0,1fr));}.ovc-ent,.ent3{grid-template-columns:repeat(3,minmax(0,1fr));}}
 /* Resultados: visão limpa, sem caixas */
@@ -3010,9 +3011,11 @@ function etapasDe(f) {
     { k: 'trafego', n: 'Tráfego', d: 'Quanto os anúncios levaram de pessoas para a LP e o site.', m: [
       ['Sessões LP + site', F.intC(ses), 'ga', 'mídia paga', 1], ['CTR', F.pct(a.ctr), 'pl', 'cliques ÷ impressões'], ['CPC', F.brl2(a.cpc), 'pl', 'custo por clique'],
       ['Clique para compra', F.pct(todas && L.sessoes ? L.sessoesCompra / L.sessoes * 100 : null), 'ga', 'sessões da LP com clique em comprar', 1]] },
-    { k: 'conversao', n: 'Conversão', d: 'Objetivo principal da Black: vendas das campanhas de conversão.', m: [
-      ['Vendas', F.intC(c.conv), 'pl', 'atribuídas', 1], ['CPA', F.brl2(c.cpa), 'pl', 'investimento ÷ vendas', 1],
-      ['Receita atribuída', F.brlC(c.rec), 'px', 'valor das compras', 1], ['ROAS', F.x(c.roas), 'px', 'receita ÷ investimento', 1]] },
+    { k: 'conversao', n: 'Vendas', d: 'Objetivo principal da Black: vendas. Total de todas as campanhas da Black e, abaixo, quanto veio de cada uma.', m: [
+      ['Vendas', F.intC(a.conv), 'pl', 'todas as campanhas', 1], ['CPA', F.brl2(a.cpa), 'pl', 'investimento ÷ vendas', 1],
+      ['Receita atribuída', F.brlC(a.rec), 'px', 'valor das compras', 1], ['ROAS', F.x(a.roas), 'px', 'receita ÷ investimento', 1],
+      ['Campanha Conversão', F.intC(c.conv), 'pl', 'vendas · CPA ' + F.brl2(c.cpa)], ['Campanha Remarketing', F.intC(rm.conv), 'pl', 'vendas · CPA ' + F.brl2(rm.cpa)],
+      ['Campanhas Alcance + Tráfego', F.intC(agg(rows.filter(r => r.objetivo === 'alcance' || r.objetivo === 'trafego')).conv), 'pl', 'vendas · medidas por CPM e custo por visita']] },
     { k: 'remarketing', n: 'Remarketing', d: 'Vendas de quem já visitou a LP do Esquenta ou o site.', m: [
       ['Vendas', F.intC(rm.conv), 'pl', 'atribuídas', 1], ['CPA', F.brl2(rm.cpa), 'pl', 'investimento ÷ vendas', 1],
       ['ROAS', F.x(rm.roas), 'px', 'receita ÷ investimento'], ['Taxa de conversão', F.pct(rm.tx), 'pl', 'vendas ÷ cliques'],
