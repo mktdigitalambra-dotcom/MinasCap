@@ -421,6 +421,8 @@ ul.resumo li::before{content:"";position:absolute;left:0;top:7px;width:7px;heigh
 .et-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;}
 @media (max-width:900px){.et-grid{grid-template-columns:repeat(2,minmax(0,1fr));}}
 .et-grid .c3 b{font-size:40px;}
+.sv-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;}
+@media (max-width:900px){.sv-grid{grid-template-columns:1fr;}}
 .c3-sep{grid-column:1/-1;font-size:10.5px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:#999;border-top:1px solid rgba(0,0,0,.07);padding-top:12px;margin-top:2px;}
 .c3-sep ~ .c3 b{font-size:28px!important;color:#222!important;}
 @media (max-width:900px){.ov2{grid-template-columns:1fr;}.ovc-sec{grid-template-columns:repeat(2,minmax(0,1fr));}.ovc-ent,.ent3{grid-template-columns:repeat(3,minmax(0,1fr));}}
@@ -700,6 +702,11 @@ table.tq tr.tot td{background:#f1f1ec!important;border-top:2px solid rgba(0,0,0,
     <div id="platDayBox" style="display:none">
       <div class="ct" id="platDayTitle"></div>
       <div class="cw" id="wPlatDay" style="height:260px"><canvas id="cPlatDay" role="img" aria-label="Evolução diária da mídia"></canvas><div class="ph-empty"><b>—</b><span id="platDayEmpty"></span></div></div>
+      <div class="sv-grid" id="svGrid" style="display:none">
+        <div class="lcard"><div class="ct">Impressões por dia</div><div class="cw" style="height:170px"><canvas id="sv_imp"></canvas></div></div>
+        <div class="lcard"><div class="ct">Cliques por dia</div><div class="cw" style="height:170px"><canvas id="sv_cli"></canvas></div></div>
+        <div class="lcard"><div class="ct">Alcance por dia</div><div class="cw" id="wSvAlc" style="height:170px"><canvas id="sv_alc"></canvas><div class="ph-empty"><b>—</b>A plataforma não informa alcance</div></div></div>
+      </div>
       <p class="hint" id="platDayHint"></p>
     </div>
     </div>
@@ -912,6 +919,7 @@ const DATA = {
     },
     // alcance diário: soma do alcance das campanhas Meta + TikTok em cada dia (Windsor.ai). A mesma pessoa pode
     // ser contada em campanhas e dias diferentes: serve para ver a tendência, não o total de pessoas.
+    alcanceDiarioPlat: { tiktok: { '2026-11-22': 10878, '2026-11-23': 11553, '2026-11-24': 11343, '2026-11-25': 1117 } },
     alcanceDiario: { '2026-11-09': 5, '2026-11-10': 71338, '2026-11-11': 209317, '2026-11-12': 173526, '2026-11-13': 240729, '2026-11-14': 329135, '2026-11-15': 364189, '2026-11-16': 114431, '2026-11-17': 63983, '2026-11-18': 66389, '2026-11-19': 54776, '2026-11-20': 59572, '2026-11-21': 34794, '2026-11-22': 1204769, '2026-11-23': 606880, '2026-11-24': 637432, '2026-11-25': 269451 },
     plataformas: ['meta', 'google', 'tiktok', 'uol', 'programatica'],   // padrão das fases sem lista própria
     insightsGeral: { positivos: [], eficiencia: [], atencao: [], otimizacoes: [], aprendizados: [] },
@@ -2617,8 +2625,10 @@ function renderDayTabs() {
   if (state.dayTab !== 'consolidado' && !parts.includes(state.dayTab)) state.dayTab = 'consolidado';
   $('#dayTabs').innerHTML = `<button class="chip ${state.dayTab === 'consolidado' ? 'on' : ''}" data-dt="consolidado">Consolidado</button>` +
     parts.map(p => `<button class="chip ${p === state.dayTab ? 'on' : ''}" data-dt="${p}"><span class="dot" style="background:${PLATAFORMAS[p].cor}"></span> ${PLATAFORMAS[p].nome}</button>`).join('');
-  const cons = state.dayTab === 'consolidado';
+  let cons = state.dayTab === 'consolidado';
   kill('cPlatDay');
+  const semVenda = p => !(agg(rowsOf('midia', fasesReais()).filter(r => r.plataforma === p)).conv > 0);
+  if (cons && state.visao === 'black' && state.plataforma !== 'todas' && semVenda(state.plataforma)) cons = false;
   if (cons) {
     $('#platDayBox').style.display = 'none';
     renderDaily(); renderVendas();
@@ -2627,20 +2637,35 @@ function renderDayTabs() {
   $('#dailyBox').style.display = 'none'; $('#vendasBox').style.display = 'none';
   kill('cDaily'); kill('cVendas');
   $('#platDayBox').style.display = '';
-  const p = state.dayTab, V = state.visao, fases = fasesReais();
+  const p = state.dayTab === 'consolidado' ? state.plataforma : state.dayTab, V = state.visao, fases = fasesReais();
   const rows = rowsOf('midia', fases).filter(r => r.plataforma === p);
   const dated = rows.filter(r => r.data);
   const dates = [...new Set(dated.map(r => r.data))].sort();
   const esq = V === 'esquenta', usaBase = cli().fases.esquenta && cli().fases.esquenta.cadastrosFonte !== 'pixel';
   const cadR = esq && usaBase ? rowsOf('cadastros', ['esquenta']).filter(r => normPlat(r.plataforma) === p) : null;
-  const l2 = V === 'geral' ? null : esq ? (cadR ? 'Cadastros na LP (GA4)' : 'Leads (pixel)') : 'Compras atribuídas';
+  const vendeu = !(V === 'black') || agg(rows).conv > 0;
+  const l2 = V === 'geral' ? null : esq ? (cadR ? 'Cadastros na LP (GA4)' : 'Leads (pixel)') : vendeu ? 'Compras atribuídas' : 'Cliques';
   $('#platDayTitle').innerHTML = `${PLATAFORMAS[p].nome}: investimento diário (R$)` + (l2 ? ` × ${l2.charAt(0).toLowerCase() + l2.slice(1)}` : ' por fase');
   const msg = !rows.length ? 'Aguardando o relatório desta mídia.' : !dates.length ? 'O relatório desta mídia não tem quebra diária (só o total do período).' : '';
   $('#platDayEmpty').textContent = msg;
   setEmpty('wPlatDay', !!msg || !window.Chart);
   $('#platDayHint').innerHTML = msg ? '' : V === 'geral' ? 'Só investimento: os resultados de cada fase são analisados nas abas de cada fase.'
     : esq ? (cadR ? 'Cadastros pelo GA4 da LP com origem nesta mídia.' : 'Leads atribuídos pelo pixel (cadastros do GA4 não confirmados nesta praça).')
-    : 'Compras atribuídas pela própria plataforma (não são vendas confirmadas no ERP).';
+    : vendeu ? 'Compras atribuídas pela própria plataforma (não são vendas confirmadas no ERP).' : 'Esta mídia não tem venda atribuída na Black: o gráfico mostra investimento e cliques por dia (25/11 parcial).';
+  ['sv_imp', 'sv_cli', 'sv_alc'].forEach(kill);
+  $('#svGrid').style.display = 'none'; $('#wPlatDay').style.display = '';
+  if (!msg && V === 'black' && semVenda(p) && window.Chart) {
+    $('#wPlatDay').style.display = 'none'; $('#svGrid').style.display = '';
+    $('#platDayTitle').innerHTML = `${PLATAFORMAS[p].nome}: impressões, cliques e alcance por dia`;
+    const cor = PLATAFORMAS[p].cor, alc = ((cli().alcanceDiarioPlat || {})[p]) || {};
+    lineChart('sv_imp', dates, dates.map(d => agg(dated.filter(r => r.data === d)).imp), false, cor);
+    lineChart('sv_cli', dates, dates.map(d => agg(dated.filter(r => r.data === d)).cli), false, cor);
+    const temAlc = dates.some(d => ok(alc[d]));
+    setEmpty('wSvAlc', !temAlc);
+    if (temAlc) lineChart('sv_alc', dates, dates.map(d => ok(alc[d]) ? alc[d] : null), false, cor);
+    $('#platDayHint').innerHTML = 'Mídia sem venda atribuída na Black: os resultados são de mídia (impressões, cliques e alcance). 25/11 é dia parcial.';
+    return;
+  }
   if (msg || !window.Chart) return;
   const o = baseOpts();
   const brlTick = v => 'R$ ' + compact(v);
@@ -2651,7 +2676,7 @@ function renderDayTabs() {
     o.scales.y = { stacked: true, grid: { color: 'rgba(0,0,0,.05)' }, ticks: { color: '#888', font: { size: 10 }, callback: brlTick } };
   } else {
     const res = esq ? (cadR ? dates.map(d => sumField(cadR.filter(r => r.data === d), 'cadastros') ?? 0) : dates.map(d => agg(dated.filter(r => r.data === d)).leads))
-      : dates.map(d => agg(dated.filter(r => r.data === d)).conv);
+      : vendeu ? dates.map(d => agg(dated.filter(r => r.data === d)).conv) : dates.map(d => agg(dated.filter(r => r.data === d)).cli);
     datasets = [
       { type: 'bar', label: 'Investimento (R$)', money: true, data: dates.map(d => agg(dated.filter(r => r.data === d)).inv), backgroundColor: PLATAFORMAS[p].cor + 'CC', borderRadius: 3, maxBarThickness: 48, yAxisID: 'y' },
       { type: 'line', label: l2, data: res, borderColor: '#000', backgroundColor: '#D9A520', borderWidth: 2, pointRadius: 3, pointBackgroundColor: '#D9A520', pointBorderColor: '#000', tension: .3, yAxisID: 'y2' }
