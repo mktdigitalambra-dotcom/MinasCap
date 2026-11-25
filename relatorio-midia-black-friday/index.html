@@ -3128,8 +3128,12 @@ function renderKpis2() {
   $('#kpi2Ctx').textContent = cli().nome + ' · ' + VISOES[state.visao] + ' · ' + periodoTxt();
   $('#objStrip').innerHTML = '';
   const ent = f => { const a = agg(rowsOf('midia', [f])), al = alcanceFase(f);
-    return [['Investimento', F.brlC(a.inv), 'pl', 'Meta c/ imposto'], ['Impressões', F.intC(a.imp), 'pl'], ['Alcance', F.intC(al.v), 'pl', 'Meta + TikTok'],
-      ['Frequência', F.dec(al.freq), 'pl', 'impressões ÷ alcance'], ['CPM', F.brl2(a.cpm), 'pl']]; };
+    const base = [['Investimento', F.brlC(a.inv), 'pl', 'Meta c/ imposto'], ['Impressões', F.intC(a.imp), 'pl']];
+    const comAlcance = ok(al.v) && al.v > 0;
+    // Google, UOL e Programática não informam alcance: no lugar entram cliques e CTR, os KPIs principais desses canais
+    const meio = comAlcance ? [['Alcance', F.intC(al.v), 'pl', 'Meta + TikTok'], ['Frequência', F.dec(al.freq), 'pl', 'impressões ÷ alcance']]
+      : [['Cliques', F.intC(a.cli), 'pl'], ['CTR', F.pct(a.ctr), 'pl', 'cliques ÷ impressões']];
+    return [...base, ...meio, ['CPM', F.brl2(a.cpm), 'pl']]; };
   $('#kEntrega').closest('.kgrp').style.display = G ? 'none' : '';
   if (G) {
     $('#kEntrega').innerHTML = '';
@@ -3184,7 +3188,7 @@ function renderCplDaily() {
 
 /* ---------- meta de investimento (planejado × realizado) ---------- */
 function renderMetaInvest() {
-  const M = cli().metasInvest || {}, fases = fasesReais().filter(f => M[f]);
+  const M = cli().metasInvest || {}, fases = fasesReais().filter(f => M[f] && f === 'black');
   $('#secMeta').style.display = fases.length ? '' : 'none';
   $('#metaCtx').textContent = 'Planejado × realizado por mídia · ' + periodoTxt();
   $('#metaBody').innerHTML = fases.map(f => {
