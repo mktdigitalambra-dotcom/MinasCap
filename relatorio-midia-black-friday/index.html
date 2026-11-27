@@ -421,6 +421,8 @@ ul.resumo li::before{content:"";position:absolute;left:0;top:7px;width:7px;heigh
 .et-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;}
 @media (max-width:900px){.et-grid{grid-template-columns:repeat(2,minmax(0,1fr));}}
 .et-grid .c3 b{font-size:40px;}
+.ss-box{margin:12px 0 4px;padding:10px 14px;border-radius:12px;background:#FDECEC;border:1px solid #F5B5B5;font-size:12px;color:#5A1A1A;line-height:1.45;}
+.ss-box b{display:block;color:#C81D1D;font-size:12.5px;margin-bottom:2px;}
 .vis-card{margin-bottom:14px;}
 .mm{margin:14px 0 4px;padding:12px 16px;border:1px solid var(--border);border-radius:12px;background:#fff;}
 .mm-c{margin:12px 0 0;padding:10px 0 12px;border:0;border-bottom:1px solid rgba(0,0,0,.07);border-radius:0;}
@@ -734,7 +736,7 @@ table.tq tr.tot td{background:#f1f1ec!important;border-top:2px solid rgba(0,0,0,
     <div id="vendasBox">
       <div class="ct">Investimento, compras e CPA por dia <small id="vendasCtx"></small></div>
       <div class="cw" id="wVendas" style="height:290px"><canvas id="cVendas" role="img" aria-label="Investimento, compras e CPA por dia"></canvas><div class="ph-empty"><b>Aguardando dados</b>Sem compras registradas na Black Friday</div></div>
-      <p class="hint">Barras: investimento (R$, eixo esquerdo). Linha preta: compras atribuídas pelas plataformas (eixo direito). Linha dourada tracejada: CPA (R$, valor no rótulo).</p>
+      <p class="hint">Barras: investimento (R$, eixo esquerdo). Linha preta: compras atribuídas pelas plataformas (eixo direito). Linha dourada tracejada: CPA (R$, valor no rótulo). Linha vermelha em 26/11: Meta sem entrega (provável falta de saldo).</p>
     </div>
     <div id="cplBox" class="lcard" style="display:none;margin-bottom:16px"><div class="ct">CPL diário <small>investimento ÷ cadastros na LP (GA4, mídia paga) · dias com pelo menos 5 cadastros</small></div><div class="cw" style="height:170px"><canvas id="cCpl"></canvas></div></div>
     <div id="platDayBox" style="display:none">
@@ -849,7 +851,7 @@ table.tq tr.tot td{background:#f1f1ec!important;border-top:2px solid rgba(0,0,0,
    ===================================================================== */
 const CONFIG = {
   titulo: 'Black Friday 2026',
-  atualizadoEm: '2026-11-25'    // Esquenta fechado em 21/11; Black Friday com mídia até 25/11 (parcial) e BI até 24/11
+  atualizadoEm: '2026-11-27'    // Esquenta fechado em 21/11; Black Friday com mídia até 25/11 (parcial) e BI até 24/11
 };
 
 // Plataformas disponíveis. "imposto" é aplicado sobre o investimento quando o
@@ -901,8 +903,8 @@ const DATA = {
     nome: 'Minas Cap',
     // visitantes (usuários) de mídia paga por dia: LP (páginas da Black, 558042593) e site (260399536, só na semana da Black)
     visitantes: {
-      lp: { '2026-11-06': 184, '2026-11-07': 1786, '2026-11-08': 3252, '2026-11-09': 1021, '2026-11-10': 3024, '2026-11-11': 3196, '2026-11-12': 3164, '2026-11-13': 2365, '2026-11-14': 2528, '2026-11-15': 2659, '2026-11-16': 2253, '2026-11-17': 3940, '2026-11-18': 5109, '2026-11-19': 3283, '2026-11-20': 3263, '2026-11-21': 2194, '2026-11-22': 11246, '2026-11-23': 9626, '2026-11-24': 9166, '2026-11-25': 1669 },
-      site: { '2026-11-22': 17325, '2026-11-23': 8675, '2026-11-24': 9836, '2026-11-25': 3029 }
+      lp: { '2026-11-06': 184, '2026-11-07': 1786, '2026-11-08': 3252, '2026-11-09': 1021, '2026-11-10': 3024, '2026-11-11': 3196, '2026-11-12': 3164, '2026-11-13': 2365, '2026-11-14': 2528, '2026-11-15': 2659, '2026-11-16': 2253, '2026-11-17': 3940, '2026-11-18': 5109, '2026-11-19': 3283, '2026-11-20': 3263, '2026-11-21': 2194, '2026-11-22': 11246, '2026-11-23': 9626, '2026-11-24': 9166, '2026-11-25': 7171, '2026-11-26': 5458, '2026-11-27': 1737 },
+      site: { '2026-11-22': 17325, '2026-11-23': 8675, '2026-11-24': 9836, '2026-11-25': 11409, '2026-11-26': 9524, '2026-11-27': 2554 }
     },
     // meta de investimento (planejado c/ imposto Meta) — planilha "[Minas Cap] Semanal - Novembro 2026", aba "Consolidado - AON+Black Friday" (SharePoint Marketing)
     metasInvest: {
@@ -968,7 +970,7 @@ const DATA = {
     // alcance diário: soma do alcance das campanhas Meta + TikTok em cada dia (Windsor.ai). A mesma pessoa pode
     // ser contada em campanhas e dias diferentes: serve para ver a tendência, não o total de pessoas.
     alcanceDiarioPlat: { tiktok: { '2026-11-22': 10878, '2026-11-23': 11553, '2026-11-24': 11343, '2026-11-25': 1117 } },
-    alcanceDiario: { '2026-11-09': 5, '2026-11-10': 71338, '2026-11-11': 209317, '2026-11-12': 173526, '2026-11-13': 240729, '2026-11-14': 329135, '2026-11-15': 364189, '2026-11-16': 114431, '2026-11-17': 63983, '2026-11-18': 66389, '2026-11-19': 54776, '2026-11-20': 59572, '2026-11-21': 34794, '2026-11-22': 1204769, '2026-11-23': 606880, '2026-11-24': 637432, '2026-11-25': 269451 },
+    alcanceDiario: { '2026-11-09': 5, '2026-11-10': 71338, '2026-11-11': 209317, '2026-11-12': 173526, '2026-11-13': 240729, '2026-11-14': 329135, '2026-11-15': 364189, '2026-11-16': 114431, '2026-11-17': 63983, '2026-11-18': 66389, '2026-11-19': 54776, '2026-11-20': 59572, '2026-11-21': 34794, '2026-11-22': 1204769, '2026-11-23': 606880, '2026-11-24': 637432, '2026-11-25': 626063, '2026-11-26': 19570, '2026-11-27': 395984 },
     plataformas: ['meta', 'google', 'tiktok', 'uol', 'programatica'],   // padrão das fases sem lista própria
     insightsGeral: { positivos: [], eficiencia: [], atencao: [], otimizacoes: [], aprendizados: [] },
     esquentaConversao: {
@@ -1333,18 +1335,20 @@ const DATA = {
         inicio: '2026-11-22', fim: '2026-11-28',
         plataformas: ['meta',  'google',  'tiktok',  'uol',  'programatica'],
         ticket: null,     // edição 548 = R$ 5 por título (BI); receita usa o valor da compra do pixel, não compras × ticket
-        lp: { urls: ['https://quemsomos.minascap.com/blackfridaychegou/'], sessoes: 37522, usuarios: 24838, usuariosUnicos: 25671, sessoesCompra: 2715, btnCompra: 4804,
-          nota: 'GA4 da LP (propriedade 558042593), 22–25/11 (25/11 parcial), sessões com entrada em /blackfridaychegou, todas as origens. Usuários = usuários ativos; usuários únicos = total de usuários distintos. Clique para compra = evento btn_compra (4.804 cliques em 2.715 sessões).' },        // R$ por compra na edição da Black: receita = compras × ticket (confirmar)
+        lp: { urls: ['https://quemsomos.minascap.com/blackfridaychegou/'], sessoes: 55908, usuarios: 33527, usuariosUnicos: 34461, sessoesCompra: 4306, btnCompra: 9940,
+          nota: 'GA4 da LP (propriedade 558042593), 22–27/11 (27/11 parcial), sessões com entrada em /blackfridaychegou, todas as origens. Usuários = usuários ativos; usuários únicos = total de usuários distintos. Clique para compra = evento btn_compra (9.940 cliques em 4.306 sessões).' },        // R$ por compra na edição da Black: receita = compras × ticket (confirmar)
         planejado: {},
-        alcance: { meta: 1825063, tiktok: 24193 },   // 22–25/11: soma do alcance das campanhas no período (Windsor); pode haver sobreposição
+        alcance: { meta: 2042067, tiktok: 31815 },   // 22–27/11: soma do alcance das campanhas no período (Windsor); pode haver sobreposição
         // compras atribuídas na Black às campanhas do Esquenta (já desligadas): LEADS 20, TRÁFEGO 9, VÍDEO 2 (Meta, 22–25/11)
-        esquentaCompras: 31,
+        esquentaCompras: 35,
         // meta da mídia — "Minas Cap - Projeções BF.xlsx" (SharePoint Marketing): venda TT desejada 1.250.000; online 375.000; mídia 48.750 (mínima 42.000)
         metaMidia: { desejada: 48750, minima: 42000 },
+        semSaldo: { data: '2026-11-26', plataforma: 'meta', texto: 'Meta sem entrega', desc: 'O Meta quase não entregou no dia (provável falta de saldo — confirmar no Gerenciador).' },
         campanhas: [],
         midia: [
-          // Windsor.ai (APIs de Meta, Google e TikTok), conferido em 25/11: campanhas BLACK no Meta e no TikTok; todas as campanhas do Google na semana da Black. 25/11 parcial.
+          // Windsor.ai (APIs de Meta, Google e TikTok), atualizado em 27/11: campanhas BLACK no Meta e no TikTok; todas as campanhas do Google na semana da Black. 27/11 parcial. UOL e Programática: relatórios até 25/11.
           // conversoes = compras atribuídas pela plataforma; receita = valor das compras atribuído pela plataforma (pixel do Meta / valor de conversão do Google).
+          // 26/11: Meta quase sem entrega (R$ 72 no dia, provável falta de saldo); as compras do dia são atribuições de dias anteriores.
           { data: '2026-11-22', plataforma: 'meta', campanha: 'ALCANCE_Minas-Cap_BLACK-FRIDAY-2026', investimento: 2011.07, impressoes: 1304406, cliques: 1811, lpv: 904, leads: 69, videoViews: 4300, conversoes: 109, receita: 1360 },
           { data: '2026-11-22', plataforma: 'meta', campanha: 'TRÁFEGO_Minas-Cap_BLACK-FRIDAY-2026', investimento: 1202.46, impressoes: 160922, cliques: 4355, lpv: 2611, leads: 31, videoViews: 2701, conversoes: 35, receita: 325 },
           { data: '2026-11-22', plataforma: 'meta', campanha: 'CONVERSÃO_Minas-Cap_BLACK-FRIDAY-2026', investimento: 2345.17, impressoes: 205551, cliques: 2894, lpv: 1745, leads: 168, videoViews: 3840, conversoes: 612, receita: 7605 },
@@ -1357,10 +1361,18 @@ const DATA = {
           { data: '2026-11-24', plataforma: 'meta', campanha: 'TRÁFEGO_Minas-Cap_BLACK-FRIDAY-2026', investimento: 1241.14, impressoes: 139800, cliques: 3444, lpv: 1644, leads: 23, videoViews: 4233, conversoes: 43, receita: 505 },
           { data: '2026-11-24', plataforma: 'meta', campanha: 'CONVERSÃO_Minas-Cap_BLACK-FRIDAY-2026', investimento: 2694.89, impressoes: 294524, cliques: 2532, lpv: 1563, leads: 324, videoViews: 5508, conversoes: 877, receita: 9765 },
           { data: '2026-11-24', plataforma: 'meta', campanha: 'REMARKET ING_Minas-Cap_BLACK-FRIDAY-2026', investimento: 1498.43, impressoes: 148611, cliques: 1415, lpv: 859, leads: 150, videoViews: 2875, conversoes: 512, receita: 5850 },
-          { data: '2026-11-25', plataforma: 'meta', campanha: 'ALCANCE_Minas-Cap_BLACK-FRIDAY-2026', investimento: 486.05, impressoes: 274920, cliques: 306, lpv: 138, leads: 46, videoViews: 880, conversoes: 54, receita: 610 },
-          { data: '2026-11-25', plataforma: 'meta', campanha: 'TRÁFEGO_Minas-Cap_BLACK-FRIDAY-2026', investimento: 1351.55, impressoes: 74683, cliques: 2514, lpv: 1864, leads: 6, videoViews: 5618, conversoes: 17, receita: 165 },
-          { data: '2026-11-25', plataforma: 'meta', campanha: 'CONVERSÃO_Minas-Cap_BLACK-FRIDAY-2026', investimento: 1639.73, impressoes: 137285, cliques: 1364, lpv: 883, leads: 230, videoViews: 2227, conversoes: 564, receita: 6140 },
-          { data: '2026-11-25', plataforma: 'meta', campanha: 'REMARKET ING_Minas-Cap_BLACK-FRIDAY-2026', investimento: 908.66, impressoes: 73947, cliques: 801, lpv: 529, leads: 120, videoViews: 1200, conversoes: 296, receita: 3360 },
+          { data: '2026-11-25', plataforma: 'meta', campanha: 'ALCANCE_Minas-Cap_BLACK-FRIDAY-2026', investimento: 818.9, impressoes: 453004, cliques: 487, lpv: 237, leads: 80, videoViews: 1437, conversoes: 115, receita: 1435 },
+          { data: '2026-11-25', plataforma: 'meta', campanha: 'TRÁFEGO_Minas-Cap_BLACK-FRIDAY-2026', investimento: 2115.4, impressoes: 98727, cliques: 3808, lpv: 3203, leads: 10, videoViews: 11013, conversoes: 27, receita: 305 },
+          { data: '2026-11-25', plataforma: 'meta', campanha: 'CONVERSÃO_Minas-Cap_BLACK-FRIDAY-2026', investimento: 2575.35, impressoes: 217339, cliques: 2197, lpv: 1411, leads: 380, videoViews: 3734, conversoes: 1002, receita: 11045 },
+          { data: '2026-11-25', plataforma: 'meta', campanha: 'REMARKET ING_Minas-Cap_BLACK-FRIDAY-2026', investimento: 1512.64, impressoes: 125943, cliques: 1365, lpv: 873, leads: 199, videoViews: 2163, conversoes: 543, receita: 6050 },
+          { data: '2026-11-26', plataforma: 'meta', campanha: 'ALCANCE_Minas-Cap_BLACK-FRIDAY-2026', investimento: 11.2, impressoes: 5924, cliques: 4, lpv: 2, leads: 46, videoViews: 14, conversoes: 76, receita: 980 },
+          { data: '2026-11-26', plataforma: 'meta', campanha: 'TRÁFEGO_Minas-Cap_BLACK-FRIDAY-2026', investimento: 22.99, impressoes: 1457, cliques: 31, lpv: 32, leads: 15, videoViews: 154, conversoes: 23, receita: 255 },
+          { data: '2026-11-26', plataforma: 'meta', campanha: 'CONVERSÃO_Minas-Cap_BLACK-FRIDAY-2026', investimento: 25.0, impressoes: 1726, cliques: 27, lpv: 26, leads: 100, videoViews: 34, conversoes: 459, receita: 5170 },
+          { data: '2026-11-26', plataforma: 'meta', campanha: 'REMARKET ING_Minas-Cap_BLACK-FRIDAY-2026', investimento: 13.16, impressoes: 943, cliques: 7, lpv: 9, leads: 56, videoViews: 25, conversoes: 288, receita: 3410 },
+          { data: '2026-11-27', plataforma: 'meta', campanha: 'ALCANCE_Minas-Cap_BLACK-FRIDAY-2026', investimento: 470.51, impressoes: 221243, cliques: 289, lpv: 134, leads: 23, videoViews: 766, conversoes: 29, receita: 280 },
+          { data: '2026-11-27', plataforma: 'meta', campanha: 'TRÁFEGO_Minas-Cap_BLACK-FRIDAY-2026', investimento: 1717.25, impressoes: 56642, cliques: 2308, lpv: 1725, leads: 6, videoViews: 7772, conversoes: 15, receita: 145 },
+          { data: '2026-11-27', plataforma: 'meta', campanha: 'CONVERSÃO_Minas-Cap_BLACK-FRIDAY-2026', investimento: 2243.02, impressoes: 161226, cliques: 1630, lpv: 1080, leads: 297, videoViews: 2734, conversoes: 507, receita: 5830 },
+          { data: '2026-11-27', plataforma: 'meta', campanha: 'REMARKET ING_Minas-Cap_BLACK-FRIDAY-2026', investimento: 1305.62, impressoes: 93083, cliques: 986, lpv: 605, leads: 130, videoViews: 1653, conversoes: 313, receita: 3585 },
           { data: '2026-11-22', plataforma: 'google', campanha: 'PMAX_minas-cap_AON', objetivo: 'conversao', investimento: 388.3116, impressoes: 54968, cliques: 1363, conversoes: 163.7937, receita: 2072.5568 },
           { data: '2026-11-22', plataforma: 'google', campanha: 'DEMAND-GEN_minas-cap_AON', objetivo: 'trafego', investimento: 90.3661, impressoes: 2806, cliques: 77, conversoes: 4.0, receita: 65.0 },
           { data: '2026-11-22', plataforma: 'google', campanha: 'Search_minas-cap_AON', objetivo: 'conversao', investimento: 209.1833, impressoes: 3658, cliques: 1133, conversoes: 68.195, receita: 925.6029 },
@@ -1373,14 +1385,28 @@ const DATA = {
           { data: '2026-11-24', plataforma: 'google', campanha: 'DEMAND-GEN_minas-cap_AON', objetivo: 'trafego', investimento: 294.8418, impressoes: 17581, cliques: 280, conversoes: 13.6738, receita: 205.0806 },
           { data: '2026-11-24', plataforma: 'google', campanha: 'Search_minas-cap_AON', objetivo: 'conversao', investimento: 319.0825, impressoes: 4247, cliques: 1326, conversoes: 185.3801, receita: 2378.1964 },
           { data: '2026-11-24', plataforma: 'google', campanha: 'YOUTUBE_Minas-Cap_BLACK-FRIDAY', objetivo: 'video', investimento: 342.7155, impressoes: 53369, cliques: 57, videoViews: 39200 },
-          { data: '2026-11-25', plataforma: 'google', campanha: 'PMAX_minas-cap_AON', objetivo: 'conversao', investimento: 810.0668, impressoes: 66018, cliques: 1308, conversoes: 48.8896, receita: 716.3843 },
-          { data: '2026-11-25', plataforma: 'google', campanha: 'DEMAND-GEN_minas-cap_AON', objetivo: 'trafego', investimento: 268.2591, impressoes: 11796, cliques: 216, conversoes: 4.0, receita: 40.0 },
-          { data: '2026-11-25', plataforma: 'google', campanha: 'Search_minas-cap_AON', objetivo: 'conversao', investimento: 274.5938, impressoes: 2283, cliques: 621, conversoes: 44.3904, receita: 498.904 },
-          { data: '2026-11-25', plataforma: 'google', campanha: 'YOUTUBE_Minas-Cap_BLACK-FRIDAY', objetivo: 'video', investimento: 183.2991, impressoes: 29879, cliques: 23, videoViews: 19989 },
+          { data: '2026-11-25', plataforma: 'google', campanha: 'PMAX_minas-cap_AON', objetivo: 'conversao', investimento: 1082.2664, impressoes: 92702, cliques: 1803, conversoes: 212.7197, receita: 2903.1053 },
+          { data: '2026-11-25', plataforma: 'google', campanha: 'DEMAND-GEN_minas-cap_AON', objetivo: 'trafego', investimento: 369.8277, impressoes: 17171, cliques: 319, conversoes: 35.6875, receita: 375.714 },
+          { data: '2026-11-25', plataforma: 'google', campanha: 'Search_minas-cap_AON', objetivo: 'conversao', investimento: 475.6541, impressoes: 3882, cliques: 1096, conversoes: 143.37, receita: 1731.3021 },
+          { data: '2026-11-25', plataforma: 'google', campanha: 'YOUTUBE_Minas-Cap_BLACK-FRIDAY', objetivo: 'video', investimento: 342.9146, impressoes: 56019, cliques: 49, videoViews: 38138 },
+          { data: '2026-11-26', plataforma: 'google', campanha: 'PMAX_minas-cap_AON', objetivo: 'conversao', investimento: 923.4848, impressoes: 70523, cliques: 1299, conversoes: 59.6593, receita: 827.8295 },
+          { data: '2026-11-26', plataforma: 'google', campanha: 'DEMAND-GEN_minas-cap_AON', objetivo: 'trafego', investimento: 335.7693, impressoes: 14457, cliques: 242, conversoes: 14.8844, receita: 161.0485 },
+          { data: '2026-11-26', plataforma: 'google', campanha: 'Search_minas-cap_AON', objetivo: 'conversao', investimento: 946.3824, impressoes: 5461, cliques: 1708, conversoes: 217.2739, receita: 2782.1643 },
+          { data: '2026-11-26', plataforma: 'google', campanha: 'PMAX_minas-cap_TURBO', objetivo: 'conversao', investimento: 1891.4752, impressoes: 136126, cliques: 1466, conversoes: 104.6711, receita: 1108.4988 },
+          { data: '2026-11-26', plataforma: 'google', campanha: 'YOUTUBE_Minas-Cap_BLACK-FRIDAY', objetivo: 'video', investimento: 341.8874, impressoes: 54422, cliques: 45, videoViews: 38765 },
+          { data: '2026-11-26', plataforma: 'google', campanha: 'YOUTUBE-N-PULAVEL_Minas-Cap_BLACK-FRIDAY', objetivo: 'video', investimento: 987.2123, impressoes: 107407, cliques: 25, videoViews: 99416 },
+          { data: '2026-11-27', plataforma: 'google', campanha: 'PMAX_minas-cap_AON', objetivo: 'conversao', investimento: 656.9817, impressoes: 49987, cliques: 687, conversoes: 15.3931, receita: 220.5901 },
+          { data: '2026-11-27', plataforma: 'google', campanha: 'DEMAND-GEN_minas-cap_AON', objetivo: 'trafego', investimento: 164.9607, impressoes: 6230, cliques: 116, conversoes: 1.0, receita: 40.0 },
+          { data: '2026-11-27', plataforma: 'google', campanha: 'Search_minas-cap_AON', objetivo: 'conversao', investimento: 563.0893, impressoes: 3297, cliques: 1050, conversoes: 160.2892, receita: 1761.8842 },
+          { data: '2026-11-27', plataforma: 'google', campanha: 'PMAX_minas-cap_TURBO', objetivo: 'conversao', investimento: 961.2502, impressoes: 75499, cliques: 911, conversoes: 22.4388, receita: 213.6261 },
+          { data: '2026-11-27', plataforma: 'google', campanha: 'YOUTUBE_Minas-Cap_BLACK-FRIDAY', objetivo: 'video', investimento: 127.2912, impressoes: 18818, cliques: 11, videoViews: 13598 },
+          { data: '2026-11-27', plataforma: 'google', campanha: 'YOUTUBE-N-PULAVEL_Minas-Cap_BLACK-FRIDAY', objetivo: 'video', investimento: 776.7978, impressoes: 94316, cliques: 17, videoViews: 84771 },
           { data: '2026-11-22', plataforma: 'tiktok', campanha: 'CLIQUE_Minas-Cap_BLACK-FRIDAY-26', investimento: 774.1, impressoes: 79008, cliques: 13413 },
           { data: '2026-11-23', plataforma: 'tiktok', campanha: 'CLIQUE_Minas-Cap_BLACK-FRIDAY-26', investimento: 1042.85, impressoes: 96053, cliques: 19426 },
           { data: '2026-11-24', plataforma: 'tiktok', campanha: 'CLIQUE_Minas-Cap_BLACK-FRIDAY-26', investimento: 1075.31, impressoes: 92767, cliques: 18632 },
-          { data: '2026-11-25', plataforma: 'tiktok', campanha: 'CLIQUE_Minas-Cap_BLACK-FRIDAY-26', investimento: 466.35, impressoes: 36716, cliques: 8088 },
+          { data: '2026-11-25', plataforma: 'tiktok', campanha: 'CLIQUE_Minas-Cap_BLACK-FRIDAY-26', investimento: 928.28, impressoes: 73635, cliques: 16524 },
+          { data: '2026-11-26', plataforma: 'tiktok', campanha: 'CLIQUE_Minas-Cap_BLACK-FRIDAY-26', investimento: 1064.89, impressoes: 85110, cliques: 17784 },
+          { data: '2026-11-27', plataforma: 'tiktok', campanha: 'CLIQUE_Minas-Cap_BLACK-FRIDAY-26', investimento: 491.37, impressoes: 33266, cliques: 8235 },
           // UOL ads: relatório da plataforma (custom-report 22–25/11/2026), por campanha e dia. 25/11 é dia parcial.
           { data: '2026-11-22', plataforma: 'uol', campanha: 'Impressões_MinasCap_BLACK-FRIDAY-26', objetivo: 'alcance', investimento: 41.78, impressoes: 17026, cliques: 7 },
           { data: '2026-11-22', plataforma: 'uol', campanha: 'Cliques_MinasCap_BLACK-FRIDAY-26', objetivo: 'trafego', investimento: 54.48, impressoes: 22174, cliques: 13 },
@@ -1399,7 +1425,7 @@ const DATA = {
         // GA4: sessões de mídia paga em 22/11 na LP (propriedade 558042593) + site (260399536), por origem/mídia.
         // Site com a métrica padrão de sessões (não a personalizada "Sessões Minas Cap").
         ga4: [
-          // GA4, sessões de mídia paga (cpc/paid), 22–25/11 (25/11 parcial). prop 'lp' = LP (558042593, páginas da Black); prop 'site' = site (260399536).
+          // GA4, sessões de mídia paga (cpc/paid), 22–27/11 (27/11 parcial). prop 'lp' = LP (558042593, páginas da Black); prop 'site' = site (260399536).
           { data: '2026-11-22', prop: 'lp', plataforma: 'meta', sessoes: 5851 },
           { data: '2026-11-22', prop: 'lp', plataforma: 'tiktok', sessoes: 6188 },
           { data: '2026-11-22', prop: 'lp', plataforma: 'programatica', sessoes: 801 },
@@ -1415,10 +1441,18 @@ const DATA = {
           { data: '2026-11-24', prop: 'lp', plataforma: 'programatica', sessoes: 159 },
           { data: '2026-11-24', prop: 'lp', plataforma: 'google', sessoes: 727 },
           { data: '2026-11-24', prop: 'lp', plataforma: 'uol', sessoes: 40 },
-          { data: '2026-11-25', prop: 'lp', plataforma: 'meta', sessoes: 775 },
-          { data: '2026-11-25', prop: 'lp', plataforma: 'tiktok', sessoes: 928 },
-          { data: '2026-11-25', prop: 'lp', plataforma: 'programatica', sessoes: 3 },
-          { data: '2026-11-25', prop: 'lp', plataforma: 'google', sessoes: 135 },
+          { data: '2026-11-25', prop: 'lp', plataforma: 'meta', sessoes: 2341 },
+          { data: '2026-11-25', prop: 'lp', plataforma: 'tiktok', sessoes: 6672 },
+          { data: '2026-11-25', prop: 'lp', plataforma: 'google', sessoes: 333 },
+          { data: '2026-11-25', prop: 'lp', plataforma: 'programatica', sessoes: 9 },
+          { data: '2026-11-25', prop: 'lp', plataforma: 'uol', sessoes: 1 },
+          { data: '2026-11-26', prop: 'lp', plataforma: 'tiktok', sessoes: 7742 },
+          { data: '2026-11-26', prop: 'lp', plataforma: 'google', sessoes: 238 },
+          { data: '2026-11-26', prop: 'lp', plataforma: 'meta', sessoes: 41 },
+          { data: '2026-11-26', prop: 'lp', plataforma: 'programatica', sessoes: 5 },
+          { data: '2026-11-27', prop: 'lp', plataforma: 'tiktok', sessoes: 1128 },
+          { data: '2026-11-27', prop: 'lp', plataforma: 'meta', sessoes: 749 },
+          { data: '2026-11-27', prop: 'lp', plataforma: 'google', sessoes: 70 },
           { data: '2026-11-22', prop: 'site', plataforma: 'google', sessoes: 25096 },
           { data: '2026-11-22', prop: 'site', plataforma: 'programatica', sessoes: 45 },
           { data: '2026-11-22', prop: 'site', plataforma: 'meta', sessoes: 17 },
@@ -1434,10 +1468,18 @@ const DATA = {
           { data: '2026-11-24', prop: 'site', plataforma: 'uol', sessoes: 6 },
           { data: '2026-11-24', prop: 'site', plataforma: 'rich-media', sessoes: 3 },
           { data: '2026-11-24', prop: 'site', plataforma: 'tiktok', sessoes: 2 },
-          { data: '2026-11-25', prop: 'site', plataforma: 'google', sessoes: 3076 },
-          { data: '2026-11-25', prop: 'site', plataforma: 'meta', sessoes: 928 },
-          { data: '2026-11-25', prop: 'site', plataforma: 'programatica', sessoes: 71 },
-          { data: '2026-11-25', prop: 'site', plataforma: 'uol', sessoes: 8 }
+          { data: '2026-11-25', prop: 'site', plataforma: 'google', sessoes: 12003 },
+          { data: '2026-11-25', prop: 'site', plataforma: 'meta', sessoes: 4190 },
+          { data: '2026-11-25', prop: 'site', plataforma: 'programatica', sessoes: 196 },
+          { data: '2026-11-25', prop: 'site', plataforma: 'uol', sessoes: 13 },
+          { data: '2026-11-26', prop: 'site', plataforma: 'google', sessoes: 12826 },
+          { data: '2026-11-26', prop: 'site', plataforma: 'programatica', sessoes: 171 },
+          { data: '2026-11-26', prop: 'site', plataforma: 'meta', sessoes: 86 },
+          { data: '2026-11-26', prop: 'site', plataforma: 'uol', sessoes: 8 },
+          { data: '2026-11-26', prop: 'site', plataforma: 'rich-media', sessoes: 4 },
+          { data: '2026-11-27', prop: 'site', plataforma: 'google', sessoes: 2355 },
+          { data: '2026-11-27', prop: 'site', plataforma: 'meta', sessoes: 991 },
+          { data: '2026-11-27', prop: 'site', plataforma: 'programatica', sessoes: 37 }
         ],
         erp: [],
         insights: {
@@ -1473,7 +1515,7 @@ const CONTEUDO = {
     conclusao: {
       resultados: [
         'Esquenta (06–21/11): R$ 19.718 em cinco plataformas e 1.295 cadastros na LP pelo GA4, sendo 930 da mídia paga (R$ 21,20 por cadastro).',
-        'Black Friday (22–25/11, 25/11 parcial): R$ 33 mil em mídia e 4.839 vendas atribuídas (Meta 4.055 + Google 784), CPA R$ 5,28.'
+        'Black Friday (22–27/11, 27/11 parcial): R$ 56,5 mil em mídia e 8.743 compras atribuídas (Meta 6.926 + Google 1.817), CPA R$ 6,46 e ROAS 1,82. Pela receita da mídia são 20.524 títulos, 42,1% da meta desejada.'
       ],
       aprendizados: [
         'Para captar cadastro, o Meta foi o canal mais eficiente (taxa de cadastro de 7,0% das sessões); Google e TikTok geraram volume de visitas com conversão baixa.',
@@ -1581,10 +1623,10 @@ const CONTEUDO = {
       },
       black: {
         resumo: [
-          '1º dia da Black Friday (22/11): R$ 8.505 em Meta, Google (YouTube) e TikTok. UOL e Programática da Black ainda não foram recebidos.',
-          'O Meta atribuiu 976 compras, com CPA de R$ 7,77. Conversão (R$ 4,30) e Remarketing (R$ 6,16) concentraram 85% das compras.',
+          'Investimento de R$ 56,5 mil em Meta, Google, TikTok, UOL e Programática de 22 a 27/11 (27/11 parcial; UOL e Programática até 25/11), com foco em vendas.',
+          '8.743 compras atribuídas pelo Meta e pelo Google, CPA R$ 6,46. No Meta, Conversão teve 4.051 compras a R$ 3,08 e Remarketing 2.158 a R$ 3,21.',
           'O Remarketing usa dois públicos: visitantes da LP do Esquenta e visitantes do site nos últimos 180 dias. É o elo direto entre as fases, mas a plataforma não separa qual dos dois públicos comprou.',
-          'Receita e ROAS são estimados como compras × ticket de R$ 5 (a confirmar). As vendas do ERP ainda não estão integradas.'
+          'Em 26/11 o Meta quase não entregou (R$ 81 no dia, provável falta de saldo); as compras atribuídas nesse dia vêm de anúncios vistos antes.'
         ],
         analise: {
           meta: { papel: 'Canal principal de vendas: Alcance, Tráfego, Conversão e Remarketing.',
@@ -2724,7 +2766,7 @@ function renderDayTabs() {
   setEmpty('wPlatDay', !!msg || !window.Chart);
   $('#platDayHint').innerHTML = msg ? '' : V === 'geral' ? 'Só investimento: os resultados de cada fase são analisados nas abas de cada fase.'
     : esq ? (cadR ? 'Cadastros pelo GA4 da LP com origem nesta mídia.' : 'Leads atribuídos pelo pixel (cadastros do GA4 não confirmados nesta praça).')
-    : vendeu ? 'Compras atribuídas pela própria plataforma. Linha dourada: CPA do dia (dias com pelo menos 5 compras).' : 'Esta mídia não tem venda atribuída na Black: o gráfico mostra investimento e cliques por dia (25/11 parcial).';
+    : vendeu ? 'Compras atribuídas pela própria plataforma. Linha dourada: CPA do dia (dias com pelo menos 5 compras).' : 'Esta mídia não tem venda atribuída na Black: o gráfico mostra investimento e cliques por dia (27/11 parcial).';
   ['sv_imp', 'sv_cli', 'sv_alc'].forEach(kill);
   $('#svGrid').style.display = 'none'; $('#wPlatDay').style.display = '';
   if (!msg && V === 'black' && semVenda(p) && window.Chart) {
@@ -2736,7 +2778,7 @@ function renderDayTabs() {
     const temAlc = dates.some(d => ok(alc[d]));
     setEmpty('wSvAlc', !temAlc);
     if (temAlc) lineChart('sv_alc', dates, dates.map(d => ok(alc[d]) ? alc[d] : null), false, cor);
-    $('#platDayHint').innerHTML = 'Mídia sem venda atribuída na Black: os resultados são de mídia (impressões, cliques e alcance). 25/11 é dia parcial.';
+    $('#platDayHint').innerHTML = 'Mídia sem venda atribuída na Black: os resultados são de mídia (impressões, cliques e alcance). 27/11 é dia parcial; UOL e Programática com relatório até 25/11.';
     return;
   }
   if (msg || !window.Chart) return;
@@ -3215,7 +3257,7 @@ function renderKpis2() {
       return `<div class="ovc ${f === 'esquenta' ? 'esq' : 'blk'}">
         <div class="ovc-h"><span class="ph-pill ${f === 'esquenta' ? 'esq' : 'blk'}">${FASES[f].nome}</span><small>${f === 'esquenta' ? 'captação de cadastros, base e reativação' : 'vendas, receita, CPA e ROAS'}</small></div>
         <div class="ovc-hero">${cards3(hero)}</div>
-        ${f === 'black' ? metaMidiaHtml(true) : ''}
+        ${f === 'black' ? metaMidiaHtml(true) + semSaldoHtml() : ''}
         <div class="ovc-sec">${cards3(sec.filter(Boolean).map(x => [...x.slice(0, 4), 0]))}</div>
         <div class="ovc-ent"><div class="ovc-lbl">Entrega · plataformas</div>${cards3(ent(f))}</div>
       </div>`; }).join('')}</div>`;
@@ -3226,7 +3268,7 @@ function renderKpis2() {
     const cur = et.find(x => x.k === state.etapa[f]);
     $('#objStrip').innerHTML = `<div class="obj3 ${f === 'esquenta' ? 'esq' : 'blk'}">${OBJ_TXT[f]}</div>`;
     $('#kEntrega').innerHTML = `<div class="ent3">${cards3(ent(f))}</div>`;
-    $('#kPerf').innerHTML = (f === 'black' ? metaMidiaHtml(false) : '') + `<div class="kgrp-h" style="margin-top:16px">Performance<small>escolha a etapa</small></div>
+    $('#kPerf').innerHTML = (f === 'black' ? metaMidiaHtml(false) + semSaldoHtml() : '') + `<div class="kgrp-h" style="margin-top:16px">Performance<small>escolha a etapa</small></div>
       <div class="chips tabs et-tabs">${et.map(x => `<button class="chip ${x.k === cur.k ? 'on' : ''}" data-et="${x.k}">${x.n}</button>`).join('')}</div>
       <div class="et-panel ${f === 'esquenta' ? 'esq' : 'blk'}"><p class="et-d">${cur.d}</p><div class="et-grid">${cards3(cur.m)}</div></div>`;
   }
@@ -3305,8 +3347,35 @@ function renderVisitantes() {
   charts.cVis = new Chart($('#cVis'), { type: 'line', data: { labels: dates.map(dBR), datasets: ds }, options: o });
   const soma = src => dates.reduce((s, d) => s + (src[d] || 0), 0);
   $('#visHint').innerHTML = `LP: ${F.int(soma(V.lp || {}))} visitantes · site: ${F.int(soma(V.site || {}))} visitantes no período. Visitantes = usuários do dia; a soma dos dias pode contar a mesma pessoa mais de uma vez. ` +
-    (fase !== 'black' ? 'No Esquenta, a mídia levou só para a LP; o site entra a partir da Black.' : '') + ' 25/11 parcial.';
+    (fase !== 'black' ? 'No Esquenta, a mídia levou só para a LP; o site entra a partir da Black.' : '') + ' 27/11 parcial.';
 }
+
+/* ---------- dia sem entrega/saldo no Meta ---------- */
+function semSaldoInfo() {
+  const S = cli().fases.black.semSaldo; if (!S) return null;
+  const R = rowsOf('midia', ['black'], false).filter(r => r.plataforma === 'meta');
+  const dia = agg(R.filter(r => r.data === S.data));
+  const antes = [...new Set(R.map(r => r.data))].filter(d => d < S.data);
+  const med = k => antes.length ? antes.reduce((s, d) => s + (agg(R.filter(r => r.data === d))[k] || 0), 0) / antes.length : null;
+  const ses = d => sumField(rowsOf('ga4', ['black'], false).filter(r => r.data === d && normPlat(r.plataforma) === 'meta'), 'sessoes') || 0;
+  const sesMed = antes.length ? antes.reduce((s, d) => s + ses(d), 0) / antes.length : null;
+  return { S, dia, invMed: med('inv'), impMed: med('imp'), sesDia: ses(S.data), sesMed };
+}
+function semSaldoHtml() {
+  const x = semSaldoInfo(); if (!x || !['todas', 'meta'].includes(state.plataforma) || !inPeriod(x.S.data)) return '';
+  const q = (a, b) => ok(a) && b ? nf((a / b - 1) * 100, 0) + '%' : '—';
+  return `<div class="ss-box"><b>⚠ ${dBR(x.S.data)} · ${x.S.texto || 'Meta sem saldo'}</b>
+    <span>${x.S.desc || 'A conta principal do Meta ficou sem saldo o dia inteiro; só a campanha da conta Vitalícia (_VT) rodou.'} Investimento do Meta no dia: ${F.brl(x.dia.inv)} (média de ${F.brl(x.invMed)}/dia antes, ${q(x.dia.inv, x.invMed)}); impressões: ${F.intC(x.dia.imp)} (${q(x.dia.imp, x.impMed)}); sessões do Meta no site: ${F.int(x.sesDia)} (${q(x.sesDia, x.sesMed)}). As ${F.int(x.dia.conv)} compras do Meta no dia são, na maior parte, atribuições de anúncios vistos antes.</span></div>`;
+}
+if (window.Chart) Chart.register({ id: 'semSaldo', afterDatasetsDraw(c) {
+  const x = cli().fases.black.semSaldo; if (!x || !c.scales.x || c.config.type === 'doughnut' || (c.options.indexAxis === 'y')) return;
+  const i = (c.data.labels || []).indexOf(dBR(x.data)); if (i < 0) return;
+  const px = c.scales.x.getPixelForValue(i), a = c.chartArea, ctx = c.ctx;
+  ctx.save(); ctx.strokeStyle = 'rgba(227,35,34,.85)'; ctx.setLineDash([4, 3]); ctx.lineWidth = 1.5;
+  ctx.beginPath(); ctx.moveTo(px, a.top); ctx.lineTo(px, a.bottom); ctx.stroke(); ctx.setLineDash([]);
+  ctx.fillStyle = '#E32322'; ctx.font = '700 10px Inter, sans-serif'; ctx.textAlign = 'center';
+  ctx.fillText(x.texto || 'Sem saldo', Math.min(Math.max(px, a.left + 40), a.right - 40), a.top + 10); ctx.restore();
+} });
 
 function renderAll() {
   renderNav(); renderPlatChips(); renderHero(); renderResumo(); renderKpis2(); renderVisitantes();
